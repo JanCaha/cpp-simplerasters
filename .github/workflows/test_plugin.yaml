@@ -1,0 +1,70 @@
+name: Tests for Library
+
+on:
+  push:
+    branches-ignore:
+      - "ex-**" 
+      - "experiments**"
+    paths:
+      - src/**
+      - external/** 
+      - cmake/**
+      - CMakeLists.txt
+      - "**/CMakeLists.txt"
+      - .github/workflows/test_plugin.yaml
+
+jobs:
+
+  Tests-library:
+
+    runs-on: ubuntu-latest
+
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+      QT_QPA_PLATFORM: "offscreen"
+      XDG_RUNTIME_DIR: "/tmp"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Update and Upgrade
+        run: |
+          sudo apt update
+          sudo apt install ninja-build
+
+      - name: Install GDAL
+        run: |
+          sudo apt -y install gdal-bin gdal-dev
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: | 
+           mkdir build
+           cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTS:bool=on 
+
+      - name: Build
+        run: | 
+           cmake --build build --config Release --target all
+
+      - name: Run tests
+        run: |
+          cd build/tests
+          ctest -VV
+
+      - name: Test install
+        run: |
+          rm -rf build
+          cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTS:bool=off
+          sudo cmake --build build --config Release --target install
