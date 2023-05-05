@@ -34,7 +34,7 @@ jobs:
 
       - name: Install GDAL
         run: |
-          sudo apt -y install gdal-bin gdal-dev
+          sudo apt-get -y install gdal-bin libgdal-dev
 
       - name: Checkout
         uses: actions/checkout@v3
