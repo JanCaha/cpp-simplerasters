@@ -144,4 +144,7 @@ class ProjectedSquareCellRaster : public SingleBandRaster
 // Functions
 //////////
 
-std::string rasterFormatsFileFilters();
+namespace simplerasters
+{
+    std::string rasterFormatsFileFilters();
+}

@@ -105,8 +105,10 @@ std::string fileFilter( GDALMajorObject *object )
     return res;
 }
 
-std::string rasterFormatsFileFilters()
+std::string simplerasters::rasterFormatsFileFilters()
 {
+    GDALAllRegister();
+
     std::string completeFileFilter;
     GDALDriverManager *dm = GetGDALDriverManager();
 
@@ -115,16 +117,20 @@ std::string rasterFormatsFileFilters()
     for ( size_t i = 0; i < count; i++ )
     {
         driver = dm->GetDriver( i );
-        std::string driverFileFilter = fileFilter( driver );
-        if ( !driverFileFilter.empty() )
+
+        if ( metadataEquals( driver, "DCAP_RASTER", "YES" ) )
         {
-            if ( completeFileFilter.empty() )
+            std::string driverFileFilter = fileFilter( driver );
+            if ( !driverFileFilter.empty() )
             {
-                completeFileFilter += driverFileFilter;
-            }
-            else
-            {
-                completeFileFilter += ";;" + driverFileFilter;
+                if ( completeFileFilter.empty() )
+                {
+                    completeFileFilter += driverFileFilter;
+                }
+                else
+                {
+                    completeFileFilter += ";;" + driverFileFilter;
+                }
             }
         }
     }
