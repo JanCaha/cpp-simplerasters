@@ -38,3 +38,4 @@ endmacro(AddTest)
 
 AddTest(testsinglebandraster)
 AddTest(testprojectedsqurecellraster)
+AddTest(testfunctions)
