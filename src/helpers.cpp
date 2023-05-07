@@ -105,7 +105,7 @@ std::string fileFilter( GDALMajorObject *object )
     return res;
 }
 
-std::string rasterFilters()
+std::string rasterFormatsFileFilters()
 {
     std::string completeFileFilter;
     GDALDriverManager *dm = GetGDALDriverManager();
