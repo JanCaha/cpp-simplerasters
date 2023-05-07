@@ -139,3 +139,9 @@ class ProjectedSquareCellRaster : public SingleBandRaster
   private:
     void validate();
 };
+
+//////////
+// Functions
+//////////
+
+std::string rasterFilters();
