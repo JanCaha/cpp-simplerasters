@@ -34,5 +34,7 @@
 build/*
 # tiff additional files
 *.aux.xml
+
+# settings
 .vscode/settings.json
 .vscode/c_cpp_properties.json
