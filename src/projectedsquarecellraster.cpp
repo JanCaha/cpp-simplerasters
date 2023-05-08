@@ -1,6 +1,7 @@
 #include "api/simplerasters.h"
 
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( std::string path, int bandNo ) : SingleBandRaster( path, bandNo )
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( std::string path, GDALDataType dataType, int bandNo )
+    : SingleBandRaster( path, dataType, bandNo )
 {
     validate();
 }

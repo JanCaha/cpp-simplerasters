@@ -87,7 +87,7 @@ class SingleBandRaster : public AbstractRaster
 {
   public:
     SingleBandRaster(){};
-    SingleBandRaster( std::string path, int band = 1 );
+    SingleBandRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
     SingleBandRaster( const SingleBandRaster &other, bool copyValues = false );
 
     bool isDataValid() const;
@@ -132,7 +132,7 @@ class SingleBandRaster : public AbstractRaster
 class ProjectedSquareCellRaster : public SingleBandRaster
 {
   public:
-    ProjectedSquareCellRaster( std::string path, int band = 1 );
+    ProjectedSquareCellRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
     ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, bool copyValues = false );
     ProjectedSquareCellRaster( const SingleBandRaster &other, bool copyValues = false );
 

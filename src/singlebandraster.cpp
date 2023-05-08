@@ -2,7 +2,7 @@
 
 #include "helpers.h"
 
-SingleBandRaster::SingleBandRaster( std::string path, int bandNo )
+SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int bandNo )
 {
 
     setUpGDAL();
@@ -44,7 +44,15 @@ SingleBandRaster::SingleBandRaster( std::string path, int bandNo )
 
     mValid = true;
 
-    mDataType = band->GetRasterDataType();
+    if ( dataType == GDALDataType::GDT_Unknown )
+    {
+        mDataType = band->GetRasterDataType();
+    }
+    else
+    {
+        mDataType = dataType;
+    }
+
     mNoData = band->GetNoDataValue();
 
     prepareDataArray();
@@ -82,7 +90,18 @@ void SingleBandRaster::prepareDataArray()
     }
     else
     {
-        mData = std::shared_ptr<void>( new int64_t[arraySize] );
+        if ( mDataType == GDALDataType::GDT_Int16 )
+        {
+            mData = std::shared_ptr<void>( new int16_t[arraySize] );
+        }
+        else if ( mDataType == GDALDataType::GDT_Int32 )
+        {
+            mData = std::shared_ptr<void>( new int32_t[arraySize] );
+        }
+        else
+        {
+            mData = std::shared_ptr<void>( new int64_t[arraySize] );
+        }
     }
 }
 
@@ -132,7 +151,18 @@ double SingleBandRaster::value( arraysize index ) const
     }
     else
     {
-        return static_cast<double>( ( static_cast<int64_t *>( mData.get() ) )[index] );
+        if ( mDataType == GDALDataType::GDT_Int16 )
+        {
+            return static_cast<double>( ( static_cast<int16_t *>( mData.get() ) )[index] );
+        }
+        if ( mDataType == GDALDataType::GDT_Int32 )
+        {
+            return static_cast<double>( ( static_cast<int32_t *>( mData.get() ) )[index] );
+        }
+        else
+        {
+            return static_cast<double>( ( static_cast<int64_t *>( mData.get() ) )[index] );
+        }
     }
 }
 
