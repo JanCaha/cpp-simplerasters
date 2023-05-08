@@ -23,10 +23,17 @@ TEST( SingleBandRaster, NotExistingFile )
 
 TEST( SingleBandRaster, NonExistingBand )
 {
-    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM, 2 );
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Float32, 2 );
     ASSERT_FALSE( r.isValid() );
     ASSERT_FALSE( r.isDataValid() );
     ASSERT_THAT( r.error(), HasSubstr( "Illegal band" ) );
+}
+
+TEST( SingleBandRaster, NonRasterFile )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_TXT );
+    ASSERT_FALSE( r.isValid() );
+    ASSERT_THAT( r.error(), HasSubstr( "not recognized as a supported file format" ) );
 }
 
 TEST_F( SingleBandRasterTest, Validity )
@@ -195,6 +202,15 @@ TEST_F( SingleBandRasterTest, IsPointInside )
 }
 
 TEST( SingleBandRaster, EmptyRaster ) { SingleBandRaster r = SingleBandRaster(); }
+
+TEST( SingleBandRaster, ReadDataAsDefinedType )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Int16 );
+    ASSERT_EQ( r.value( 0, 0 ), 1011 );
+
+    r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Float64 );
+    EXPECT_DOUBLE_EQ( r.value( 0, 0 ), 1010.5443115234375 );
+}
 
 int main( int argc, char **argv )
 {
