@@ -205,7 +205,18 @@ void SingleBandRaster::writeValue( arraysize index, double value )
     }
     else
     {
-        ( static_cast<int64_t *>( mData.get() ) )[index] = static_cast<int64_t>( value );
+        if ( mDataType == GDALDataType::GDT_Int16 )
+        {
+            ( static_cast<int16_t *>( mData.get() ) )[index] = static_cast<int16_t>( value );
+        }
+        else if ( mDataType == GDALDataType::GDT_Int32 )
+        {
+            ( static_cast<int32_t *>( mData.get() ) )[index] = static_cast<int32_t>( value );
+        }
+        else
+        {
+            ( static_cast<int64_t *>( mData.get() ) )[index] = static_cast<int64_t>( value );
+        }
     }
 }
 
@@ -332,4 +343,5 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValu
     : SingleBandRaster( other, other.mDataType, copyValues )
 {
 }
+
 u_long SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
