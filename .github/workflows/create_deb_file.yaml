@@ -1,0 +1,56 @@
+name: Tests for Library
+
+on:
+  push:
+    branches:
+      - "main"
+    tags:        
+      - '**'
+
+jobs:
+
+  Create-deb-file-library:
+
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Update and Upgrade
+        run: |
+          sudo apt update
+          sudo apt install ninja-build
+
+      - name: Install GDAL
+        run: |
+          sudo apt-get -y install gdal-bin libgdal-dev
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure
+        run: | 
+           mkdir build
+            cmake \
+            -S. \
+            -Bbuild \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTS:bool=off \
+            -DPACK_DEB:bool=on
+
+      - name: Build
+        run: | 
+           cmake --build build --config Release --target all
+
+      - name: Pack deb file
+        run: |
+          sudo cmake --build build --config Release --target pack_deb
+      
+      - name: Upload DEB file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: _packages
+          path: _packages/simplerasters_*.deb
