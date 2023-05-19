@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 project(simplerasters VERSION 0.2.0 DESCRIPTION "Raster Representation Library")
 
 option(BUILD_TESTS "Build tests." ON)
+option(PACK_DEB "Build tests." ON)
 
 set(LIBRARY_NAME "simplerasters")
 
@@ -25,3 +26,24 @@ endif()
 configure_file(${LIBRARY_NAME}.pc.in ${LIBRARY_NAME}.pc @ONLY)
 
 install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+
+# ############################################################
+# Pack :
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    if(PACK_DEB)
+        message(STATUS "DEB will be packed file.")
+
+        include(Packing)
+
+        file(GLOB old_versions "${CMAKE_SOURCE_DIR}/_packages/*.deb")
+
+        if(old_versions)
+            file(REMOVE ${old_versions})
+        endif()
+
+        add_custom_target(pack_deb
+            COMMAND ${CMAKE_CPACK_COMMAND} -G DEB -C Release
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        )
+    endif()
+endif()
