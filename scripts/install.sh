@@ -10,8 +10,10 @@ cmake \
     -Bbuild \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_TESTS:bool=off
+    -DBUILD_TESTS:bool=off \
+    -DPACK_DEB:bool=on
 
 cmake --build build --config Release --target all
 
 sudo cmake --build build --config Release --target install
+cmake --build build --config Release --target pack_deb
