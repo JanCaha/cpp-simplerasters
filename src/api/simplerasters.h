@@ -89,6 +89,7 @@ class SingleBandRaster : public AbstractRaster
     SingleBandRaster(){};
     SingleBandRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
     SingleBandRaster( const SingleBandRaster &other, bool copyValues = false );
+    SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues = false );
 
     bool isDataValid() const;
 

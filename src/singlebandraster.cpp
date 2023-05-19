@@ -298,7 +298,7 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
     return true;
 }
 
-SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValues )
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues )
 {
     mRows = other.mRows;
     mCols = other.mCols;
@@ -307,7 +307,8 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValu
     mNoData = other.mNoData;
     mError = other.mError;
     mValid = other.mValid;
-    mDataType = other.mDataType;
+
+    mDataType = dataType;
 
     prepareDataArray();
 
@@ -327,4 +328,8 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValu
     }
 }
 
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValues )
+    : SingleBandRaster( other, other.mDataType, copyValues )
+{
+}
 u_long SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
