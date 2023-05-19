@@ -1,14 +1,7 @@
 name: Tests for Library
 
 on:
-  push:
-    paths:
-      - src/**
-      - external/** 
-      - cmake/**
-      - CMakeLists.txt
-      - "**/CMakeLists.txt"
-      - .github/workflows/test_plugin.yaml
+  on: [push, pull_request]
 
 jobs:
 
