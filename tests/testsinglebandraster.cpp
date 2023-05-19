@@ -178,6 +178,14 @@ TEST_F( SingleBandRasterTest, CopyRasterWithData )
     }
 }
 
+TEST_F( SingleBandRasterTest, CopyRasterRetype )
+{
+    SingleBandRaster rCopy = SingleBandRaster( r, GDALDataType::GDT_Int16, true );
+    ASSERT_NE( r.dataSize(), rCopy.dataSize() );
+    ASSERT_GE( r.dataSize(), rCopy.dataSize() );
+    ASSERT_EQ( rCopy.valueAt( -336531.4064, -1189032.2883 ), 1010 );
+}
+
 TEST_F( SingleBandRasterTest, DataSize )
 {
     EXPECT_EQ( r.dataSize(), r.cells() * 4 );
