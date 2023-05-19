@@ -24,8 +24,6 @@ add_library(simplerasters SHARED
 set_target_properties(simplerasters PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
 set_target_properties(simplerasters PROPERTIES VERSION ${PROJECT_VERSION})
 
-set_target_properties(simplerasters PROPERTIES SOVERSION 1)
-
 set_target_properties(simplerasters PROPERTIES PUBLIC_HEADER api/simplerasters.h)
 
 target_include_directories(simplerasters PRIVATE ${GDAL_INCLUDE_DIR})
