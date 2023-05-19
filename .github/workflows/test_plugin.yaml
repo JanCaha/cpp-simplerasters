@@ -12,6 +12,8 @@ on:
       - CMakeLists.txt
       - "**/CMakeLists.txt"
       - .github/workflows/test_plugin.yaml
+    tags:        
+      - '**'
 
 jobs:
 
@@ -72,7 +74,7 @@ jobs:
           sudo cmake --build build --config Release --target pack_deb
       
       - name: Upload DEB file as artifact
-        if: github.event_name == 'push' && (contains(github.event.head_commit.message, 'v.') || startsWith(github.ref, 'refs/tags'))
+        if: github.event_name == 'push' && (contains(github.event.head_commit.message, 'version') || startsWith(github.ref, 'refs/tags'))
         uses: actions/upload-artifact@v3
         with:
           name: _packages
