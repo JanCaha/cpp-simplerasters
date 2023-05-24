@@ -55,5 +55,6 @@ jobs:
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: _packages
-          path: _packages/simplerasters_*.deb
+          name: simplerasters
+          path: simplerasters_*.deb
+      
