@@ -43,11 +43,11 @@ jobs:
 
       - name: Build
         run: | 
-           cmake --build build --config Release --target all
+          cmake --build build --config Release --target all
 
       - name: Pack deb file
         run: |
-          sudo cmake --build build --config Release --target pack_deb
+          cmake --build build --config Release --target pack_deb
       
       - name: Move deb file
         run: |
