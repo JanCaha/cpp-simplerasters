@@ -49,6 +49,9 @@ jobs:
         run: |
           sudo cmake --build build --config Release --target pack_deb
       
+      - name: Move deb file
+        run: |
+          mv _packages/simplerasters_*.deb .
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
         with:
