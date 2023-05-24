@@ -75,3 +75,8 @@ jobs:
                 ref: `refs/tags/${VERSION}`,
                 sha: context.sha
             })
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: viewshed_*.deb
