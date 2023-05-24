@@ -1,4 +1,4 @@
-name: Create DEB artifact
+name: Create DEB artifact and Release
 
 on:
   push:
@@ -52,6 +52,7 @@ jobs:
       - name: Move deb file
         run: |
           mv _packages/simplerasters_*.deb .
+          
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
         with:
