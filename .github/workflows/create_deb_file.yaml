@@ -58,3 +58,9 @@ jobs:
           name: simplerasters
           path: simplerasters_*.deb
       
+      - name: Version
+        id: version
+        run: |
+          VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      
