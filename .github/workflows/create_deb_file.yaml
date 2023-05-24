@@ -1,4 +1,4 @@
-name: Create DEB artifact
+name: Create DEB artifact and Release
 
 on:
   push:
@@ -49,8 +49,35 @@ jobs:
         run: |
           sudo cmake --build build --config Release --target pack_deb
       
+      - name: Move deb file
+        run: |
+          mv _packages/simplerasters_*.deb .
+          
       - name: Upload DEB file as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: _packages
-          path: _packages/simplerasters_*.deb
+          name: simplerasters
+          path: simplerasters_*.deb
+      
+      - name: Version
+        id: version
+        run: |
+          VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+      
+      - name: Create Tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const {DIST_VERSION} = process.env          
+            github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/${VERSION}`,
+                sha: context.sha
+            })
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: viewshed_*.deb
