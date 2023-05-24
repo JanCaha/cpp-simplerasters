@@ -64,3 +64,14 @@ jobs:
           VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
       
+      - name: Create Tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const {DIST_VERSION} = process.env          
+            github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/${VERSION}`,
+                sha: context.sha
+            })
