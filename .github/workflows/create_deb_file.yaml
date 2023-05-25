@@ -62,8 +62,7 @@ jobs:
       - name: Version
         id: version
         run: |
-          echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
-          echo $VERSION
+          echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
 
       - name: Create Tag
         uses: actions/github-script@v6
@@ -73,7 +72,7 @@ jobs:
             github.rest.git.createRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: `refs/tags/${VERSION}`,
+                ref: `refs/tags/${{steps.version.outputs.VERSION}}`,
                 sha: context.sha
             })
 
