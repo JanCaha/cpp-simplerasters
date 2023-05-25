@@ -64,8 +64,8 @@ jobs:
         run: |
           PROJECT_VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")
           echo $PROJECT_VERSION
-          echo "VERSION={$PROJECT_VERSION}" >> $GITHUB_ENV
-          echo ${VERSION}
+          echo "VERSION=$PROJECT_VERSION" >> $GITHUB_ENV
+          echo $VERSION
 
       - name: Create Tag
         uses: actions/github-script@v6
