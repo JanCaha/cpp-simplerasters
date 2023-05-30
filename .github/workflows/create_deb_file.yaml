@@ -13,6 +13,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,11 +66,12 @@ jobs:
         id: version
         run: |
           echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
-      
-      - name: Tag and push current repo code
-        run: |
-          git tag "v${{steps.version.outputs.VERSION}}"
-          git push origin
+
+      - name: Push tag
+        uses: anothrNick/github-tag-action@1.64.0 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          CUSTOM_TAG : "v${{steps.version.outputs.VERSION}}"
 
       - name: Release
         uses: softprops/action-gh-release@v1
