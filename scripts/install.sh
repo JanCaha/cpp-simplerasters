@@ -16,4 +16,4 @@ cmake \
 cmake --build build --config Release --target all
 
 sudo cmake --build build --config Release --target install
-cmake --build build --config Release --target pack_deb
+sudo cmake --build build --config Release --target pack_deb
