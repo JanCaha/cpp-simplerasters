@@ -18,9 +18,16 @@ jobs:
           sudo apt update
           sudo apt install ninja-build
 
-      - name: Install GDAL
+      - name: Install latest CMake
         run: |
-          sudo apt-get -y install gdal-bin libgdal-dev
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
+
+      - name: Install GDAL
+        run: sudo apt-get -y install gdal-bin libgdal-dev
+      
+      - name: Install GTest and GMock
+        run: sudo apt-get install libgtest-dev libgmock-dev
 
       - name: Checkout
         uses: actions/checkout@v3
