@@ -76,5 +76,5 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: viewshed_*.deb
+          files: simplerasters_*.deb
           tag_name: "v${{steps.version.outputs.VERSION}}"
