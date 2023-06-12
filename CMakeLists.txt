@@ -29,7 +29,7 @@ install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL
 
 # ############################################################
 # Pack :
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
     if(PACK_DEB)
         message(STATUS "DEB will be packed file.")
 
