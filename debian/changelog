@@ -1,0 +1,11 @@
+simplerasters (0.3.4-0ppa0) jammy; urgency=low
+
+  * Fix ppa build!
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 12 Jun 2023 15:17:22 +0200
+
+simplerasters (0.3.0-0ppa0) jammy; urgency=low
+
+  * Initial upload!
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 12 Jun 2023 13:56:16 +0200
