@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(simplerasters VERSION 0.3.0 DESCRIPTION "Raster Representation Library")
+project(simplerasters VERSION 0.3.4 DESCRIPTION "Raster Representation Library")
 
 option(BUILD_TESTS "Build tests." ON)
 option(PACK_DEB "Build tests." ON)
