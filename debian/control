@@ -7,5 +7,5 @@ Homepage: https://www.cahik.cz
 
 Package: simplerasters
 Architecture: any
-Depends: gdal-bin libgdal-dev
+Depends: gdal-bin, libgdal-dev
 Description: Simplification of access to GDAL raster data.
