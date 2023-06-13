@@ -23,9 +23,14 @@ if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
-configure_file(${LIBRARY_NAME}.pc.in ${LIBRARY_NAME}.pc @ONLY)
+string(FIND ${CMAKE_INSTALL_PREFIX} "debian/tmp/usr" IS_PPA_BUILD)
 
-install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+if(${IS_PPA_BUILD} GREATER 0)
+    message(STATUS "Not installing pkgconfig info.")
+else()
+    configure_file(${LIBRARY_NAME}.pc.in ${LIBRARY_NAME}.pc @ONLY)
+    install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+endif()
 
 # ############################################################
 # Pack :
