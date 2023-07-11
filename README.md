@@ -3,7 +3,7 @@
 ## Citation
 
 ```bibtex
-@Software{Caha2023b,
+@Software{Caha2023,
   author  = {Jan Caha},
   title   = {simplerasters ({C++ Raster Data Access Library based on GDAL})},
   year    = {2023},
