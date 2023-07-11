@@ -1,5 +1,4 @@
 find_package(GTest REQUIRED CONFIG)
-include_directories(${GTEST_INCLUDE_DIRS})
 
 include_directories(
         ${GTEST_INCLUDE_DIRS}

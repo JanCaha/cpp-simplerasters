@@ -45,7 +45,7 @@ void AbstractRaster::transformCoordinatesToWorld( const double &row, const doubl
 
 void AbstractRaster::transformCoordinatesToWorld( const std::shared_ptr<OGRPoint> p, double &x, double &y )
 {
-    transformCoordinatesToRaster( p->getY(), p->getX(), x, y );
+    transformCoordinatesToWorld( p->getY(), p->getX(), x, y );
 }
 
 bool AbstractRaster::isValid() const { return mValid; }

@@ -1,0 +1,11 @@
+Source: simplerasters
+Section: science
+Priority: optional
+Maintainer: Jan Caha <jan.caha@outlook.com>
+Build-Depends: cmake, build-essential, gdal-bin, libgdal-dev
+Homepage: https://www.cahik.cz
+
+Package: simplerasters
+Architecture: any
+Depends: gdal-bin, libgdal-dev
+Description: Simplification of access to GDAL raster data.

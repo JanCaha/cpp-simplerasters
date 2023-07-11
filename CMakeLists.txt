@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(simplerasters VERSION 0.3.0 DESCRIPTION "Raster Representation Library")
+project(simplerasters VERSION 0.4.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
 
 option(BUILD_TESTS "Build tests." ON)
 option(PACK_DEB "Build tests." ON)
@@ -23,13 +23,18 @@ if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
-configure_file(${LIBRARY_NAME}.pc.in ${LIBRARY_NAME}.pc @ONLY)
+string(FIND ${CMAKE_INSTALL_PREFIX} "debian/tmp/usr" IS_PPA_BUILD)
 
-install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+if(${IS_PPA_BUILD} GREATER 0)
+    message(STATUS "Not installing pkgconfig info.")
+else()
+    configure_file(${LIBRARY_NAME}.pc.in ${LIBRARY_NAME}.pc @ONLY)
+    install(FILES ${CMAKE_BINARY_DIR}/${LIBRARY_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+endif()
 
 # ############################################################
 # Pack :
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
     if(PACK_DEB)
         message(STATUS "DEB will be packed file.")
 
