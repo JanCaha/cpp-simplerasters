@@ -1,5 +1,5 @@
 Source: simplerasters
-Section: devel
+Section: science
 Priority: optional
 Maintainer: Jan Caha <jan.caha@outlook.com>
 Build-Depends: cmake, build-essential, gdal-bin, libgdal-dev
