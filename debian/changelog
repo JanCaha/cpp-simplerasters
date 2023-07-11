@@ -1,3 +1,9 @@
+simplerasters (0.4.0-0ppa0) jammy; urgency=low
+
+  * Minor updates
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 11 Jul 2023 12:54:33 +0200
+
 simplerasters (0.3.7-0ppa0) jammy; urgency=low
 
   * Fix ppa build!
