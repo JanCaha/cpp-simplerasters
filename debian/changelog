@@ -1,3 +1,9 @@
+simplerasters (0.4.2-0ppa0) jammy; urgency=low
+
+  * Fix ProjectedSquareCellRaster constructor, to throw errors correctly
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 07 Aug 2023 12:29:53 +0200
+
 simplerasters (0.4.1-0ppa0) jammy; urgency=low
 
   * Build as Release
