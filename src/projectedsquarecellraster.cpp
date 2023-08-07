@@ -3,6 +3,10 @@
 ProjectedSquareCellRaster::ProjectedSquareCellRaster( std::string path, GDALDataType dataType, int bandNo )
     : SingleBandRaster( path, dataType, bandNo )
 {
+    if ( !isValid() )
+    {
+        return;
+    }
     validate();
 }
 
@@ -30,11 +34,19 @@ void ProjectedSquareCellRaster::validate()
 ProjectedSquareCellRaster::ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, bool copyValues )
     : SingleBandRaster( other, copyValues )
 {
+    if ( !isValid() )
+    {
+        return;
+    }
     validate();
 }
 
 ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, bool copyValues )
     : SingleBandRaster( other, copyValues )
 {
+    if ( !isValid() )
+    {
+        return;
+    }
     validate();
 }

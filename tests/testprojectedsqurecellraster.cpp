@@ -7,6 +7,14 @@
 
 using ::testing::HasSubstr;
 
+TEST( ProjectedSquareCellRaster, NotExistingFile )
+{
+    ProjectedSquareCellRaster r = ProjectedSquareCellRaster( (std::string)TEST_DATA_DIR + "/dsm_error.tif" );
+    ASSERT_FALSE( r.isValid() );
+    ASSERT_FALSE( r.isDataValid() );
+    ASSERT_THAT( r.error(), HasSubstr( "No such file or directory" ) );
+}
+
 TEST( ProjectedSquareCellRaster, NonRectangular )
 {
     ProjectedSquareCellRaster r = ProjectedSquareCellRaster( TEST_DATA_DSM_NON_RECTANGULAR );
