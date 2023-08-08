@@ -33,7 +33,10 @@ jobs:
       - name: Configure CMake
         run: |
           cmake -B build . -GNinja `
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_MSVC_RUNTIME_LIBRARY:STRING=MultiThreaded `
+            -DCMAKE_TOOLCHAIN_FILE:PATH="C:\temp\vcpkg-llvm-$env:LLVM_VERSION\scripts\buildsystems\vcpkg.cmake" `
+            -DVCPKG_TARGET_TRIPLET:STRING=x64-windows-static
 
       - name: Build
         run: cmake --build build --target all
