@@ -1,4 +1,4 @@
-name: Tests for Library
+name: Build on Win
 
 on: 
     push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  Tests-library:
+  Build-on-Win:
 
     runs-on: windows-latest
 
