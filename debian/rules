@@ -20,6 +20,8 @@ override_dh_auto_configure:
 override_dh_auto_build:
 	cmake --build $(BUILDDIR) --config Release --target all	
 
+override_dh_auto_make: ;
+
 override_dh_auto_install: install-lib 
 
 install-lib:
