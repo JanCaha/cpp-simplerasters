@@ -1,31 +1,22 @@
 #!/usr/bin/make -f
 
+export DH_OPTIONS
 export DH_COMPAT=11
 export DH_VERBOSE=1
 export BUILDDIR=build
 
 %:
-	dh $@ --buildsystem=cmake+ninja --parallel
+	dh $@ --buildsystem=cmake+ninja --parallel --builddirectory=$(BUILDDIR)
 
 override_dh_auto_configure:
 	dh_auto_configure \
-		--builddirectory=$(BUILDDIR) \
 		--parallel \
+		--builddirectory=$(BUILDDIR) \
 		-- \
 		-D CMAKE_CXX_COMPILER=clang++ \
 		-D CMAKE_BUILD_TYPE=Release \
-		-D BUILD_TESTS=OFF \
-		-D PACK_DEB=OFF 
-
-override_dh_auto_build:
-	cmake --build $(BUILDDIR) --config Release --target all	
-
-override_dh_auto_make: ;
-
-override_dh_auto_install: install-lib 
-
-install-lib:
-	cd $(BUILDDIR) && cmake -P cmake_install.cmake
-
+		-D BUILD_TESTS=OFF
 
 override_dh_testroot: ;
+
+override_dh_auto_test: ;
