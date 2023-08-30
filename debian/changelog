@@ -1,8 +1,8 @@
-simplerasters (0.4.3-0ppa0) jammy; urgency=low
+simplerasters (0.5.0-0ppa0) jammy; urgency=low
 
   * Test different launchpad build
 
- -- Jan Caha <jan.caha@outlook.com>  Tue, 29 Aug 2023 21:39:16 +0200
+ -- Jan Caha <jan.caha@outlook.com>  Wed, 30 Aug 2023 10:39:45 +0200
 
 simplerasters (0.4.2-0ppa0) jammy; urgency=low
 
