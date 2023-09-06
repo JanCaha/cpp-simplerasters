@@ -14,7 +14,7 @@ jobs:
       XDG_RUNTIME_DIR: "/tmp"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TRIPLET: x64-windows
-      VCPKG_DEFAULT_BINARY_CACHE: ${VCPKG_INSTALLATION_ROOT}/bincache
+      VCPKG_DEFAULT_BINARY_CACHE: ${{VCPKG_INSTALLATION_ROOT}}/bincache
 
     steps:
 
