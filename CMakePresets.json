@@ -15,7 +15,7 @@
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
-                    "value": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+                    "value": "$env{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake"
                 },
                 "BUILD_TESTS": {
                     "type": "BOOL",
