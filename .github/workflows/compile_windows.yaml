@@ -27,13 +27,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-      
-      - name: Print
-        run: |
-          dir    
 
       - name: "Create directory '${{ env.VCPKG_DEFAULT_BINARY_CACHE }}'"
-        run: mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
+        run: |
+          mkdir -p $VCPKG_DEFAULT_BINARY_CACHE
+          cd $VCPKG_DEFAULT_BINARY_CACHE
+          cd ..
+          dir
         shell: bash
 
       # Setup the build machine with the most recent versions of CMake and Ninja. Both are cached if not already: on subsequent runs both will be quickly restored from GitHub cache service.
