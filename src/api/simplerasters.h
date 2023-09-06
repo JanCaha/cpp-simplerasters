@@ -19,7 +19,7 @@ Copyright (C) 2023 Jan Caha
 // Types
 //////////
 
-typedef u_long arraysize;
+using arraysize = u_long;
 
 //////////
 // Classes
