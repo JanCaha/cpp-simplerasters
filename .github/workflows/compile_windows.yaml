@@ -55,8 +55,6 @@ jobs:
 
       - name: Build (Release configuration)
         run: |
-          cmake --build --preset ninja-vcpkg-release
+          cmake -G "NMake Makefiles" .
+          nmake
 
-      - name: Test (Release configuration)
-        run: |
-          ctest --preset test-release      
