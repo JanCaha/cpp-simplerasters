@@ -35,8 +35,6 @@ jobs:
 
       - name: Setup vcpkg 
         uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgDirectory: ${VCPKG_ROOT}
 
       # Restore vcpkg from the GitHub Action cache service. Note that packages are restored by vcpkg's binary caching
       # when it is being run afterwards by CMake.
