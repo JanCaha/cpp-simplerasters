@@ -14,7 +14,7 @@ jobs:
       XDG_RUNTIME_DIR: "/tmp"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TRIPLET: x64-windows
-      CMAKE_GENERATOR: "Visual Studio 17 2022"
+      CMAKE_GENERATOR: "Visual Studio 16 2019"
       VCPKG_ROOT: "C:/vcpkg-root"
 
 
