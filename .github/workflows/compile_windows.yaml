@@ -73,4 +73,9 @@ jobs:
       - name: Build
         run: |
           cmake --build --preset windows-visual-studio-vcpkg-release
-
+          
+      - name: Upload file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: simplerasters
+          path: builds\windows-visual-studio-vcpkg-without-tests\src\Release\simplerasters.dll
