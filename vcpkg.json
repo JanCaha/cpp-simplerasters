@@ -1,8 +1,8 @@
 {
-    "name": "main",
-    "version-string": "latest",
-    "builtin-baseline": "latest",
-    "dependencies": [
-        "gdal"
-    ]
+  "name": "main",
+  "version-string": "latest",
+  "dependencies": [
+    "gdal"
+  ],
+  "builtin-baseline": "1384becefca5c1511f0e070c43f66ad6a3783c8e"
 }
