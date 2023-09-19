@@ -2,7 +2,7 @@
     "version": 3,
     "cmakeMinimumRequired": {
         "major": 3,
-        "minor": 21,
+        "minor": 23,
         "patch": 0
     },
     "configurePresets": [
@@ -38,9 +38,47 @@
         },
         {
             "name": "windows-visual-studio-vcpkg-with-tests",
-            "displayName": "vcpkg wit Tests",
+            "displayName": "vcpkg with Tests",
             "inherits": [
                 "windows-visual-studio-vcpkg"
+            ],
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        },
+        {
+            "name": "linux",
+            "displayName": "Linux",
+            "binaryDir": "${sourceDir}/builds/${presetName}",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "PACK_DEB": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "linux-without-tests",
+            "displayName": "Linux without Tests",
+            "inherits": [
+                "linux"
+            ],
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "linux-with-tests",
+            "displayName": "Linux with Tests",
+            "inherits": [
+                "linux"
             ],
             "cacheVariables": {
                 "BUILD_TESTS": {
@@ -64,7 +102,36 @@
             "displayName": "Build (Release)",
             "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
+        },
+        {
+            "name": "linux-debug",
+            "configurePreset": "linux-with-tests",
+            "displayName": "Build (Debug)",
+            "description": "Build with Visual Studio/vcpkg (Debug)",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-release",
+            "configurePreset": "linux-without-tests",
+            "displayName": "Build (Release)",
+            "description": "Build with Visual Studio/vcpkg (Release)",
+            "configuration": "Release"
         }
     ],
-    "testPresets": []
+    "testPresets": [
+        {
+            "name": "linux-tests",
+            "configurePreset": "linux-with-tests",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "window-tests",
+            "configurePreset": "windows-visual-studio-vcpkg-with-tests",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
 }
