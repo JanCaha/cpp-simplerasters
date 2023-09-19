@@ -76,5 +76,5 @@ jobs:
         with:
           configurePreset: 'windows-visual-studio-vcpkg-without-tests'
           buildPreset: 'windows-visual-studio-vcpkg-release'
-
+          testPreset: ''
 
