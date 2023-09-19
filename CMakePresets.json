@@ -7,41 +7,64 @@
     },
     "configurePresets": [
         {
-            "name": "visual-studio-vcpkg",
+            "name": "windows-visual-studio-vcpkg",
             "displayName": "Visual Studio",
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
             "binaryDir": "${sourceDir}/builds/${presetName}",
-            "generator": "Visual Studio 16 2019",
+            "generator": "$env{CMAKE_GENERATOR}",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
                     "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-                },
-                "BUILD_TESTS": {
-                    "type": "BOOL",
-                    "value": "OFF"
                 },
                 "PACK_DEB": {
                     "type": "BOOL",
                     "value": "OFF"
                 }
             }
+        },
+        {
+            "name": "windows-visual-studio-vcpkg-without-tests",
+            "displayName": "vcpkg without Tests",
+            "inherits": [
+                "windows-visual-studio-vcpkg"
+            ],
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
+            "name": "windows-visual-studio-vcpkg-with-tests",
+            "displayName": "vcpkg wit Tests",
+            "inherits": [
+                "windows-visual-studio-vcpkg"
+            ],
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
         }
     ],
     "buildPresets": [
         {
-            "name": "visual-studio-vcpkg-debug",
-            "configurePreset": "visual-studio-vcpkg",
+            "name": "windows-visual-studio-vcpkg-debug",
+            "configurePreset": "windows-visual-studio-vcpkg-with-tests",
             "displayName": "Build (Debug)",
             "description": "Build with Visual Studio/vcpkg (Debug)",
             "configuration": "Debug"
         },
         {
-            "name": "visual-studio-vcpkg-release",
-            "configurePreset": "visual-studio-vcpkg",
+            "name": "windows-visual-studio-vcpkg-release",
+            "configurePreset": "windows-visual-studio-vcpkg-without-tests",
             "displayName": "Build (Release)",
             "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
         }
-    ]
+    ],
+    "testPresets": []
 }
