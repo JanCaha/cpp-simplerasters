@@ -14,6 +14,9 @@ jobs:
       XDG_RUNTIME_DIR: "/tmp"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TRIPLET: x64-windows
+      CMAKE_GENERATOR: "Visual Studio 17 2022"
+      VCPKG_ROOT: "C:/vcpkg-root"
+
 
     steps:
 
@@ -51,10 +54,4 @@ jobs:
 
       - name: Restore from cache the dependencies and generate project files
         run: |
-          cmake --preset ninja-multi-vcpkg
-
-      - name: Build (Release configuration)
-        run: |
-          cmake -G "NMake Makefiles" .
-          nmake
-
+          cmake --preset visual-studio-vcpkg-release
