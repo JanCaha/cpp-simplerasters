@@ -53,7 +53,7 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Update vcpkg
-        run: ${VCPKG_ROOT}/vcpkg.exe update
+        run: "${VCPKG_ROOT}/vcpkg.exe" update
 
       - name: Restore from cache the dependencies and generate project files
         run: |
