@@ -6,7 +6,7 @@ int AbstractRaster::xSize() const { return mCols; }
 
 int AbstractRaster::ySize() const { return mRows; }
 
-u_long AbstractRaster::cellsInBand() const { return mRows * mCols; }
+arraysize AbstractRaster::cellsInBand() const { return mRows * mCols; }
 
 double AbstractRaster::xCellSize() const { return abs( mGeoTransform[1] ); }
 

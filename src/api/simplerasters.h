@@ -19,7 +19,7 @@ Copyright (C) 2023 Jan Caha
 // Types
 //////////
 
-using arraysize = u_long;
+using arraysize = unsigned long int;
 
 //////////
 // Classes
@@ -37,7 +37,7 @@ class AbstractRaster
 
     int width() const { return xSize(); };
 
-    u_long cellsInBand() const;
+    arraysize cellsInBand() const;
 
     double xCellSize() const;
     double yCellSize() const;
@@ -93,7 +93,7 @@ class SingleBandRaster : public AbstractRaster
 
     bool isDataValid() const;
 
-    u_long cells() const;
+    arraysize cells() const;
 
     double value( double row, double column ) const;
     double value( int row, int column ) const;
@@ -116,7 +116,7 @@ class SingleBandRaster : public AbstractRaster
 
     bool saveFile( std::string filename, std::string driverName = "GTiff" );
 
-    u_long dataSize();
+    arraysize dataSize();
 
   protected:
     GDALDataType mDataType;
