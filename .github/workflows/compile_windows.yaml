@@ -15,8 +15,6 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TRIPLET: x64-windows
       CMAKE_GENERATOR: "Visual Studio 16 2019"
-      VCPKG_ROOT: "C:/vcpkg-root"
-
 
     steps:
 
@@ -32,6 +30,10 @@ jobs:
 
       # Setup the build machine with the most recent versions of CMake and Ninja. Both are cached if not already: on subsequent runs both will be quickly restored from GitHub cache service.
       - uses: lukka/get-cmake@latest
+      
+      # On Windows runners, let's ensure to have the Developer Command Prompt environment setup correctly.
+      # As used here the Developer Command Prompt created is targeting x64 and using the default the Windows SDK.
+      - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Setup vcpkg 
         uses: lukka/run-vcpkg@v11
@@ -60,11 +62,7 @@ jobs:
             !${VCPKG_ROOT}/installed
           # The key is composed in a way that it gets properly invalidated whenever a different version of vcpkg is being used.
           key: |
-            ${{ hashFiles( 'CMakeLists.txt' )}}
-        
-      # On Windows runners, let's ensure to have the Developer Command Prompt environment setup correctly.
-      # As used here the Developer Command Prompt created is targeting x64 and using the default the Windows SDK.
-      - uses: ilammy/msvc-dev-cmd@v1
+            ${{ hashFiles( 'CMakeLists.txt' )}}      
 
       - name: Restore from cache the dependencies and generate project files
         run: |
