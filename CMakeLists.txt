@@ -21,6 +21,7 @@ if(BUILD_TESTS)
     enable_testing(true)
 
     add_subdirectory(tests)
+    list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
 string(FIND ${CMAKE_INSTALL_PREFIX} "debian/tmp/usr" IS_PPA_BUILD)

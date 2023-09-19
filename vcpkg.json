@@ -1,8 +1,16 @@
 {
   "name": "main",
   "version-string": "latest",
+  "builtin-baseline": "1384becefca5c1511f0e070c43f66ad6a3783c8e",
   "dependencies": [
     "gdal"
   ],
-  "builtin-baseline": "1384becefca5c1511f0e070c43f66ad6a3783c8e"
+  "features": {
+    "tests": {
+      "description": "Build tests",
+      "dependencies": [
+        "gtest"
+      ]
+    }
+  }
 }
