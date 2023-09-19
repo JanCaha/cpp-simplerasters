@@ -14,7 +14,6 @@ jobs:
       XDG_RUNTIME_DIR: "/tmp"
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       TRIPLET: x64-windows
-      CMAKE_GENERATOR: "Visual Studio 17 2022"
 
     steps:
 
@@ -44,12 +43,6 @@ jobs:
         shell: bash
         run: |
           echo "VCPKG_ROOT=${GITHUB_WORKSPACE}/vcpkg" >> $GITHUB_ENV
-
-      - name: Test
-        shell: bash
-        run: |
-          echo $VCPKG_ROOT
-          echo $CMAKE_GENERATOR
 
       # Restore vcpkg from the GitHub Action cache service. Note that packages are restored by vcpkg's binary caching
       # when it is being run afterwards by CMake.
