@@ -52,6 +52,9 @@ jobs:
       # As used here the Developer Command Prompt created is targeting x64 and using the default the Windows SDK.
       - uses: ilammy/msvc-dev-cmd@v1
 
+      - name: Update vcpkg
+        run: ${VCPKG_ROOT}/vcpkg.exe update
+
       - name: Restore from cache the dependencies and generate project files
         run: |
           cmake --preset visual-studio-vcpkg
