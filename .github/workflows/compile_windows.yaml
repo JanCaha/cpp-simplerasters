@@ -68,13 +68,9 @@ jobs:
 
       - name: Restore from cache the dependencies and generate project files
         run: |
-          cmake --preset windows-visual-studio-vcpkg
-      
+          cmake --preset windows-visual-studio-vcpkg-without-tests
 
-      - name: Run CMake consuming CMakePresets.json and vcpkg.json by mean of vcpkg.
-        uses: lukka/run-cmake@v10
-        with:
-          configurePreset: 'windows-visual-studio-vcpkg-without-tests'
-          buildPreset: 'windows-visual-studio-vcpkg-release'
-          testPreset: ''
+      - name: Build
+        run: |
+          cmake --build --preset windows-visual-studio-vcpkg-release
 
