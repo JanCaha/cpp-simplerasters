@@ -43,30 +43,5 @@
             "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
         }
-    ],
-    "testPresets": [
-        {
-            "name": "test-ninja-vcpkg",
-            "configurePreset": "ninja-multi-vcpkg",
-            "hidden": true
-        },
-        {
-            "name": "test-debug",
-            "description": "Test (Debug)",
-            "displayName": "Test (Debug)",
-            "configuration": "Debug",
-            "inherits": [
-                "test-ninja-vcpkg"
-            ]
-        },
-        {
-            "name": "test-release",
-            "description": "Test (Release)",
-            "displayName": "Test (Release)",
-            "configuration": "Release",
-            "inherits": [
-                "test-ninja-vcpkg"
-            ]
-        }
     ]
 }
