@@ -47,8 +47,10 @@ jobs:
 
       - name: Test
         shell: bash
-        run: echo $VCPKG_ROOT
-
+        run: |
+          echo $VCPKG_ROOT
+          echo $CMAKE_GENERATOR
+          
       # Restore vcpkg from the GitHub Action cache service. Note that packages are restored by vcpkg's binary caching
       # when it is being run afterwards by CMake.
       - name: Restore vcpkg
