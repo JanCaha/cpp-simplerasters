@@ -50,7 +50,7 @@ jobs:
         run: |
           echo $VCPKG_ROOT
           echo $CMAKE_GENERATOR
-          
+
       # Restore vcpkg from the GitHub Action cache service. Note that packages are restored by vcpkg's binary caching
       # when it is being run afterwards by CMake.
       - name: Restore vcpkg
@@ -70,6 +70,12 @@ jobs:
         run: |
           cmake --preset windows-visual-studio-vcpkg
       
-      - name: Build
-        run: |
-          cmake --build --preset windows-visual-studio-vcpkg-release
+
+      - name: Run CMake consuming CMakePresets.json and vcpkg.json by mean of vcpkg.
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: 'windows-visual-studio-vcpkg-with-tests'
+          buildPreset: 'windows-visual-studio-vcpkg-release'
+          testPreset: 'windows-visual-studio-vcpkg-with-tests'
+
+
