@@ -37,6 +37,15 @@ jobs:
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgGitCommitId: 6a349fe1fbea1e5fcda2e0775f555d829a5e82df
+      
+      - name: Set and Retrieve Github ENV variables
+        shell: bash
+        run: |
+          echo "VCPKG_ROOT=${GITHUB_WORKSPACE}/vcpkg" >> $GITHUB_ENV
+
+      - name: Test
+        shell: bash
+        run: echo $VCPKG_ROOT
 
       # Restore vcpkg from the GitHub Action cache service. Note that packages are restored by vcpkg's binary caching
       # when it is being run afterwards by CMake.
@@ -56,9 +65,6 @@ jobs:
       # On Windows runners, let's ensure to have the Developer Command Prompt environment setup correctly.
       # As used here the Developer Command Prompt created is targeting x64 and using the default the Windows SDK.
       - uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Update vcpkg
-        run: ${VCPKG_INSTALLATION_ROOT}\vcpkg.exe update
 
       - name: Restore from cache the dependencies and generate project files
         run: |
