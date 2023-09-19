@@ -7,7 +7,7 @@
     },
     "configurePresets": [
         {
-            "name": "visual-studio-multi-vcpkg",
+            "name": "visual-studio-vcpkg",
             "displayName": "Visual Studio",
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
             "binaryDir": "${sourceDir}/builds/${presetName}",
@@ -31,14 +31,14 @@
     "buildPresets": [
         {
             "name": "visual-studio-vcpkg-debug",
-            "configurePreset": "visual-studio-multi-vcpkg",
+            "configurePreset": "visual-studio-vcpkg",
             "displayName": "Build (Debug)",
             "description": "Build with Visual Studio/vcpkg (Debug)",
             "configuration": "Debug"
         },
         {
             "name": "visual-studio-vcpkg-release",
-            "configurePreset": "visual-studio-multi-vcpkg",
+            "configurePreset": "visual-studio-vcpkg",
             "displayName": "Build (Release)",
             "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
