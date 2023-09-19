@@ -11,7 +11,7 @@
             "displayName": "Visual Studio",
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
             "binaryDir": "${sourceDir}/builds/${presetName}",
-            "generator": "Visual Studio 17 2022",
+            "generator": "Visual Studio 16 2019",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
