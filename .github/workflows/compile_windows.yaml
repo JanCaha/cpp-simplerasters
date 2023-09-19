@@ -54,4 +54,8 @@ jobs:
 
       - name: Restore from cache the dependencies and generate project files
         run: |
-          cmake --preset visual-studio-vcpkg-release
+          cmake --preset visual-studio-vcpkg
+      
+      - name: Build
+        run: |
+          cmake --build --preset visual-studio-vcpkg-release
