@@ -66,6 +66,11 @@ jobs:
       - name: Build
         run: |
           cmake --build --preset windows-visual-studio-vcpkg-release
+      
+      - name: Configure
+        run: |
+          cmake --preset windows-visual-studio-vcpkg-with-tests
+  
           
       - name: Upload file as artifact
         uses: actions/upload-artifact@v3
