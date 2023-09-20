@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(simplerasters VERSION 0.5.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
-
 option(BUILD_TESTS "Build tests." ON)
+
+if(BUILD_TESTS)
+    list(APPEND VCPKG_MANIFEST_FEATURES "tests")
+endif()
+
 option(PACK_DEB "Build tests." ON)
+
+project(simplerasters VERSION 0.5.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
 
 set(LIBRARY_NAME "simplerasters")
 
@@ -21,7 +26,6 @@ if(BUILD_TESTS)
     enable_testing(true)
 
     add_subdirectory(tests)
-    list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
 string(FIND ${CMAKE_INSTALL_PREFIX} "debian/tmp/usr" IS_PPA_BUILD)
