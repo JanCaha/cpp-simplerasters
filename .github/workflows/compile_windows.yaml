@@ -73,12 +73,12 @@ jobs:
   
       - name: Build
         run: |
-          cmake --build --preset windows-visual-studio-vcpkg-with-tests
+          cmake --build --preset windows-visual-studio-vcpkg-debug
       
       - name: Test
         run: |
           ctest --preset window-tests
-              
+
       - name: Upload file as artifact
         uses: actions/upload-artifact@v3
         with:
