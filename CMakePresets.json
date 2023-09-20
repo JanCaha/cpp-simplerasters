@@ -12,6 +12,11 @@
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
             "binaryDir": "${sourceDir}/builds/${presetName}",
             "generator": "Visual Studio 17 2022",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            },
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
@@ -90,37 +95,34 @@
     ],
     "buildPresets": [
         {
-            "name": "windows-visual-studio-vcpkg-debug",
+            "name": "windows-debug",
+            "displayName": "Windows Build (Debug)",
             "configurePreset": "windows-visual-studio-vcpkg-with-tests",
-            "displayName": "Build (Debug)",
-            "description": "Build with Visual Studio/vcpkg (Debug)",
             "configuration": "Debug"
         },
         {
-            "name": "windows-visual-studio-vcpkg-release",
+            "name": "windows-release",
+            "displayName": "Windows Build (Release)",
             "configurePreset": "windows-visual-studio-vcpkg-without-tests",
-            "displayName": "Build (Release)",
-            "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
         },
         {
             "name": "linux-debug",
             "configurePreset": "linux-with-tests",
-            "displayName": "Build (Debug)",
-            "description": "Build with Visual Studio/vcpkg (Debug)",
+            "displayName": "Linux Build (Debug)",
             "configuration": "Debug"
         },
         {
             "name": "linux-release",
+            "displayName": "Linux Build (Release)",
             "configurePreset": "linux-without-tests",
-            "displayName": "Build (Release)",
-            "description": "Build with Visual Studio/vcpkg (Release)",
             "configuration": "Release"
         }
     ],
     "testPresets": [
         {
             "name": "linux-tests",
+            "displayName": "Linux Tests",
             "configurePreset": "linux-with-tests",
             "output": {
                 "outputOnFailure": true
@@ -128,6 +130,7 @@
         },
         {
             "name": "window-tests",
+            "displayName": "Windows Tests",
             "configurePreset": "windows-visual-studio-vcpkg-with-tests",
             "output": {
                 "outputOnFailure": true
