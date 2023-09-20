@@ -7,6 +7,35 @@
     },
     "configurePresets": [
         {
+            "name": "without-tests",
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                },
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "with-tests",
+            "cacheVariables": {
+                "BUILD_TESTS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                },
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "no-deb",
+            "cacheVariables": {
+                "PACK_DEB": {
+                    "type": "BOOL",
+                    "value": "OFF"
+                }
+            }
+        },
+        {
             "name": "windows-visual-studio-vcpkg",
             "displayName": "Visual Studio",
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
@@ -21,10 +50,6 @@
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
                     "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-                },
-                "PACK_DEB": {
-                    "type": "BOOL",
-                    "value": "OFF"
                 }
             }
         },
@@ -32,65 +57,43 @@
             "name": "windows-visual-studio-vcpkg-without-tests",
             "displayName": "vcpkg without Tests",
             "inherits": [
-                "windows-visual-studio-vcpkg"
-            ],
-            "cacheVariables": {
-                "BUILD_TESTS": {
-                    "type": "BOOL",
-                    "value": "OFF"
-                }
-            }
+                "windows-visual-studio-vcpkg",
+                "no-deb",
+                "without-tests"
+            ]
         },
         {
             "name": "windows-visual-studio-vcpkg-with-tests",
             "displayName": "vcpkg with Tests",
             "inherits": [
-                "windows-visual-studio-vcpkg"
-            ],
-            "cacheVariables": {
-                "BUILD_TESTS": {
-                    "type": "BOOL",
-                    "value": "ON"
-                }
-            }
+                "windows-visual-studio-vcpkg",
+                "no-deb",
+                "with-tests"
+            ]
         },
         {
             "name": "linux",
             "displayName": "Linux",
             "binaryDir": "${sourceDir}/builds/${presetName}",
-            "generator": "Ninja",
-            "cacheVariables": {
-                "PACK_DEB": {
-                    "type": "BOOL",
-                    "value": "OFF"
-                }
-            }
+            "generator": "Ninja"
         },
         {
             "name": "linux-without-tests",
             "displayName": "Linux without Tests",
             "inherits": [
-                "linux"
-            ],
-            "cacheVariables": {
-                "BUILD_TESTS": {
-                    "type": "BOOL",
-                    "value": "OFF"
-                }
-            }
+                "linux",
+                "no-deb",
+                "without-tests"
+            ]
         },
         {
             "name": "linux-with-tests",
             "displayName": "Linux with Tests",
             "inherits": [
-                "linux"
-            ],
-            "cacheVariables": {
-                "BUILD_TESTS": {
-                    "type": "BOOL",
-                    "value": "ON"
-                }
-            }
+                "linux",
+                "no-deb",
+                "with-tests"
+            ]
         }
     ],
     "buildPresets": [
@@ -124,6 +127,7 @@
             "name": "linux-tests",
             "displayName": "Linux Tests",
             "configurePreset": "linux-with-tests",
+            "configuration": "Debug",
             "output": {
                 "outputOnFailure": true
             }
@@ -132,6 +136,7 @@
             "name": "window-tests",
             "displayName": "Windows Tests",
             "configurePreset": "windows-visual-studio-vcpkg-with-tests",
+            "configuration": "Debug",
             "output": {
                 "outputOnFailure": true
             }
