@@ -12,5 +12,11 @@
         "gtest"
       ]
     }
-  }
+  },
+  "overrides": [
+    {
+      "name": "proj",
+      "version": "9.0.1"
+    }
+  ]
 }
