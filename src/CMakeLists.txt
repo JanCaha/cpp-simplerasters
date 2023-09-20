@@ -34,3 +34,20 @@ include(GNUInstallDirs)
 install(TARGETS simplerasters
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
+
+add_library(simplerasters_static STATIC
+    ${SOURCES}
+    ${HEADERS}
+)
+
+set_target_properties(simplerasters_static PROPERTIES OUTPUT_NAME ${LIBRARY_NAME})
+set_target_properties(simplerasters_static PROPERTIES VERSION ${PROJECT_VERSION})
+
+set_target_properties(simplerasters_static PROPERTIES PUBLIC_HEADER api/simplerasters.h)
+
+target_include_directories(simplerasters_static PRIVATE ${GDAL_INCLUDE_DIR})
+target_link_libraries(simplerasters_static PRIVATE ${GDAL_LIBRARY})
+
+install(TARGETS simplerasters_static
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
