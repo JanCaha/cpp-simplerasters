@@ -16,7 +16,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/api
 )
 
-add_library(simplerasters
+add_library(simplerasters SHARED
     ${SOURCES}
     ${HEADERS}
 )
