@@ -65,7 +65,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build --preset windows-visual-studio-vcpkg-release
+          cmake --build --preset windows-release
       
       - name: Configure
         run: |
@@ -73,7 +73,7 @@ jobs:
   
       - name: Build
         run: |
-          cmake --build --preset windows-visual-studio-vcpkg-debug
+          cmake --build --preset windows-debug
       
       - name: Test
         run: |
