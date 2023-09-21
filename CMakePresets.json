@@ -75,7 +75,12 @@
             "name": "linux",
             "displayName": "Linux",
             "binaryDir": "${sourceDir}/builds/${presetName}",
-            "generator": "Ninja"
+            "generator": "Ninja",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
         },
         {
             "name": "linux-without-tests",
