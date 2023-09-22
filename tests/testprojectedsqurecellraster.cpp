@@ -34,6 +34,8 @@ TEST( ProjectedSquareCellRaster, NotProjected )
 TEST( ProjectedSquareCellRaster, FromSingleBandRaster )
 {
     SingleBandRaster rSingleBand = SingleBandRaster( TEST_DATA_DSM );
+    ASSERT_TRUE( rSingleBand.isValid() );
+
     ProjectedSquareCellRaster r = ProjectedSquareCellRaster( rSingleBand );
     ASSERT_TRUE( r.isValid() );
 }
