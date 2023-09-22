@@ -79,7 +79,12 @@ jobs:
         shell: bash
         run: |
           echo "PROJ_DATA==${GITHUB_WORKSPACE}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/share/proj/data" >> $GITHUB_ENV 
-
+      
+      - name: Set PROJ env
+        run: |
+           cd $PROJ_DATA
+           dir
+           
       - name: Test
         run: |
           ctest -C Debug --preset window-tests
