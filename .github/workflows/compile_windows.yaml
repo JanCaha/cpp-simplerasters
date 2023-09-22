@@ -81,8 +81,10 @@ jobs:
           echo "PROJ_DATA==${GITHUB_WORKSPACE}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/share/proj/data" >> $GITHUB_ENV 
       
       - name: Set PROJ env
+        shell: powershell
         run: |
-           cd $PROJ_DATA
+           echo $Env:PROJ_DATA
+           cd $Env:PROJ_DATA
            dir
            
       - name: Test
