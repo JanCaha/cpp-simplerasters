@@ -81,6 +81,8 @@ class AbstractRaster
     void setUpGDAL();
 
     void bBoxCoordinates( double &minX, double &maxX, double &minY, double &maxY ) const;
+
+    std::string mPath;
 };
 
 class SingleBandRaster : public AbstractRaster

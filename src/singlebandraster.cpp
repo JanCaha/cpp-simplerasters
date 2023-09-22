@@ -7,6 +7,8 @@ SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int
 
     setUpGDAL();
 
+    mPath = path;
+
     GDALDatasetUniquePtr dataset =
         GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( path.c_str(), GA_ReadOnly ) ) );
 
@@ -20,15 +22,7 @@ SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int
         return;
     }
 
-    std::string auth = dataset->GetSpatialRef()->GetAuthorityName( nullptr );
-    std::string code = dataset->GetSpatialRef()->GetAuthorityCode( nullptr );
-
-    std::string user_input = auth + ":" + code;
-
-    mCrs = OGRSpatialReference();
-    mCrs.SetFromUserInput( user_input.c_str() );
-
-    // mCrs = OGRSpatialReference( *dataset->GetSpatialRef() );
+    mCrs = OGRSpatialReference( *dataset->GetSpatialRef() );
 
     mGeoTransform = { { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 } };
     CPLErr res = GDALGetGeoTransform( dataset.get(), mGeoTransform.data() );
