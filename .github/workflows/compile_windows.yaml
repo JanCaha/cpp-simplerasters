@@ -75,6 +75,13 @@ jobs:
         run: |
           cmake --build --preset windows-debug
       
+      - name: Set PROJ env
+        shell: bash
+        run: |
+          proj_db_path=$(find builds -name proj.db)
+          proj_data_path="$(dirname "$proj_db_path")"
+          echo "PROJ_DATA=$proj_data_path" >> $GITHUB_ENV 
+
       - name: Test
         run: |
           ctest -C Debug --preset window-tests
