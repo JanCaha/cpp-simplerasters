@@ -36,6 +36,15 @@
             }
         },
         {
+            "name": "vcpkg",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": {
+                    "type": "FILEPATH",
+                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+                }
+            }
+        },
+        {
             "name": "windows-visual-studio-vcpkg",
             "displayName": "Visual Studio",
             "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
@@ -46,12 +55,9 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             },
-            "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": {
-                    "type": "FILEPATH",
-                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-                }
-            }
+            "inherits": [
+                "vcpkg"
+            ]
         },
         {
             "name": "windows-visual-studio-vcpkg-without-tests",
@@ -99,6 +105,16 @@
                 "no-deb",
                 "with-tests"
             ]
+        },
+        {
+            "name": "linux-with-tests-vcpkg",
+            "displayName": "Linux with Tests using VCPKG",
+            "inherits": [
+                "linux",
+                "no-deb",
+                "with-tests",
+                "vcpkg"
+            ]
         }
     ],
     "buildPresets": [
@@ -118,6 +134,12 @@
             "name": "linux-debug",
             "configurePreset": "linux-with-tests",
             "displayName": "Linux Build (Debug)",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-debug-vcpkg",
+            "configurePreset": "linux-with-tests-vcpkg",
+            "displayName": "Linux Build VCPKG (Debug)",
             "configuration": "Debug"
         },
         {
