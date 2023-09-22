@@ -78,9 +78,7 @@ jobs:
       - name: Set PROJ env
         shell: bash
         run: |
-          proj_db_path=$(find builds -name proj.db)
-          proj_data_path="$(dirname "$proj_db_path")"
-          echo "PROJ_DATA=$proj_data_path" >> $GITHUB_ENV 
+          echo "PROJ_DATA==${GITHUB_WORKSPACE}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/share/proj/data" >> $GITHUB_ENV 
 
       - name: Test
         run: |
