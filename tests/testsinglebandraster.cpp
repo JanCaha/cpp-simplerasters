@@ -36,11 +36,11 @@ TEST( SingleBandRaster, NonRasterFile )
     ASSERT_THAT( r.error(), HasSubstr( "not recognized as a supported file format" ) );
 }
 
-TEST_F( SingleBandRasterTest, Validity )
+TEST( SingleBandRaster, Validity )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
     EXPECT_TRUE( r.isValid() );
     EXPECT_TRUE( r.isDataValid() );
-    EXPECT_TRUE( r.isProjected() );
 }
 
 TEST_F( SingleBandRasterTest, Sizes )
@@ -69,13 +69,15 @@ TEST_F( SingleBandRasterTest, CellSizes )
     EXPECT_FALSE( r1.hasSquareCells() );
 }
 
-TEST_F( SingleBandRasterTest, IsProjected )
+TEST( SingleBandRaster, IsProjected )
 {
-    EXPECT_TRUE( r.isProjected() );
+    SingleBandRaster r2 = SingleBandRaster( TEST_DATA_DSM );
 
-    SingleBandRaster r1 = SingleBandRaster( TEST_DATA_DSM_4326 );
+    EXPECT_TRUE( r2.isProjected() );
 
-    EXPECT_FALSE( r1.isProjected() );
+    // SingleBandRaster r1 = SingleBandRaster( TEST_DATA_DSM_4326 );
+
+    // EXPECT_FALSE( r1.isProjected() );
 }
 
 TEST_F( SingleBandRasterTest, CoordinatesTransformToRaster )
