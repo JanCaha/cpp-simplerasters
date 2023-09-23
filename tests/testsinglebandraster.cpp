@@ -191,8 +191,10 @@ TEST( SingleBandRaster, CopyRasterRetype )
     ASSERT_EQ( rCopy.valueAt( -336531.4064, -1189032.2883 ), 1010 );
 }
 
-TEST_F( SingleBandRasterTest, DataSize )
+TEST( SingleBandRaster, DataSize )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
+
     EXPECT_EQ( r.dataSize(), r.cells() * 4 );
 
     SingleBandRaster rint = SingleBandRaster( TEST_DATA_DSM_INT32 );
