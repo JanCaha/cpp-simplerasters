@@ -75,9 +75,9 @@ TEST( SingleBandRaster, IsProjected )
 
     EXPECT_TRUE( r2.isProjected() );
 
-    // SingleBandRaster r1 = SingleBandRaster( TEST_DATA_DSM_4326 );
+    SingleBandRaster r1 = SingleBandRaster( TEST_DATA_DSM_4326 );
 
-    // EXPECT_FALSE( r1.isProjected() );
+    EXPECT_FALSE( r1.isProjected() );
 }
 
 TEST_F( SingleBandRasterTest, CoordinatesTransformToRaster )
@@ -147,8 +147,9 @@ TEST_F( SingleBandRasterTest, PrefillValues ) { r.prefillValues( -1 ); }
 
 TEST_F( SingleBandRasterTest, SaveFile ) { r.saveFile( "/tmp/a.tif" ); }
 
-TEST_F( SingleBandRasterTest, CopyRasterWithoutData )
+TEST( SingleBandRaster, CopyRasterWithoutData )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
     SingleBandRaster rCopy = SingleBandRaster( r );
     EXPECT_EQ( r.width(), rCopy.width() );
     EXPECT_EQ( r.height(), rCopy.height() );
@@ -163,8 +164,9 @@ TEST_F( SingleBandRasterTest, CopyRasterWithoutData )
     }
 }
 
-TEST_F( SingleBandRasterTest, CopyRasterWithData )
+TEST( SingleBandRaster, CopyRasterWithData )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
     SingleBandRaster rCopy = SingleBandRaster( r, true );
     EXPECT_EQ( r.width(), rCopy.width() );
     EXPECT_EQ( r.height(), rCopy.height() );
@@ -180,8 +182,9 @@ TEST_F( SingleBandRasterTest, CopyRasterWithData )
     }
 }
 
-TEST_F( SingleBandRasterTest, CopyRasterRetype )
+TEST( SingleBandRaster, CopyRasterRetype )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
     SingleBandRaster rCopy = SingleBandRaster( r, GDALDataType::GDT_Int16, true );
     ASSERT_NE( r.dataSize(), rCopy.dataSize() );
     ASSERT_GE( r.dataSize(), rCopy.dataSize() );
@@ -199,8 +202,10 @@ TEST_F( SingleBandRasterTest, DataSize )
     EXPECT_EQ( rfloat64.dataSize(), r.cells() * 8 );
 }
 
-TEST_F( SingleBandRasterTest, IsPointInside )
+TEST( SingleBandRaster, IsPointInside )
 {
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
+
     OGRPoint p = OGRPoint( -336463.75, -1189114.64 );
     EXPECT_TRUE( r.isInside( p ) );
 
