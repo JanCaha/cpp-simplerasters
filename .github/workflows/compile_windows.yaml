@@ -89,7 +89,14 @@ jobs:
            
       - name: Test
         run: |
-          ctest -C Debug --preset window-tests
+          ctest -C Debug --preset windows-tests
+      
+      - name: Try Install
+        run: |
+          cmake --preset windows-visual-studio-vcpkg-without-tests
+          cmake --build --preset windows-release
+          cd "${{github.workspace}}/install"
+          dir
 
       - name: Upload file as artifact
         uses: actions/upload-artifact@v3
