@@ -271,8 +271,7 @@ double SingleBandRaster::valueAt( double x, double y )
 bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
 {
 
-    std::unique_ptr<GDALDriver> driver =
-        std::unique_ptr<GDALDriver>( GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) ) );
+    GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );
 
     if ( !driver )
     {
@@ -306,7 +305,8 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
     GDALClose( dataset.get() );
 
     dataset.release();
-    driver.release();
+
+    delete driver;
 
     return true;
 }
