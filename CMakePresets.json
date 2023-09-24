@@ -136,7 +136,8 @@
             "configurePreset": "windows-visual-studio-vcpkg-without-tests",
             "configuration": "Release",
             "targets": [
-                "all",
+                "simplerasters",
+                "simplerasters_static",
                 "install"
             ]
         },
