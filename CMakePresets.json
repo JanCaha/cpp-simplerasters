@@ -8,6 +8,7 @@
     "configurePresets": [
         {
             "name": "without-tests",
+            "hidden": true,
             "cacheVariables": {
                 "BUILD_TESTS": {
                     "type": "BOOL",
@@ -18,6 +19,7 @@
         },
         {
             "name": "with-tests",
+            "hidden": true,
             "cacheVariables": {
                 "BUILD_TESTS": {
                     "type": "BOOL",
@@ -28,6 +30,7 @@
         },
         {
             "name": "no-deb",
+            "hidden": true,
             "cacheVariables": {
                 "PACK_DEB": {
                     "type": "BOOL",
@@ -37,6 +40,7 @@
         },
         {
             "name": "vcpkg",
+            "hidden": true,
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": {
                     "type": "FILEPATH",
@@ -46,10 +50,11 @@
         },
         {
             "name": "windows-visual-studio-vcpkg",
-            "displayName": "Visual Studio",
-            "description": "Configure with vcpkg toolchain and generate Visual Studio project files for all configurations",
+            "displayName": "Windows Visual Studio with VCPKG",
             "binaryDir": "${sourceDir}/builds/${presetName}",
+            "installDir": "${sourceDir}/install",
             "generator": "Visual Studio 17 2022",
+            "hidden": true,
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -61,7 +66,7 @@
         },
         {
             "name": "windows-visual-studio-vcpkg-without-tests",
-            "displayName": "vcpkg without Tests",
+            "displayName": "Windows without Tests",
             "inherits": [
                 "windows-visual-studio-vcpkg",
                 "no-deb",
@@ -70,7 +75,7 @@
         },
         {
             "name": "windows-visual-studio-vcpkg-with-tests",
-            "displayName": "vcpkg with Tests",
+            "displayName": "Windows with Tests",
             "inherits": [
                 "windows-visual-studio-vcpkg",
                 "no-deb",
@@ -82,6 +87,7 @@
             "displayName": "Linux",
             "binaryDir": "${sourceDir}/builds/${presetName}",
             "generator": "Ninja",
+            "hidden": true,
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -120,7 +126,7 @@
     "buildPresets": [
         {
             "name": "windows-debug",
-            "displayName": "Windows Build (Debug)",
+            "displayName": "Windows Build (Debug - include tests)",
             "configurePreset": "windows-visual-studio-vcpkg-with-tests",
             "configuration": "Debug"
         },
@@ -128,18 +134,22 @@
             "name": "windows-release",
             "displayName": "Windows Build (Release)",
             "configurePreset": "windows-visual-studio-vcpkg-without-tests",
-            "configuration": "Release"
+            "configuration": "Release",
+            "targets": [
+                "all",
+                "install"
+            ]
         },
         {
             "name": "linux-debug",
             "configurePreset": "linux-with-tests",
-            "displayName": "Linux Build (Debug)",
+            "displayName": "Linux Build (Debug - include tests)",
             "configuration": "Debug"
         },
         {
             "name": "linux-debug-vcpkg",
             "configurePreset": "linux-with-tests-vcpkg",
-            "displayName": "Linux Build VCPKG (Debug)",
+            "displayName": "Linux Build VCPKG (Debug - include tests)",
             "configuration": "Debug"
         },
         {
@@ -151,6 +161,15 @@
     ],
     "testPresets": [
         {
+            "name": "linux-tests-vcpkg",
+            "displayName": "Linux Tests VCPKG",
+            "configurePreset": "linux-with-tests-vcpkg",
+            "configuration": "Debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
             "name": "linux-tests",
             "displayName": "Linux Tests",
             "configurePreset": "linux-with-tests",
@@ -160,7 +179,7 @@
             }
         },
         {
-            "name": "window-tests",
+            "name": "windows-tests",
             "displayName": "Windows Tests",
             "configurePreset": "windows-visual-studio-vcpkg-with-tests",
             "configuration": "Debug",
