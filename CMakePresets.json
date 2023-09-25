@@ -60,7 +60,6 @@
             "name": "windows-visual-studio-vcpkg",
             "displayName": "Windows Visual Studio with VCPKG",
             "binaryDir": "${sourceDir}/builds/${presetName}",
-            "installDir": "${sourceDir}/install",
             "generator": "Visual Studio 17 2022",
             "hidden": true,
             "condition": {
@@ -76,7 +75,6 @@
             "name": "windows-visual-studio-vcpkg-without-tests",
             "displayName": "Windows without Tests",
             "inherits": [
-                "clang",
                 "windows-visual-studio-vcpkg",
                 "no-deb",
                 "without-tests"
@@ -86,7 +84,6 @@
             "name": "windows-visual-studio-vcpkg-with-tests",
             "displayName": "Windows with Tests",
             "inherits": [
-                "clang",
                 "windows-visual-studio-vcpkg",
                 "no-deb",
                 "with-tests"
