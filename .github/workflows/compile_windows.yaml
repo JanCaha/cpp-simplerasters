@@ -91,13 +91,21 @@ jobs:
         run: |
           ctest -C Debug --preset windows-tests
       
+      - name: Create Install Dir
+        run: mkdir install
+
       - name: Try Install
         run: |
           cmake --preset windows-visual-studio-vcpkg-without-tests
           cmake --build --preset windows-release
           cd "${{github.workspace}}/install"
           dir
+      
+      - name: Copy
+        run: |
+        Xcopy ${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/ ${{github.workspace}}/install /E /H /C /I
 
+        
       - name: Upload file as artifact
         uses: actions/upload-artifact@v3
         with:
