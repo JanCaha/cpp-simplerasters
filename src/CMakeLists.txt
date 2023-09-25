@@ -46,5 +46,5 @@ macro(create_library_type target_name type)
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
 endmacro()
 
-create_library_type(simplerasters_dynamic "shared")
+create_library_type(simplerasters_shared "shared")
 create_library_type(simplerasters_static "static")
