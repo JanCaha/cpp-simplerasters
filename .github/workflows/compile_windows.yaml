@@ -102,9 +102,9 @@ jobs:
           dir
       
       - name: Copy
+        shell: bash
         run: |
-          Xcopy ${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/ ${{github.workspace}}/install /E /H /C /I
-
+          cp -r builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/ install 
         
       - name: Upload file as artifact
         uses: actions/upload-artifact@v3
