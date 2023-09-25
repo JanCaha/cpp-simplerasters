@@ -103,7 +103,7 @@ jobs:
       
       - name: Copy
         run: |
-        Xcopy ${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/ ${{github.workspace}}/install /E /H /C /I
+          Xcopy ${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/ ${{github.workspace}}/install /E /H /C /I
 
         
       - name: Upload file as artifact
