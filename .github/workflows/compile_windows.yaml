@@ -78,7 +78,7 @@ jobs:
       - name: Set PROJ env
         shell: bash
         run: |
-          echo PROJ_DATA="${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/share/proj/data" >> $GITHUB_ENV 
+          echo PROJ_DATA="${{github.workspace}}/builds/windows-visual-studio-vcpkg-with-tests/vcpkg_installed/x64-windows/share/proj" >> $GITHUB_ENV 
       
       - name: Set PROJ env
         shell: powershell
