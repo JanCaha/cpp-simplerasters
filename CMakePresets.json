@@ -7,6 +7,14 @@
     },
     "configurePresets": [
         {
+            "name": "clang",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_C_COMPILER": "clang"
+            }
+        },
+        {
             "name": "without-tests",
             "hidden": true,
             "cacheVariables": {
@@ -68,6 +76,7 @@
             "name": "windows-visual-studio-vcpkg-without-tests",
             "displayName": "Windows without Tests",
             "inherits": [
+                "clang",
                 "windows-visual-studio-vcpkg",
                 "no-deb",
                 "without-tests"
@@ -77,6 +86,7 @@
             "name": "windows-visual-studio-vcpkg-with-tests",
             "displayName": "Windows with Tests",
             "inherits": [
+                "clang",
                 "windows-visual-studio-vcpkg",
                 "no-deb",
                 "with-tests"
@@ -98,6 +108,7 @@
             "name": "linux-without-tests",
             "displayName": "Linux without Tests",
             "inherits": [
+                "clang",
                 "linux",
                 "no-deb",
                 "without-tests"
@@ -107,6 +118,7 @@
             "name": "linux-with-tests",
             "displayName": "Linux with Tests",
             "inherits": [
+                "clang",
                 "linux",
                 "no-deb",
                 "with-tests"
