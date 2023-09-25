@@ -102,4 +102,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: simplerasters
-          path: builds\windows-visual-studio-vcpkg-without-tests\src\Release\simplerasters.dll
+          path: install/**
