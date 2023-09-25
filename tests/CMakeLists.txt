@@ -15,7 +15,7 @@ macro(AddTest testname)
         add_executable(${testname} "${testname}.cpp")
         target_link_libraries(${testname}
                 ${GDAL_LIBRARY}
-                simplerasters
+                simplerasters_static
                 GTest::gtest
                 GTest::gtest_main
                 GTest::gmock
