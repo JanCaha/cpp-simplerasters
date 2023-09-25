@@ -1,11 +1,11 @@
 # these are cache variables, so they could be overwritten with -D,
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME}
-    CACHE STRING "Viewshed Library"
+    CACHE STRING "SimpleRasters Library"
 )
 
 # which is useful in case of packing only selected components instead of the whole thing
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Viewshed Library"
-    CACHE STRING "Package description for the package metadata"
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "SimpleRasters Library"
+    CACHE STRING ""
 )
 set(CPACK_PACKAGE_VENDOR "Jan Caha")
 
@@ -21,7 +21,7 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
 
-set(CPACK_PACKAGE_CONTACT "YOUR@E-MAIL.net")
+set(CPACK_PACKAGE_CONTACT "jan.caha@outlook.com")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Jan Caha")
 
 # set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
