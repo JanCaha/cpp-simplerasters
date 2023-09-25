@@ -1,3 +1,9 @@
+simplerasters (0.6.0-0ppa0) jammy; urgency=low
+
+  * Update to build on Windows
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 25 Sep 2023 14:44:10 +0200
+ 
 simplerasters (0.5.0-0ppa0) jammy; urgency=low
 
   * Test different launchpad build

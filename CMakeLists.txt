@@ -8,7 +8,7 @@ endif()
 
 option(PACK_DEB "Build tests." ON)
 
-project(simplerasters VERSION 0.5.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
+project(simplerasters VERSION 0.6.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
 
 set(LIBRARY_NAME "simplerasters")
 
