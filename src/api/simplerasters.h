@@ -148,4 +148,6 @@ class ProjectedSquareCellRaster : public SingleBandRaster
 namespace simplerasters
 {
     std::string rasterFormatsFileFilters();
-}
+
+    bool compareValues( const double &a, const double &b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
+} // namespace simplerasters
