@@ -1,3 +1,9 @@
+simplerasters (0.6.0-0ppa0) jammy; urgency=low
+
+  * Functions to test if rasters have the same parameters and values are the same
+
+ -- Jan Caha <jan.caha@outlook.com>  Mon, 30 Oct 2023 14:46:39 +0100
+
 simplerasters (0.5.0-0ppa0) jammy; urgency=low
 
   * Test different launchpad build

@@ -120,3 +120,25 @@ OGRPolygon AbstractRaster::boundingBox()
 
     return poly;
 }
+
+bool AbstractRaster::sameDimensions( AbstractRaster &other ) { return mRows == other.mRows && mCols == other.mCols; }
+
+bool AbstractRaster::sameCrs( AbstractRaster &other ) { return mCrs.IsSame( &other.mCrs ); }
+
+bool AbstractRaster::sameGeotransform( AbstractRaster &other, double epsilon )
+{
+
+    bool same;
+
+    for ( size_t i = 0; i < 6; i++ )
+    {
+        same = simplerasters::compareValues( mGeoTransform.at( i ), other.mGeoTransform.at( i ) );
+
+        if ( !same )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}

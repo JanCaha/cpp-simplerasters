@@ -345,3 +345,24 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValu
 }
 
 u_long SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
+
+GDALDataType SingleBandRaster::gdalDataType() { return mDataType; }
+
+bool SingleBandRaster::sameDataType( SingleBandRaster &other ) { return mDataType == other.gdalDataType(); }
+
+bool SingleBandRaster::sameValues( SingleBandRaster &other, double epsilon )
+{
+    bool same;
+
+    for ( size_t i = 0; i < cells(); i++ )
+    {
+        same = simplerasters::compareValues( value( i ), other.value( i ) );
+
+        if ( !same )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
