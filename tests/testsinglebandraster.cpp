@@ -220,6 +220,55 @@ TEST( SingleBandRaster, ReadDataAsDefinedType )
     EXPECT_DOUBLE_EQ( r.value( 0, 0 ), 1010.5443115234375 );
 }
 
+TEST( SingleBandRaster, SameCRS )
+{
+    SingleBandRaster r = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm.tif" );
+    SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
+    SingleBandRaster rWGS84 = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_4326.tif" );
+
+    ASSERT_TRUE( r.sameCrs( rInt ) );
+    ASSERT_FALSE( r.sameCrs( rWGS84 ) );
+}
+
+TEST( SingleBandRaster, SameDataType )
+{
+    SingleBandRaster r = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm.tif" );
+    SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
+    SingleBandRaster rWGS84 = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_4326.tif" );
+
+    ASSERT_TRUE( r.sameDataType( rWGS84 ) );
+    ASSERT_FALSE( r.sameDataType( rInt ) );
+}
+
+TEST( SingleBandRaster, SameDimensions )
+{
+    SingleBandRaster r = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm.tif" );
+    SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
+    SingleBandRaster rWGS84 = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_4326.tif" );
+
+    ASSERT_FALSE( r.sameDimensions( rWGS84 ) );
+    ASSERT_TRUE( r.sameDimensions( rInt ) );
+}
+
+TEST( SingleBandRaster, SameValues )
+{
+    SingleBandRaster r = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm.tif" );
+    SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
+    SingleBandRaster rDouble = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_float64.tif" );
+
+    ASSERT_FALSE( r.sameValues( rDouble ) );
+}
+
+TEST( SingleBandRaster, SameGeotransform )
+{
+    SingleBandRaster r = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm.tif" );
+    SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
+    SingleBandRaster rWGS84 = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_4326.tif" );
+
+    ASSERT_TRUE( r.sameGeotransform( rInt ) );
+    ASSERT_FALSE( r.sameGeotransform( rWGS84 ) );
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
