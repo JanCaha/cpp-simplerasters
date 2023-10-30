@@ -256,7 +256,7 @@ TEST( SingleBandRaster, SameValues )
     SingleBandRaster rInt = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_int32.tif" );
     SingleBandRaster rDouble = SingleBandRaster( (std::string)TEST_DATA_DIR + "/dsm_float64.tif" );
 
-    ASSERT_FALSE( r.sameValues( rDouble ) );
+    ASSERT_FALSE( r.sameValues( rInt ) );
 }
 
 TEST( SingleBandRaster, SameGeotransform )
