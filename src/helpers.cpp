@@ -137,3 +137,18 @@ std::string simplerasters::rasterFormatsFileFilters()
 
     return completeFileFilter;
 }
+
+bool simplerasters::compareValues( const double &a, const double &b, double epsilon )
+{
+    if ( std::isnan( a ) && std::isnan( b ) )
+    {
+        return true;
+    }
+
+    if ( abs( a - b ) < epsilon )
+    {
+        return true;
+    }
+
+    return false;
+}

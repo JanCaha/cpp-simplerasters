@@ -62,6 +62,10 @@ class AbstractRaster
 
     OGRPolygon extent() { return boundingBox(); };
 
+    bool sameDimensions( AbstractRaster &other );
+    bool sameCrs( AbstractRaster &other );
+    bool sameGeotransform( AbstractRaster &other, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
+
   protected:
     bool mValid;
     std::string mError;
@@ -118,6 +122,11 @@ class SingleBandRaster : public AbstractRaster
 
     u_long dataSize();
 
+    GDALDataType gdalDataType();
+
+    bool sameDataType( SingleBandRaster &other );
+    bool sameValues( SingleBandRaster &other, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
+
   protected:
     GDALDataType mDataType;
 
@@ -148,4 +157,6 @@ class ProjectedSquareCellRaster : public SingleBandRaster
 namespace simplerasters
 {
     std::string rasterFormatsFileFilters();
-}
+
+    bool compareValues( const double &a, const double &b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
+} // namespace simplerasters
