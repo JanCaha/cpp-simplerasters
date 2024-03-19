@@ -13,16 +13,6 @@ jobs:
 
     steps:
 
-      - name: Version and latest tag
-        id: a
-        run: |
-          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
-
-      - name: Version and latest tag
-        id: b
-        run: |
-          echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
-
       - name: Update and Upgrade
         run: |
           sudo apt update
@@ -40,7 +30,9 @@ jobs:
         run: sudo apt-get install libgtest-dev libgmock-dev
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - name: Configure
         run: | 
@@ -78,7 +70,7 @@ jobs:
         run: |
           echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
-          echo "CURRENT_TAG='v'$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+          echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
