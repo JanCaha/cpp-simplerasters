@@ -1,4 +1,4 @@
-simplerasters (0.6.0-1) jammy; urgency=low
+simplerasters (0.6.0-2) jammy; urgency=low
 
   * update new gdal release
   * new numbering

@@ -22,7 +22,7 @@ jobs:
         run: |
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-
+          
       - name: Install GDAL
         run: sudo apt-get -y install gdal-bin libgdal-dev
       
@@ -30,7 +30,9 @@ jobs:
         run: sudo apt-get install libgtest-dev libgmock-dev
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Configure
         run: | 
@@ -62,4 +64,3 @@ jobs:
             -DBUILD_TESTS:bool=off \
             -DPACK_DEB:bool=on
           sudo cmake --build build --config Release --target install
-
