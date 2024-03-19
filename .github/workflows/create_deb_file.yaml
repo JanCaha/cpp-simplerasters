@@ -150,13 +150,4 @@ jobs:
         run: |
           cd ..
           dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
-      
-      - name: Create Issue
-        uses: dacbd/create-issue-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: JanCaha
-          repo: cpp-viewshed-library
-          title: Release new version
-          body: |
-            PPA updated with new version of simplerasters. The viewshed library needs new relase, when the latest simplerasters is online. 
+    
