@@ -84,11 +84,11 @@ jobs:
         run: |
           echo $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
-          
+
       - name: NOT SAME TAG
         if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
-        run: echo "${{steps.version.outputs.VERSION}} != ${{steps.version.outputs.CURRENT_TAG}}"
+        run: echo "${{steps.version.outputs.CURRENT_TAG}} != ${{steps.version.outputs.LATEST_TAG}}"
       
       - name : SAME TAG
         if: steps.version.outputs.CURRENT_TAG == steps.version.outputs.LATEST_TAG
-        run: echo "${{steps.version.outputs.VERSION}} == ${{steps.version.outputs.CURRENT_TAG}}"
+        run: echo "${{steps.version.outputs.CURRENT_TAG}} == ${{steps.version.outputs.LATEST_TAG}}"
