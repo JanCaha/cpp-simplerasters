@@ -149,5 +149,7 @@ jobs:
       - name: Dput to Repo
         run: |
           cd ..
-          dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
+          FILE=$(find . -name "*_source.changes")
+          echo $FILE
+          dput ppa:jancaha/gis-tools $FILE
     
