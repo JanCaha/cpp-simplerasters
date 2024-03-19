@@ -88,6 +88,8 @@ jobs:
           echo ${{steps.version.outputs.LATEST_TAG}}
           echo ${{steps.version.outputs.CURRENT_TAG}}
           echo ${{ github.ref_name }}
+          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 
       - name: NOT SAME TAG
         if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
