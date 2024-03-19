@@ -78,12 +78,15 @@ jobs:
         run: |
           echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
           echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
-          echo "CURRENT_TAG="v"$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+          echo "CURRENT_TAG='v'$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
 
       - name: Print
         run: |
           echo $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
+          echo ${{steps.version.outputs.VERSION}}
+          echo ${{steps.version.outputs.LATEST_TAG}}
+          echo ${{steps.version.outputs.CURRENT_TAG}}
 
       - name: NOT SAME TAG
         if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
