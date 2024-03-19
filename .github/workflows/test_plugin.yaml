@@ -13,6 +13,16 @@ jobs:
 
     steps:
 
+      - name: Version and latest tag
+        id: a
+        run: |
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+
+      - name: Version and latest tag
+        id: b
+        run: |
+          echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+
       - name: Update and Upgrade
         run: |
           sudo apt update
@@ -67,7 +77,7 @@ jobs:
         id: version
         run: |
           echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
-          echo "LATEST_TAG=$(git describe --tags --abbrev=0")" >> $GITHUB_OUTPUT
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
           echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
 
       - name: NOT SAME TAG
