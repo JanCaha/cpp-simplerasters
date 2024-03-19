@@ -1,3 +1,10 @@
+simplerasters (0.6.0-1) jammy; urgency=low
+
+  * update new gdal release
+  * new numbering
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 19 Mar 2024 14:27:49 +0100
+
 simplerasters (0.6.0-0ppa0) jammy; urgency=low
 
   * Functions to test if rasters have the same parameters and values are the same
