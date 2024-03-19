@@ -22,7 +22,7 @@ jobs:
         run: |
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-
+          
       - name: Install GDAL
         run: sudo apt-get -y install gdal-bin libgdal-dev
       
@@ -63,3 +63,17 @@ jobs:
             -DPACK_DEB:bool=on
           sudo cmake --build build --config Release --target install
 
+      - name: Version and latest tag
+        id: version
+        run: |
+          echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0")" >> $GITHUB_OUTPUT
+          echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+
+      - name: NOT SAME TAG
+        if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
+        run: echo "${{steps.version.outputs.VERSION}} != ${{steps.version.outputs.CURRENT_TAG}}"
+      
+      - name : SAME TAG
+        if: steps.version.outputs.CURRENT_TAG == steps.version.outputs.LATEST_TAG
+        run: echo "${{steps.version.outputs.VERSION}} == ${{steps.version.outputs.CURRENT_TAG}}"
