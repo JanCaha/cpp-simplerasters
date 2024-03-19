@@ -143,11 +143,11 @@ jobs:
           cd ..
           dput ppa:jancaha/gis-tools "${PACKAGE}"_"${VERSION}"-0ppa0_source.changes
       
-      - name: Copy Issue
+      - name: Create Issue
         uses: dacbd/create-issue-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          org: JanCaha
+          owner: JanCaha
           repo: cpp-viewshed-library
           title: Release new version
           body: |
