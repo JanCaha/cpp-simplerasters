@@ -57,6 +57,7 @@ TEST( ProjectedSquareCellRaster, Type )
     ASSERT_EQ( band->GetRasterDataType(), dataType );
 
     band.release();
+    dataset.release();
 }
 
 int main( int argc, char **argv )
