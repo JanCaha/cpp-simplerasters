@@ -144,9 +144,7 @@ class ProjectedSquareCellRaster : public SingleBandRaster
 {
   public:
     ProjectedSquareCellRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
-    ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, bool copyValues = false );
     ProjectedSquareCellRaster( const SingleBandRaster &other, bool copyValues = false );
-    ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, GDALDataType dataType, bool copyValues = false );
     ProjectedSquareCellRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues = false );
 
   private:
