@@ -110,6 +110,7 @@ class SingleBandRaster : public AbstractRaster
     bool isNoData( arraysize index ) const;
 
     double noData() const;
+    void setNoData( double value );
 
     double cornerValue( double row, double column ) const;
 

@@ -112,6 +112,8 @@ arraysize SingleBandRaster::toIndex( int row, int column ) const
 
 double SingleBandRaster::noData() const { return mNoData; }
 
+void SingleBandRaster::setNoData( double value ) { mNoData = value; }
+
 bool SingleBandRaster::isNoData( int row, int column ) const { return doubleEqual( value( row, column ), noData() ); }
 
 bool SingleBandRaster::isNoData( arraysize index ) const { return doubleEqual( value( index ), noData() ); }
