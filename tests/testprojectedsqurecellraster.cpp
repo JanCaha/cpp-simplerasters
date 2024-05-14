@@ -38,6 +38,27 @@ TEST( ProjectedSquareCellRaster, FromSingleBandRaster )
     ASSERT_TRUE( r.isValid() );
 }
 
+TEST( ProjectedSquareCellRaster, Type )
+{
+    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_64.tif";
+    GDALDataType dataType = GDALDataType::GDT_Int64;
+
+    ProjectedSquareCellRaster rOrig = ProjectedSquareCellRaster( TEST_DATA_DSM );
+
+    ProjectedSquareCellRaster r = ProjectedSquareCellRaster( rOrig, dataType );
+    ASSERT_TRUE( r.isValid() );
+    ASSERT_EQ( r.gdalDataType(), dataType );
+    r.saveFile( resultFile );
+
+    GDALDatasetUniquePtr dataset =
+        GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+
+    ASSERT_EQ( band->GetRasterDataType(), dataType );
+
+    band.release();
+}
+
 int main( int argc, char **argv )
 {
     testing::InitGoogleTest( &argc, argv );
