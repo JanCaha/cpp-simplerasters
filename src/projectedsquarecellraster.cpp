@@ -31,29 +31,8 @@ void ProjectedSquareCellRaster::validate()
     mValid = true;
 }
 
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, bool copyValues )
-    : SingleBandRaster( other, copyValues )
-{
-    if ( !isValid() )
-    {
-        return;
-    }
-    validate();
-}
-
 ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, bool copyValues )
     : SingleBandRaster( other, copyValues )
-{
-    if ( !isValid() )
-    {
-        return;
-    }
-    validate();
-}
-
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, GDALDataType dataType,
-                                                      bool copyValues )
-    : SingleBandRaster( other, dataType, copyValues )
 {
     if ( !isValid() )
     {
