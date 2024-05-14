@@ -30,6 +30,8 @@ jobs:
 
       - name: Install GDAL
         run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
 
       - name: Checkout
@@ -61,7 +63,7 @@ jobs:
           mv _packages/simplerasters_*.deb .
           
       - name: Upload DEB file as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: simplerasters
           path: simplerasters_*.deb

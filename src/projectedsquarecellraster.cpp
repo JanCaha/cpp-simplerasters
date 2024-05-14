@@ -50,3 +50,25 @@ ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &ot
     }
     validate();
 }
+
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( const ProjectedSquareCellRaster &other, GDALDataType dataType,
+                                                      bool copyValues )
+    : SingleBandRaster( other, dataType, copyValues )
+{
+    if ( !isValid() )
+    {
+        return;
+    }
+    validate();
+}
+
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, GDALDataType dataType,
+                                                      bool copyValues )
+    : SingleBandRaster( other, dataType, copyValues )
+{
+    if ( !isValid() )
+    {
+        return;
+    }
+    validate();
+}
