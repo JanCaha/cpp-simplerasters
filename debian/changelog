@@ -1,8 +1,8 @@
-simplerasters (0.7.0-0) jammy; urgency=low
+simplerasters (0.7.1-0) jammy; urgency=low
 
-  * add new constructors to avoid issues 
+  * add new constructors to avoid issues, add function to set no data value
 
- -- Jan Caha <jan.caha@outlook.com>  Tue, 14 May 2024 12:38:52 +0200
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 14 May 2024 15:02:37 +0200
 
 simplerasters (0.6.1-0) jammy; urgency=low
 
