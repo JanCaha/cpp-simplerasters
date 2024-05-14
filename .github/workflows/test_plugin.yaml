@@ -24,7 +24,10 @@ jobs:
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
           
       - name: Install GDAL
-        run: sudo apt-get -y install gdal-bin libgdal-dev
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt update
+          sudo apt-get -y install gdal-bin libgdal-dev
       
       - name: Install GTest and GMock
         run: sudo apt-get install libgtest-dev libgmock-dev
