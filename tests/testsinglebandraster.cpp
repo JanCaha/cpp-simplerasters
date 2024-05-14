@@ -38,27 +38,30 @@ TEST( SingleBandRaster, NonRasterFile )
 
 TEST( SingleBandRaster, Types )
 {
-    std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
-    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
-    GDALDataType dataType = GDALDataType::GDT_Int32;
+    if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
+    {
+        std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
+        std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
+        GDALDataType dataType = GDALDataType::GDT_Int32;
 
-    SingleBandRaster rOrig = SingleBandRaster( file );
-    ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
+        SingleBandRaster rOrig = SingleBandRaster( file );
+        ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
 
-    SingleBandRaster r = SingleBandRaster( rOrig, dataType );
-    ASSERT_TRUE( r.isValid() );
-    ASSERT_TRUE( r.isDataValid() );
-    ASSERT_EQ( r.gdalDataType(), dataType );
-    r.saveFile( resultFile );
+        SingleBandRaster r = SingleBandRaster( rOrig, dataType );
+        ASSERT_TRUE( r.isValid() );
+        ASSERT_TRUE( r.isDataValid() );
+        ASSERT_EQ( r.gdalDataType(), dataType );
+        r.saveFile( resultFile );
 
-    GDALDatasetUniquePtr dataset =
-        GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
-    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+        GDALDatasetUniquePtr dataset =
+            GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+        std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
 
-    ASSERT_EQ( band->GetRasterDataType(), dataType );
+        ASSERT_EQ( band->GetRasterDataType(), dataType );
 
-    band.release();
-    dataset.release();
+        band.release();
+        dataset.release();
+    }
 }
 
 TEST_F( SingleBandRasterTest, Validity )
