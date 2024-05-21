@@ -1,3 +1,9 @@
+simplerasters (0.7.2-0) jammy; urgency=low
+
+  * changes to build that fix local compilation, change location of ppa build
+
+ -- Jan Caha <jan.caha@outlook.com>  Tue, 21 May 2024 12:27:52 +0200
+ 
 simplerasters (0.7.1-0) jammy; urgency=low
 
   * add new constructors to avoid issues, add function to set no data value
