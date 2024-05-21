@@ -83,7 +83,7 @@ jobs:
           CUSTOM_TAG : "v${{steps.version.outputs.VERSION}}"
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
         with:
           files: simplerasters_*.deb
