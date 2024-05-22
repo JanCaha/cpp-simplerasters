@@ -1,5 +1,6 @@
-simplerasters (0.7.2-0) jammy; urgency=low
+simplerasters (0.7.3-0) jammy; urgency=low
 
+  * fix linux install build
   * changes to build that fix local compilation, change location of ppa build
 
  -- Jan Caha <jan.caha@outlook.com>  Tue, 21 May 2024 12:27:52 +0200
