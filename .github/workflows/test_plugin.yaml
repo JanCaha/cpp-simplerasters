@@ -45,7 +45,8 @@ jobs:
             -Bbuild \
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_TESTS:bool=on 
+            -DBUILD_TESTS:bool=on \
+            -D CMAKE_INSTALL_PREFIX=/usr
 
       - name: Build
         run: | 
@@ -65,5 +66,7 @@ jobs:
             -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TESTS:bool=off \
-            -DPACK_DEB:bool=on
+            -DPACK_DEB:bool=on \
+            -D CMAKE_INSTALL_PREFIX=/usr
+          
           sudo cmake --build build --config Release --target install
