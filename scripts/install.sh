@@ -11,7 +11,8 @@ cmake \
     -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TESTS:bool=off \
-    -DPACK_DEB:bool=on
+    -DPACK_DEB:bool=on \
+    -D CMAKE_INSTALL_PREFIX=/usr
 
 cmake --build build --config Release --target all
 
