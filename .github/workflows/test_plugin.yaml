@@ -5,8 +5,8 @@ on: [push, pull_request]
 jobs:
 
   Tests-library:
-
-    runs-on: ubuntu-latest
+  
+    runs-on: [ubuntu-20.04, ubuntu-22.04]
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,8 +21,8 @@ jobs:
       - name: Install latest CMake
         run: |
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-          
+          echo "deb https://apt.kitware.com/ubuntu/ $(lsb_release -c) main" | sudo tee /etc/apt/sources.list.d/kitware.list
+
       - name: Install GDAL
         run: |
           sudo add-apt-repository ppa:ubuntugis/ppa
