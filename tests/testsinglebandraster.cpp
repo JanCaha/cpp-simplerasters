@@ -47,7 +47,7 @@ TEST( SingleBandRaster, Types )
         SingleBandRaster rOrig = SingleBandRaster( file );
         ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
 
-        SingleBandRaster r = SingleBandRaster( rOrig, dataType );
+        SingleBandRaster r = SingleBandRaster( file, dataType );
         ASSERT_TRUE( r.isValid() );
         ASSERT_TRUE( r.isDataValid() );
         ASSERT_EQ( r.gdalDataType(), dataType );

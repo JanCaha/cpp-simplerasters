@@ -45,9 +45,7 @@ TEST( ProjectedSquareCellRaster, Type )
         std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_64.tif";
         GDALDataType dataType = GDALDataType::GDT_Int64;
 
-        ProjectedSquareCellRaster rOrig = ProjectedSquareCellRaster( TEST_DATA_DSM );
-
-        ProjectedSquareCellRaster r = ProjectedSquareCellRaster( rOrig, dataType );
+        ProjectedSquareCellRaster r = ProjectedSquareCellRaster( TEST_DATA_DSM, dataType );
         ASSERT_TRUE( r.isValid() );
         ASSERT_EQ( r.gdalDataType(), dataType );
         r.saveFile( resultFile );
