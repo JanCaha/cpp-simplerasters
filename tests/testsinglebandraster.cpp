@@ -38,7 +38,7 @@ TEST( SingleBandRaster, NonRasterFile )
 
 TEST( SingleBandRaster, Types )
 {
-    if ( getEnvVar( "GITHUB_ACTIONS" ).compare( "true" ) )
+    if ( !getEnvVar( "GITHUB_ACTIONS" ).compare( "" ) )
         GTEST_SKIP() << "Skipping this test on GitHub Actions.";
 
     if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
