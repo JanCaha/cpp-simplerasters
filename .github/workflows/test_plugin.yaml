@@ -44,6 +44,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=/usr/bin/g++-12 \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TESTS:bool=on \
             -D CMAKE_INSTALL_PREFIX=/usr
@@ -64,6 +65,7 @@ jobs:
             -S. \
             -Bbuild \
             -G Ninja \
+            -DCMAKE_CXX_COMPILER=/usr/bin/g++-12 \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TESTS:bool=off \
             -DPACK_DEB:bool=on \
