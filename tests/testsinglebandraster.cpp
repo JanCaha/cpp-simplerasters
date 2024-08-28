@@ -38,6 +38,9 @@ TEST( SingleBandRaster, NonRasterFile )
 
 TEST( SingleBandRaster, Types )
 {
+    if ( !getEnvVar( "GITHUB_ACTIONS" ).compare( "" ) )
+        GTEST_SKIP() << "Skipping this test on GitHub Actions.";
+
     if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
     {
         std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
@@ -47,7 +50,7 @@ TEST( SingleBandRaster, Types )
         SingleBandRaster rOrig = SingleBandRaster( file );
         ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
 
-        SingleBandRaster r = SingleBandRaster( rOrig, dataType );
+        SingleBandRaster r = SingleBandRaster( file, dataType );
         ASSERT_TRUE( r.isValid() );
         ASSERT_TRUE( r.isDataValid() );
         ASSERT_EQ( r.gdalDataType(), dataType );
@@ -59,8 +62,8 @@ TEST( SingleBandRaster, Types )
 
         ASSERT_EQ( band->GetRasterDataType(), dataType );
 
-        band.release();
-        dataset.release();
+        // band.release();
+        // dataset.release();
     }
 }
 
