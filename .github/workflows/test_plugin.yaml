@@ -16,7 +16,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build
+          sudo apt install ninja-build g++-12
 
       - name: Install latest CMake
         run: |
