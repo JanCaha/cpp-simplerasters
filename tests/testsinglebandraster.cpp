@@ -59,8 +59,8 @@ TEST( SingleBandRaster, Types )
 
         ASSERT_EQ( band->GetRasterDataType(), dataType );
 
-        band.release();
-        dataset.release();
+        // band.release();
+        // dataset.release();
     }
 }
 
