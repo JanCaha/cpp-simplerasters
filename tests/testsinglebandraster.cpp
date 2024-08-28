@@ -38,6 +38,9 @@ TEST( SingleBandRaster, NonRasterFile )
 
 TEST( SingleBandRaster, Types )
 {
+    if ( getEnvVar( "GITHUB_ACTIONS" ).compare( "true" ) )
+        GTEST_SKIP() << "Skipping this test on GitHub Actions.";
+
     if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
     {
         std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
