@@ -10,7 +10,7 @@ jobs:
 
   Tests-library:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,6 +29,7 @@ jobs:
           
       - name: Install GDAL
         run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
       
