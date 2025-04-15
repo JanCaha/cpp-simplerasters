@@ -1,0 +1,41 @@
+package:
+  name: libsimplerasters
+  version: "0.7.5"
+
+source:
+  git_url: https://github.com/JanCaha/cpp-simplerasters
+
+build:
+  number: 0
+  script: 
+    - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bool=off -DPACK_DEB:bool=off
+    - cmake --build build --config Release
+    - cmake --install build --prefix {{PREFIX}}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - libgcc-ng  # [linux]
+    - libstdcxx-ng  # [linux]
+    - libcxx  # [osx]
+    - msvc_runtime  # [win]
+  host:
+    - cmake
+    - ninja
+    - libgdal
+    - libgdal
+  run:
+    - libgdal
+
+
+about:
+  home: https://github.com/JanCaha/cpp-simplerasters
+  license: MIT
+  summary: "C++ Raster Data Access Library based on GDAL"
+
+extra:
+  recipe-maintainers:
+    - JanCaha
+  channels:
+    - conda-forge
