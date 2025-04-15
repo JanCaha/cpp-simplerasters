@@ -39,10 +39,6 @@ jobs:
           environment-file: conda/conda-env.yaml
           activate-environment: dev-viewshed
 
-      - name: Set solver
-        run: |
-          conda config --set solver classic 
-
       - name: Build library
         run: |
           conda build conda
