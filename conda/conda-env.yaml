@@ -1,0 +1,11 @@
+name: dev-viewshed
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - conda-build
+  - cmake
+  - ninja
+  - libgdal
