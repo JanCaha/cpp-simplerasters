@@ -14,16 +14,10 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - libgcc-ng  # [linux]
-    - libstdcxx-ng  # [linux]
-    - libcxx  # [osx]
-    - msvc_runtime  # [win]
   host:
     - cmake
     - ninja
-    - libgdal
     - libgdal
   run:
     - libgdal
