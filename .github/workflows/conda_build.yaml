@@ -34,7 +34,7 @@ jobs:
       - name: Setup conda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          use-mamba: false
+          use-mamba: true
           python-version: ${{ matrix.python-version }}
           environment-file: conda/conda-env.yaml
           activate-environment: dev-viewshed
