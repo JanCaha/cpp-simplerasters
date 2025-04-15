@@ -19,7 +19,7 @@ jobs:
       
       - name: Set Env variable with project version
         run: |
-            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
+            echo "VERSION=$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_ENV
           
       - name: Print project version
         run: |
