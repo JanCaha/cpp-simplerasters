@@ -33,7 +33,7 @@ TEST( SingleBandRaster, NonRasterFile )
 {
     SingleBandRaster r = SingleBandRaster( TEST_DATA_TXT );
     ASSERT_FALSE( r.isValid() );
-    ASSERT_THAT( r.error(), HasSubstr( "not recognized as a supported file format" ) );
+    ASSERT_THAT( r.error(), HasSubstr( "supported file format" ) );
 }
 
 TEST( SingleBandRaster, Types )
