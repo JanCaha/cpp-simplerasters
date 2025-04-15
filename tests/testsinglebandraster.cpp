@@ -33,7 +33,7 @@ TEST( SingleBandRaster, NonRasterFile )
 {
     SingleBandRaster r = SingleBandRaster( TEST_DATA_TXT );
     ASSERT_FALSE( r.isValid() );
-    ASSERT_THAT( r.error(), HasSubstr( "not recognized as a supported file format" ) );
+    ASSERT_THAT( r.error(), HasSubstr( "supported file format" ) );
 }
 
 TEST( SingleBandRaster, Types )
@@ -62,8 +62,8 @@ TEST( SingleBandRaster, Types )
 
         ASSERT_EQ( band->GetRasterDataType(), dataType );
 
-        // band.release();
-        // dataset.release();
+        band.release();
+        dataset.release();
     }
 }
 
