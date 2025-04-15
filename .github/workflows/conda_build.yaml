@@ -42,9 +42,16 @@ jobs:
       - name: Build library
         run: |
           conda build conda
-          ls -l $CONDA_PREFIX/conda-bld/linux-64
-          cp $CONDA_PREFIX/conda-bld/linux-64/*.conda ./packages
 
-      - name: packages
+      - name: List build directory
+        run: |      
+          ls -l $CONDA_PREFIX/conda-bld/linux-64
+
+      - name: Copy to directory
         run: |
-          ls -l ./packages
+          mkdir -p packages
+          cp $CONDA_PREFIX/conda-bld/linux-64/*.conda packages
+
+      - name: List packages
+        run: |
+          ls -l packages
