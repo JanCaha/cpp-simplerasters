@@ -1,0 +1,54 @@
+name: Build conda package
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on: push
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.12"] #["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    permissions:
+      contents: write
+
+    env:
+      CONDA_PKG_DIR: ~/conda_pkgs_dir
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          use-mamba: false
+          python-version: ${{ matrix.python-version }}
+          environment-file: conda/conda-env.yaml
+          activate-environment: dev-viewshed
+
+      - name: Set solver
+        run: |
+          conda config --set solver classic 
+
+      - name: Build library
+        run: |
+          conda build conda
+          ls -l $CONDA_PREFIX/conda-bld/linux-64
+          cp $CONDA_PREFIX/conda-bld/linux-64/*.conda ./packages
+
+      - name: packages
+        run: |
+          ls -l ./packages
