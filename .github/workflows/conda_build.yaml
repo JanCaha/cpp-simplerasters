@@ -63,13 +63,12 @@ jobs:
         with:
           use-mamba: true
           channels: conda-forge
+          activate-environment: base
+          auto-update-conda: true
       
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
-
       - name: Install conda-build
         run: |
-          conda install -n base conda-build vs2019_win-64
+          conda install -n base conda-build vs2022_win-64
 
       - name: Test win
         run: |
