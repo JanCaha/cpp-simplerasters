@@ -52,3 +52,30 @@ jobs:
       - name: List packages
         run: |
           ls -l packages
+
+  Build-on-Windows:
+
+    name: Build on Windows
+    
+    runs-on: windows-latest
+    
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LIBARCHIVE: C:\Miniconda\Library\bin\archive.dll
+
+    steps:
+      
+      - name: Checkout
+        uses: actions/checkout@v4
+  
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          use-mamba: true
+          channels: conda-forge
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install conda-build
+        run: |
+          conda install -n base conda-build
