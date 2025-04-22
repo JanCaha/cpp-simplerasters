@@ -19,7 +19,7 @@ Copyright (C) 2023 Jan Caha
 // Types
 //////////
 
-typedef u_long arraysize;
+typedef uint32_t arraysize;
 
 //////////
 // Classes
@@ -90,7 +90,7 @@ class AbstractRaster
 class SingleBandRaster : public AbstractRaster
 {
   public:
-    SingleBandRaster(){};
+    SingleBandRaster() {};
     SingleBandRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
     SingleBandRaster( const SingleBandRaster &other, bool copyValues = false );
     SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues = false );
