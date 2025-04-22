@@ -2,9 +2,6 @@ package:
   name: libsimplerasters
   version: "0.7.5"
 
-source:
-  git_url: https://github.com/JanCaha/cpp-simplerasters
-
 build:
   number: 0
   script: 
