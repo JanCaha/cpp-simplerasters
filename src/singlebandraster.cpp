@@ -75,7 +75,7 @@ bool SingleBandRaster::isDataValid() const { return mDataValid; }
 void SingleBandRaster::prepareDataArray()
 {
 
-    arraysize arraySize = cells();
+    std::size_t arraySize = cells();
 
     if ( GDALDataTypeIsFloating( mDataType ) )
     {
@@ -105,9 +105,9 @@ void SingleBandRaster::prepareDataArray()
     }
 }
 
-arraysize SingleBandRaster::toIndex( int row, int column ) const
+std::size_t SingleBandRaster::toIndex( int row, int column ) const
 {
-    return static_cast<arraysize>( row ) * mCols + column;
+    return static_cast<std::size_t>( row ) * mCols + column;
 }
 
 double SingleBandRaster::noData() const { return mNoData; }
@@ -116,7 +116,7 @@ void SingleBandRaster::setNoData( double value ) { mNoData = value; }
 
 bool SingleBandRaster::isNoData( int row, int column ) const { return doubleEqual( value( row, column ), noData() ); }
 
-bool SingleBandRaster::isNoData( arraysize index ) const { return doubleEqual( value( index ), noData() ); }
+bool SingleBandRaster::isNoData( std::size_t index ) const { return doubleEqual( value( index ), noData() ); }
 
 double SingleBandRaster::value( int row, int column ) const
 {
@@ -128,7 +128,7 @@ double SingleBandRaster::value( int row, int column ) const
     return value( toIndex( row, column ) );
 }
 
-double SingleBandRaster::value( arraysize index ) const
+double SingleBandRaster::value( std::size_t index ) const
 {
     if ( !mData )
     {
@@ -183,11 +183,11 @@ void SingleBandRaster::prefillValues( double value )
 
 void SingleBandRaster::writeValue( int row, int column, double value )
 {
-    arraysize index = toIndex( row, column );
+    std::size_t index = toIndex( row, column );
     writeValue( index, value );
 }
 
-void SingleBandRaster::writeValue( arraysize index, double value )
+void SingleBandRaster::writeValue( std::size_t index, double value )
 {
     if ( !mData )
     {
