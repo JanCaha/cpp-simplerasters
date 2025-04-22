@@ -86,6 +86,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: conda_package/linux-64/*.conda 
+          name: conda_package_linux
 
   Build-on-Windows:
 
@@ -127,4 +128,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: conda_package/win-64/*.conda
-  
+          name: conda_package_windows
