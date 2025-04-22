@@ -168,7 +168,7 @@ double SingleBandRaster::value( std::size_t index ) const
     }
 }
 
-u_long SingleBandRaster::cells() const { return cellsInBand(); };
+std::size_t SingleBandRaster::cells() const { return cellsInBand(); };
 
 void SingleBandRaster::prefillValues( double value )
 {
@@ -346,7 +346,7 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValu
 {
 }
 
-u_long SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
+std::size_t SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
 
 GDALDataType SingleBandRaster::gdalDataType() { return mDataType; }
 

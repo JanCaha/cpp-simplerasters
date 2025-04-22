@@ -31,7 +31,7 @@ class AbstractRaster
 
     int width() const { return xSize(); };
 
-    u_long cellsInBand() const;
+    std::size_t cellsInBand() const;
 
     double xCellSize() const;
     double yCellSize() const;
@@ -91,7 +91,7 @@ class SingleBandRaster : public AbstractRaster
 
     bool isDataValid() const;
 
-    u_long cells() const;
+    std::size_t cells() const;
 
     double value( double row, double column ) const;
     double value( int row, int column ) const;
@@ -115,7 +115,7 @@ class SingleBandRaster : public AbstractRaster
 
     bool saveFile( std::string filename, std::string driverName = "GTiff" );
 
-    u_long dataSize();
+    std::size_t dataSize();
 
     GDALDataType gdalDataType();
 
