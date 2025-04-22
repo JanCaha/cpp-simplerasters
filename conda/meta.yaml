@@ -2,6 +2,9 @@ package:
   name: libsimplerasters
   version: "0.7.5"
 
+source:
+  path: ..
+
 build:
   number: 0
   script: 
