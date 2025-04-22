@@ -33,8 +33,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           use-mamba: true
-          environment-file: conda/conda-env.yaml
-          activate-environment: dev-viewshed
+          channels: conda-forge
 
       - name: Build library
         run: |
