@@ -34,3 +34,22 @@ include(GNUInstallDirs)
 install(TARGETS simplerasters
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
+
+# Adjust install paths for Conda on Windows
+if(WIN32)
+    set(CONDA_PREFIX $ENV{CONDA_PREFIX})
+
+    if(CONDA_PREFIX)
+        install(TARGETS simplerasters
+            LIBRARY DESTINATION ${CONDA_PREFIX}/Library/lib
+            PUBLIC_HEADER DESTINATION ${CONDA_PREFIX}/Library/include/${LIBRARY_NAME})
+    else()
+        message(FATAL_ERROR "Conda environment not detected. Please activate a Conda environment.")
+    endif()
+
+# If not Windows, use the default install paths
+else()
+    install(TARGETS simplerasters
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
+endif()
