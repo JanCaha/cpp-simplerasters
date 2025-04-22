@@ -44,12 +44,12 @@ jobs:
 
       - name: Build library
         run: |
-          conda build conda
+          conda build conda --output-folder result
       
       - name: Upload artifact   
         uses: actions/upload-artifact@v4
         with:
-          path: $CONDA_PREFIX/conda-bld/linux-64/*.conda
+          path: result/*.conda
 
   Build-on-Windows:
 
@@ -80,10 +80,6 @@ jobs:
       - name: Install conda-build
         run: |
           conda install -n base conda-build
-
-      - name: Test win
-        run: |
-          where cl.exe
 
       - name: Build library
         run: |
