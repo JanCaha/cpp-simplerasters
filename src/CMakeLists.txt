@@ -37,6 +37,7 @@ if(WIN32)
         message(STATUS "CONDA PREFIX detected adjusting install paths.")
 
         install(TARGETS simplerasters
+            RUNTIME DESTINATION $ENV{CONDA_PREFIX}/Library/bin
             LIBRARY DESTINATION $ENV{CONDA_PREFIX}/Library/lib
             PUBLIC_HEADER DESTINATION $ENV{CONDA_PREFIX}/Library/include/${LIBRARY_NAME})
     else()
