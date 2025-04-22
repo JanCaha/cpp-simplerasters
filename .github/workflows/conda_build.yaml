@@ -72,7 +72,7 @@ jobs:
 
       - name: Install conda-build
         run: |
-          conda install -n base conda-build
+          conda install -n base conda-build vs2019_win-64
      
       - name: Test win
         run: |
