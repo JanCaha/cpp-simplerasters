@@ -64,8 +64,6 @@ jobs:
         with:
           use-mamba: true
           channels: conda-forge
-          environment-file: conda/conda-env.yaml
-          activate-environment: dev-viewshed
       
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -73,7 +71,7 @@ jobs:
       - name: Install conda-build
         run: |
           conda install -n base conda-build vs2019_win-64
-     
+
       - name: Test win
         run: |
           where cl.exe
