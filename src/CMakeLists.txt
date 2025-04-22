@@ -37,9 +37,13 @@ install(TARGETS simplerasters
 
 # Adjust install paths for Conda on Windows
 if(WIN32)
+    message(STATUS "Windows detected.")
+
     set(CONDA_PREFIX $ENV{CONDA_PREFIX})
 
     if(CONDA_PREFIX)
+        message(STATUS "CONDA PREFIX detected adjusting install paths.")
+
         install(TARGETS simplerasters
             LIBRARY DESTINATION ${CONDA_PREFIX}/Library/lib
             PUBLIC_HEADER DESTINATION ${CONDA_PREFIX}/Library/include/${LIBRARY_NAME})
