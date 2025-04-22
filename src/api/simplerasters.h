@@ -19,7 +19,7 @@ Copyright (C) 2023 Jan Caha
 // Types
 //////////
 
-typedef uint32_t arraysize;
+using arraysize = uint64_t;
 
 //////////
 // Classes
