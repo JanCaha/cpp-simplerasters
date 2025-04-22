@@ -85,7 +85,7 @@ jobs:
       - name: Upload artifact   
         uses: actions/upload-artifact@v4
         with:
-          path: $CONDA/conda-bld/linux-64/*.conda
+          path: /usr/share/miniconda/conda-bld/linux-64/*.conda 
 
   Build-on-Windows:
 
@@ -126,5 +126,5 @@ jobs:
       - name: Upload artifact   
         uses: actions/upload-artifact@v4
         with:
-          path: "%CONDA_PREFIX%/conda-bld/win-64/*.conda"
+          path: C:/Miniconda/conda-bld/win-64/*.conda
   
