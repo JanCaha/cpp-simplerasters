@@ -7,12 +7,10 @@ concurrency:
 on: push
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: ["3.12"] #["3.8", "3.9", "3.10", "3.11", "3.12"]
+  Build-on-Linux:
+
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -35,7 +33,6 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           use-mamba: true
-          python-version: ${{ matrix.python-version }}
           environment-file: conda/conda-env.yaml
           activate-environment: dev-viewshed
 
