@@ -32,8 +32,15 @@ jobs:
       - name: Setup conda
         uses: conda-incubator/setup-miniconda@v3
         with:
+          auto-update-conda: true
           use-mamba: true
           channels: conda-forge
+          auto-activate-base: true
+          activate-environment: ""
+
+      - name: Install conda-build
+        run: |
+          conda install -n base conda-build
 
       - name: Build library
         run: |
@@ -61,10 +68,11 @@ jobs:
   
       - uses: conda-incubator/setup-miniconda@v3
         with:
+          auto-update-conda: true
           use-mamba: true
           channels: conda-forge
-          activate-environment: base
-          auto-update-conda: true
+          auto-activate-base: true
+          activate-environment: ""
       
       - name: Install conda-build
         run: |
