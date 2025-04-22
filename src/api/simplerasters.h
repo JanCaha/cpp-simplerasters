@@ -16,12 +16,6 @@ Copyright (C) 2023 Jan Caha
 #include "ogr_geometry.h"
 
 //////////
-// Types
-//////////
-
-typedef u_long arraysize;
-
-//////////
 // Classes
 //////////
 
@@ -37,7 +31,7 @@ class AbstractRaster
 
     int width() const { return xSize(); };
 
-    u_long cellsInBand() const;
+    std::size_t cellsInBand() const;
 
     double xCellSize() const;
     double yCellSize() const;
@@ -90,24 +84,24 @@ class AbstractRaster
 class SingleBandRaster : public AbstractRaster
 {
   public:
-    SingleBandRaster(){};
+    SingleBandRaster() {};
     SingleBandRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
     SingleBandRaster( const SingleBandRaster &other, bool copyValues = false );
     SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues = false );
 
     bool isDataValid() const;
 
-    u_long cells() const;
+    std::size_t cells() const;
 
     double value( double row, double column ) const;
     double value( int row, int column ) const;
-    double value( arraysize index ) const;
+    double value( std::size_t index ) const;
 
     double valueAt( double x, double y );
 
     bool isNoData( double row, double column ) const;
     bool isNoData( int row, int column ) const;
-    bool isNoData( arraysize index ) const;
+    bool isNoData( std::size_t index ) const;
 
     double noData() const;
     void setNoData( double value );
@@ -115,13 +109,13 @@ class SingleBandRaster : public AbstractRaster
     double cornerValue( double row, double column ) const;
 
     void writeValue( int row, int column, double value );
-    void writeValue( arraysize index, double value );
+    void writeValue( std::size_t index, double value );
 
     void prefillValues( double value );
 
     bool saveFile( std::string filename, std::string driverName = "GTiff" );
 
-    u_long dataSize();
+    std::size_t dataSize();
 
     GDALDataType gdalDataType();
 
@@ -137,7 +131,7 @@ class SingleBandRaster : public AbstractRaster
     double mNoData = std::numeric_limits<double>::quiet_NaN();
 
     void prepareDataArray();
-    arraysize toIndex( int row, int column ) const;
+    std::size_t toIndex( int row, int column ) const;
 };
 
 class ProjectedSquareCellRaster : public SingleBandRaster

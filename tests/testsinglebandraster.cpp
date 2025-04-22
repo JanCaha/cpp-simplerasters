@@ -188,7 +188,7 @@ TEST_F( SingleBandRasterTest, CopyRasterWithoutData )
 
     for ( size_t i = 0; i < rCopy.cells(); i++ )
     {
-        EXPECT_TRUE( rCopy.isNoData( static_cast<arraysize>( i ) ) );
+        EXPECT_TRUE( rCopy.isNoData( static_cast<std::size_t>( i ) ) );
     }
 }
 

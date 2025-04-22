@@ -1,9 +1,9 @@
 package:
   name: libsimplerasters
-  version: "0.7.5"
+  version: "0.8.0"
 
 source:
-  git_url: https://github.com/JanCaha/cpp-simplerasters
+  path: ..
 
 build:
   number: 0
@@ -14,16 +14,11 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - libgcc-ng  # [linux]
-    - libstdcxx-ng  # [linux]
-    - libcxx  # [osx]
-    - msvc_runtime  # [win]
+    - {{ compiler('c') }}
   host:
     - cmake
     - ninja
-    - libgdal
     - libgdal
   run:
     - libgdal
@@ -39,3 +34,4 @@ extra:
     - JanCaha
   channels:
     - conda-forge
+    - defaults
