@@ -34,7 +34,7 @@ jobs:
         with:
           auto-update-conda: true
           use-mamba: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           auto-activate-base: true
           activate-environment: ""
 
@@ -73,7 +73,7 @@ jobs:
         with:
           auto-update-conda: true
           use-mamba: true
-          channels: conda-forge
+          channels: conda-forge,defaults
           auto-activate-base: true
           activate-environment: ""
       
