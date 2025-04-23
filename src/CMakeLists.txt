@@ -34,12 +34,12 @@ if(WIN32)
     message(STATUS "Windows detected.")
 
     if(DEFINED ENV{CONDA_PREFIX})
-        message(STATUS "CONDA PREFIX detected adjusting install paths.")
+        message(STATUS "CONDA PREFIX detected adjusting install paths. Installing into $ENV{LIBRARY_PREFIX}")
 
         install(TARGETS simplerasters
-            RUNTIME DESTINATION $ENV{CONDA_PREFIX}/Library/bin
-            LIBRARY DESTINATION $ENV{CONDA_PREFIX}/Library/lib
-            PUBLIC_HEADER DESTINATION $ENV{CONDA_PREFIX}/Library/include/${LIBRARY_NAME})
+            RUNTIME DESTINATION $ENV{LIBRARY_BIN}
+            LIBRARY DESTINATION $ENV{LIBRARY_LIB}
+            PUBLIC_HEADER DESTINATION $ENV{LIBRARY_INC}/${LIBRARY_NAME})
     else()
         message(FATAL_ERROR "Conda environment not detected. Please activate a Conda environment.")
     endif()
