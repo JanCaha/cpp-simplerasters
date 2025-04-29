@@ -7,6 +7,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [win]
   script: 
     - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bool=off -DPACK_DEB:bool=off
     - cmake --build build --config Release
@@ -23,6 +24,12 @@ requirements:
   run:
     - libgdal
 
+test:
+  requires:
+    - bash 
+  commands:
+    - test -f "${PREFIX}/lib/libsimplerasters.so"   
+    - test -f "${PREFIX}/include/simplerasters/simplerasters.h"
 
 about:
   home: https://github.com/JanCaha/cpp-simplerasters
