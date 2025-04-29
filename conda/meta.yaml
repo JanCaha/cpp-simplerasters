@@ -23,6 +23,12 @@ requirements:
   run:
     - libgdal
 
+test:
+  requires:
+    - bash 
+  commands:
+    - test -f "${PREFIX}/lib/libsimplerasters.so"   
+    - test -f "${PREFIX}/include/simplerasters/simplerasters.h"
 
 about:
   home: https://github.com/JanCaha/cpp-simplerasters
