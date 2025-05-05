@@ -21,7 +21,8 @@ macro(library_settings target_name)
 
     target_link_libraries(${target_name} PRIVATE ${GDAL_LIBRARY})
 
-    # include(GNUInstallDirs)
+    include(GNUInstallDirs)
+
     install(TARGETS ${target_name}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME})
