@@ -4,4 +4,4 @@ cmake -B build -S %SRC_DIR% -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bo
 
 cmake --build build --config Release
 
-cmake --install build --prefix %LIBRARY_PREFIX%
+cmake --install build
