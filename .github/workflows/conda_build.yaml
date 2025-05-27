@@ -123,7 +123,7 @@ jobs:
       
       - name: Conda render recipe
         run: |
-          conda render conda-recipe
+          conda render conda --variant-config-files conda/variants/windows.yaml
 
       - name: Build library
         run: |
