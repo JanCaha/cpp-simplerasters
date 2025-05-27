@@ -7,11 +7,6 @@ source:
 
 build:
   number: 0
-  skip: true  # [win]
-  script: 
-    - cmake -B build -S {{SRC_DIR}} -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bool=off -DPACK_DEB:bool=off
-    - cmake --build build --config Release
-    - cmake --install build --prefix {{PREFIX}}
 
 requirements:
   build:
@@ -28,10 +23,10 @@ test:
   requires:
     - bash 
   commands:
-    - test -f "${PREFIX}/lib/libsimplerasters.so"
-    - test -f "${PREFIX}/lib/libsimplerasters.a"
-    - test -f "${PREFIX}/lib/cmake/SimpleRasters/SimpleRastersConfig.cmake"
-    - test -f "${PREFIX}/include/SimpleRasters/simplerasters.h"
+    - test -f "${PREFIX}/lib/libsimplerasters.so" # [unix]
+    - test -f "${PREFIX}/lib/libsimplerasters.a" # [unix]
+    - test -f "${PREFIX}/lib/cmake/SimpleRasters/SimpleRastersConfig.cmake" # [unix]
+    - test -f "${PREFIX}/include/SimpleRasters/simplerasters.h" # [unix]
 
 about:
   home: https://github.com/JanCaha/cpp-simplerasters
