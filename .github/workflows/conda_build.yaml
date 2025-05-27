@@ -123,7 +123,7 @@ jobs:
 
       - name: Build library
         run: |
-          conda build conda --output-folder conda_package --variant-config-files conda_build_config.yaml
+          conda build conda --output-folder conda_package --variant-config-files conda/conda_build_config.yaml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
