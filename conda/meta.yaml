@@ -20,13 +20,9 @@ requirements:
     - libgdal
 
 test:
-  requires:
-    - bash # [unix]
   commands:
-    - test -f "${PREFIX}/lib/libsimplerasters.so" # [unix]
-    - test -f "${PREFIX}/lib/libsimplerasters.a" # [unix]
-    - test -f "${PREFIX}/lib/cmake/SimpleRasters/SimpleRastersConfig.cmake" # [unix]
-    - test -f "${PREFIX}/include/SimpleRasters/simplerasters.h" # [unix]
+    - bash test_script.sh  # [unix]
+    - call test_script.bat  # [win]
 
 about:
   home: https://github.com/JanCaha/cpp-simplerasters
