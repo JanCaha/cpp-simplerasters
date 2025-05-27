@@ -1,5 +1,7 @@
 c_compiler:
   - vs2022
+  - gcc
 
 cxx_compiler:
   - vs2022
+  - gxx

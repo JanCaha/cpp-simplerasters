@@ -120,10 +120,14 @@ jobs:
       - name: Install conda-build
         run: |
           conda install -n base conda-build conda-verify
+      
+      - name: Conda render recipe
+        run: |
+          conda render conda-recipe
 
       - name: Build library
         run: |
-          conda build conda --output-folder conda_package --variant-config-files conda/conda_build_config.yaml
+          conda build conda --output-folder conda_package
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
