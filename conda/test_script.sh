@@ -17,6 +17,6 @@ check_file_exists() {
 # existence of files
 check_file_exists "$PREFIX/lib/libsimplerasters.so"
 check_file_exists "$PREFIX/lib/libsimplerasters.a"
-check_file_exists "$PREFIX/cmake/SimpleRasters/SimpleRastersConfig.cmake"
+check_file_exists "$PREFIX/lib/cmake/SimpleRasters/SimpleRastersConfig.cmake"
 check_file_exists "$PREFIX/include/SimpleRasters/simplerasters.h"
 
