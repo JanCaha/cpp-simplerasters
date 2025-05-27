@@ -21,7 +21,7 @@ requirements:
 
 test:
   requires:
-    - bash 
+    - bash # [unix]
   commands:
     - test -f "${PREFIX}/lib/libsimplerasters.so" # [unix]
     - test -f "${PREFIX}/lib/libsimplerasters.a" # [unix]
