@@ -1,4 +1,4 @@
-@echo off
+@echo on
 
 echo Running Windows test...
 
@@ -18,7 +18,7 @@ goto :eof
 REM Use the function to test required files
 
 call :check_file_exists "%PREFIX%\Library\bin\libsimplerasters.dll"
-call :check_file_exists "%PREFIX%\Library\bin\libsimplerasters.lib"
+@REM call :check_file_exists "%PREFIX%\Library\bin\libsimplerasters.lib"
 
 REM Add more checks as needed
 endlocal

@@ -49,7 +49,7 @@ include(GNUInstallDirs)
 set(TARGETS 
     simplerasters_shared)
 
-if(WIN32 AND DEFINED ENV{CONDA_BUILD})
+if(UNIX)
     set(TARGETS
         ${TARGETS}
         simplerasters_static)
