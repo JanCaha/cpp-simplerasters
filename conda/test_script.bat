@@ -18,7 +18,7 @@ goto :eof
 REM Use the function to test required files
 
 call :check_file_exists "%PREFIX%\Library\bin\simplerasters.dll"
-@REM call :check_file_exists "%PREFIX%\Library\bin\simplerasters.lib"
+call :check_file_exists "%PREFIX%\Library\bin\simplerasters_static.lib"
 
 REM Add more checks as needed
 endlocal
