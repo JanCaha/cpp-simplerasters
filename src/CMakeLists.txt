@@ -30,21 +30,22 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/api
 )
 
-add_library(simplerasters_shared SHARED
-    ${SOURCES}
-)
+# add_library(simplerasters_shared SHARED
+#     ${SOURCES}
+# )
 
 set(TARGETS 
-    simplerasters_shared)
+    # simplerasters_shared
+    )
 
 
 # set_target_properties(simplerasters_static PROPERTIES
 #     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
 # )
 
-library_settings(simplerasters_shared)
+# library_settings(simplerasters_shared)
 
-if(UNIX)
+if(UNIX OR WIN32)
     add_library(simplerasters_static STATIC
         ${SOURCES}
     )
