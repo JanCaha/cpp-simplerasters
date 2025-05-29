@@ -13,8 +13,10 @@ SET(HEADERS
 macro(library_settings target_name)
     string(TOLOWER ${LIBRARY_NAME} LIBRARY_NAME_LOWER)
 
-    if (WIN32)
-        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}$<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,STATIC_LIBRARY>:_static>")
+    get_target_property(target_type ${target_name} TYPE)
+
+    if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static>")
     else()
         set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
     endif()
