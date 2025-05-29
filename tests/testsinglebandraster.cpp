@@ -56,10 +56,13 @@ TEST( SingleBandRaster, Types )
         ASSERT_EQ( r.gdalDataType(), dataType );
         r.saveFile( resultFile );
 
-        GDALDatasetUniquePtr dataset =
-            GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+        GDALDatasetH hDataset = GDALOpen( resultFile.c_str(), GA_ReadOnly );
+        GDALRasterBandH hBand = GDALGetRasterBand( hDataset, 1 );
+        GDALDataType hDataType = GDALGetRasterDataType( hBand );
 
-        ASSERT_EQ( dataset->GetRasterBand( 1 )->GetRasterDataType(), dataType );
+        ASSERT_EQ( hDataType, dataType );
+
+        GDALClose( hDataset );
     }
 }
 
