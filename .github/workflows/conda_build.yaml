@@ -123,7 +123,7 @@ jobs:
       
       - name: Build library
         run: |
-          conda build conda --variant-config-files conda/variants/windows.yaml --output-folder conda_package
+          conda build conda --variant-config-files conda/variants/windows.yaml --output-folder conda_package --debug
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
