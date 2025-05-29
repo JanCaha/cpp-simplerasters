@@ -1,13 +1,7 @@
 @echo on
 
 mkdir build
-cd build
 
-cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bool=off -DPACK_DEB:bool=off
-
-
-type build.ninja
-
-ninja --verbose
-
-ninja install
+cmake -B build -S %SRC_DIR% -G "Ninja" -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS:bool=off -DPACK_DEB:bool=off
+cmake --build build --config Release
+cmake --install build --prefix %LIBRARY_PREFIX%
