@@ -18,7 +18,8 @@ goto :eof
 REM Use the function to test required files
 
 call :check_file_exists "%PREFIX%\Library\bin\simplerasters.dll"
-call :check_file_exists "%PREFIX%\Library\bin\simplerasters_static.lib"
+call :check_file_exists "%PREFIX%\Library\lib\simplerasters_static.lib"
+call :check_file_exists "%PREFIX%\Library\lib/cmake/SimpleRasters/SimpleRastersConfig.cmake"
+call :check_file_exists "%PREFIX%\Library\include/SimpleRasters/simplerasters.h"
 
-REM Add more checks as needed
 endlocal
