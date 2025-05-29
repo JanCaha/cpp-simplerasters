@@ -13,7 +13,12 @@ SET(HEADERS
 macro(library_settings target_name)
     string(TOLOWER ${LIBRARY_NAME} LIBRARY_NAME_LOWER)
 
-    set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    if (WIN32)
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}$<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,STATIC_LIBRARY>:_static>")
+    else()
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
+    endif()
+
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
     set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER api/simplerasters.h)
@@ -30,36 +35,25 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/api
 )
 
-# add_library(simplerasters_shared SHARED
-#     ${SOURCES}
-# )
+add_library(simplerasters_shared SHARED
+    ${SOURCES}
+)
 
-set(TARGETS 
-    # simplerasters_shared
-    )
+add_library(simplerasters_static STATIC
+    ${SOURCES}
+)
 
+library_settings(simplerasters_shared)
+library_settings(simplerasters_static)
 
-# set_target_properties(simplerasters_static PROPERTIES
-#     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
-# )
-
-# library_settings(simplerasters_shared)
-
-if(UNIX OR WIN32)
-    add_library(simplerasters_static STATIC
-        ${SOURCES}
-    )
-    library_settings(simplerasters_static)
-
-    set(TARGETS
-        ${TARGETS}
-        simplerasters_static)
-endif()
-
+set_target_properties(simplerasters_static PROPERTIES
+    POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
+)
+    
 include(GNUInstallDirs)
 
 install(
-    TARGETS ${TARGETS}
+    TARGETS simplerasters_static simplerasters_shared
     EXPORT SimpleRastersTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
