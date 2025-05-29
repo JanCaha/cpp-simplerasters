@@ -37,9 +37,9 @@ add_library(simplerasters_shared SHARED
 add_library(simplerasters_static STATIC
     ${SOURCES}
 )
-set_target_properties(simplerasters_static PROPERTIES
-    POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
-)
+# set_target_properties(simplerasters_static PROPERTIES
+#     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
+# )
 
 library_settings(simplerasters_shared)
 library_settings(simplerasters_static)
