@@ -20,7 +20,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build g++-12
+          sudo apt install ninja-build g++-14
 
       - name: Install latest CMake
         run: |
@@ -48,8 +48,8 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-12 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-12 \
+            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
+            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
             -D CMAKE_BUILD_TYPE=Release \
             -D BUILD_TESTS:bool=on \
             -D CMAKE_INSTALL_PREFIX=/usr
@@ -70,8 +70,8 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-12 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-12 \
+            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
+            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
             -D CMAKE_BUILD_TYPE=Release \
             -D BUILD_TESTS:bool=off \
             -D PACK_DEB:bool=on \
