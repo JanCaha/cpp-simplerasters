@@ -244,9 +244,11 @@ TEST( SingleBandRaster, EmptyRaster ) { SingleBandRaster r = SingleBandRaster();
 TEST( SingleBandRaster, ReadDataAsDefinedType )
 {
     SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Int16 );
+    ASSERT_TRUE( r.isValid() );
     ASSERT_EQ( r.value( 0, 0 ), 1011 );
 
     r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Float64 );
+    ASSERT_TRUE( r.isValid() );
     EXPECT_DOUBLE_EQ( r.value( 0, 0 ), 1010.5443115234375 );
 }
 
