@@ -46,8 +46,17 @@ library_settings(simplerasters_static)
 
 include(GNUInstallDirs)
 
+set(TARGETS 
+    simplerasters_shared)
+
+if(WIN32 AND DEFINED ENV{CONDA_BUILD})
+    set(TARGETS
+        ${TARGETS}
+        simplerasters_static)
+endif()
+
 install(
-    TARGETS simplerasters_shared simplerasters_static
+    TARGETS ${TARGETS}
     EXPORT SimpleRastersTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
