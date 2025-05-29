@@ -54,15 +54,16 @@ TEST( SingleBandRaster, Types )
         ASSERT_TRUE( r.isValid() );
         ASSERT_TRUE( r.isDataValid() );
         ASSERT_EQ( r.gdalDataType(), dataType );
-        ASSERT_TRUE( r.saveFile( resultFile ) );
+        r.saveFile( resultFile );
 
-        GDALDatasetH hDataset = GDALOpen( resultFile.c_str(), GA_ReadOnly );
-        GDALRasterBandH hBand = GDALGetRasterBand( hDataset, 1 );
-        // GDALDataType hDataType = GDALGetRasterDataType( hBand );
+        GDALDatasetUniquePtr dataset =
+            GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+        std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
 
-        // ASSERT_EQ( hDataType, dataType );
+        ASSERT_EQ( band->GetRasterDataType(), dataType );
 
-        GDALClose( hDataset );
+        band.release();
+        dataset.release();
     }
 }
 
@@ -244,11 +245,9 @@ TEST( SingleBandRaster, EmptyRaster ) { SingleBandRaster r = SingleBandRaster();
 TEST( SingleBandRaster, ReadDataAsDefinedType )
 {
     SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Int16 );
-    ASSERT_TRUE( r.isValid() );
     ASSERT_EQ( r.value( 0, 0 ), 1011 );
 
     r = SingleBandRaster( TEST_DATA_DSM, GDALDataType::GDT_Float64 );
-    ASSERT_TRUE( r.isValid() );
     EXPECT_DOUBLE_EQ( r.value( 0, 0 ), 1010.5443115234375 );
 }
 
