@@ -16,7 +16,7 @@ macro(library_settings target_name)
     get_target_property(target_type ${target_name} TYPE)
 
     if (WIN32 AND target_type STREQUAL "STATIC_LIBRARY")
-        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static>")
+        set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
     else()
         set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
     endif()
