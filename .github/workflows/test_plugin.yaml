@@ -61,7 +61,7 @@ jobs:
       - name: Run tests
         run: |
           cd build/tests
-          ctest -VV
+          ctest -VV --output-on-failure 
 
       - name: Test install
         run: |
