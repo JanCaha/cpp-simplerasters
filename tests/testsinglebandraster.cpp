@@ -58,12 +58,8 @@ TEST( SingleBandRaster, Types )
 
         GDALDatasetUniquePtr dataset =
             GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
-        std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
 
-        ASSERT_EQ( band->GetRasterDataType(), dataType );
-
-        band.release();
-        dataset.release();
+        ASSERT_EQ( dataset->GetRasterBand( 1 )->GetRasterDataType(), dataType );
     }
 }
 
