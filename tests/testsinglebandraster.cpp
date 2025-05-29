@@ -54,7 +54,7 @@ TEST( SingleBandRaster, Types )
         ASSERT_TRUE( r.isValid() );
         ASSERT_TRUE( r.isDataValid() );
         ASSERT_EQ( r.gdalDataType(), dataType );
-        r.saveFile( resultFile );
+        ASSERT_TRUE( r.saveFile( resultFile ) );
 
         GDALDatasetH hDataset = GDALOpen( resultFile.c_str(), GA_ReadOnly );
         GDALRasterBandH hBand = GDALGetRasterBand( hDataset, 1 );
