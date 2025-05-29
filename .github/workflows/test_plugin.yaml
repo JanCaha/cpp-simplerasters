@@ -10,7 +10,7 @@ jobs:
 
   Tests-library:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,7 +20,7 @@ jobs:
       - name: Update and Upgrade
         run: |
           sudo apt update
-          sudo apt install ninja-build g++-12
+          sudo apt install ninja-build g++-14
 
       - name: Install latest CMake
         run: |
@@ -29,7 +29,7 @@ jobs:
           
       - name: Install GDAL
         run: |
-          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
       
@@ -48,8 +48,8 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-12 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-12 \
+            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
+            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
             -D CMAKE_BUILD_TYPE=Release \
             -D BUILD_TESTS:bool=on \
             -D CMAKE_INSTALL_PREFIX=/usr
@@ -61,7 +61,7 @@ jobs:
       - name: Run tests
         run: |
           cd build/tests
-          ctest -VV
+          ctest -VV --output-on-failure 
 
       - name: Test install
         run: |
@@ -70,8 +70,8 @@ jobs:
             -S . \
             -B build \
             -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-12 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-12 \
+            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
+            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
             -D CMAKE_BUILD_TYPE=Release \
             -D BUILD_TESTS:bool=off \
             -D PACK_DEB:bool=on \

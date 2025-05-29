@@ -1,0 +1,35 @@
+@PACKAGE_INIT@
+
+# find
+include(CMakeFindDependencyMacro)
+find_dependency(GDAL REQUIRED)
+
+include("${CMAKE_CURRENT_LIST_DIR}/SimpleRastersTargets.cmake")
+
+# Define standard variables for compatibility
+set(SIMPLERASTERS_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include/SimpleRasters")
+set(SIMPLERASTERS_VERSION "@PROJECT_VERSION@")
+set(SimpleRasters_FOUND True)
+
+# Default to shared libraries if no component is specified
+set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_shared)
+
+# Handle requested components
+if(SimpleRasters_FIND_COMPONENTS)
+    foreach(comp ${SimpleRasters_FIND_COMPONENTS})
+        if(comp STREQUAL "static")
+            set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_static)
+        elseif(comp STREQUAL "shared" OR comp STREQUAL "dynamic")
+            set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_shared)
+        else()
+            set(SimpleRasters_FOUND False)
+            set(SimpleRasters_NOT_FOUND_MESSAGE "Unsupported component: ${comp}")
+        endif()
+    endforeach()
+endif()
+
+if(SimpleRasters_FOUND)
+    # Provide both static and shared library variables for flexibility
+    set(SIMPLERASTERS_SHARED_LIBRARIES SimpleRasters::simplerasters_shared)
+    set(SIMPLERASTERS_STATIC_LIBRARIES SimpleRasters::simplerasters_static)
+endif()

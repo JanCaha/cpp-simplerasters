@@ -303,8 +303,6 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
 
     band.release();
 
-    GDALClose( dataset.get() );
-
     dataset.release();
     driver.release();
 
