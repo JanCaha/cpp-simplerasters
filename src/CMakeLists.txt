@@ -23,6 +23,8 @@ macro(library_settings target_name)
 
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
+    include(GNUInstallDirs)
+  
     target_include_directories(${target_name}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/api>
