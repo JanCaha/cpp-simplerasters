@@ -77,7 +77,7 @@ jobs:
           echo "CURRENT_TAG=v$(grep "project(" CMakeLists.txt | grep -E -o -e "[0-9\.]+")" >> $GITHUB_OUTPUT
 
       - name: Push tag
-        uses: anothrNick/github-tag-action@1.64.0 
+        uses: anothrNick/github-tag-action@1
         if: steps.version.outputs.CURRENT_TAG != steps.version.outputs.LATEST_TAG
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
