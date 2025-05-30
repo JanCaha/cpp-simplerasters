@@ -12,3 +12,9 @@
   url     = {https://github.com/JanCaha/cpp-simplerasters},
 }
 ```
+
+## Setup precommits
+
+```bash
+cp scripts/precommit/conda_version.sh .git/hooks/conda_version 
+```
