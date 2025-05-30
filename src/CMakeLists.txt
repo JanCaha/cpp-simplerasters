@@ -23,10 +23,13 @@ macro(library_settings target_name)
 
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
-    set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER api/simplerasters.h)
-
-    target_include_directories(${target_name} PRIVATE ${GDAL_INCLUDE_DIR})
-    target_include_directories(${target_name} PRIVATE ${CMAKE_SOURCE_DIR}"/src/api")
+    target_include_directories(${target_name}
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/api>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}>
+    PRIVATE
+        ${GDAL_INCLUDE_DIR}
+    )
 
     target_link_libraries(${target_name} PRIVATE ${GDAL_LIBRARY})
 endmacro(library_settings)
@@ -61,7 +64,12 @@ install(
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+)
+
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/src/api/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
+    FILES_MATCHING PATTERN "*.h"
 )
 
 install(
