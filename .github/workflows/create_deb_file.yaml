@@ -8,6 +8,7 @@ on:
     branches:
       - 'main'
       - 'master'
+  workflow_dispatch:
 
 jobs:
 
@@ -30,7 +31,7 @@ jobs:
 
       - name: Install GDAL
         run: |
-          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
 
