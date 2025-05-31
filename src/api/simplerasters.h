@@ -15,11 +15,21 @@ Copyright (C) 2023 Jan Caha
 #include "gdal_priv.h"
 #include "ogr_geometry.h"
 
+#if defined( _WIN32 ) || defined( __CYGWIN__ )
+#ifdef VIEWSHED_EXPORTS
+#define DLL_API __declspec( dllexport )
+#else
+#define DLL_API __declspec( dllimport )
+#endif
+#else
+#define DLL_API
+#endif
+
 //////////
 // Classes
 //////////
 
-class AbstractRaster
+class DLL_API AbstractRaster
 {
   public:
     bool isValid() const;
@@ -81,7 +91,7 @@ class AbstractRaster
     void bBoxCoordinates( double &minX, double &maxX, double &minY, double &maxY ) const;
 };
 
-class SingleBandRaster : public AbstractRaster
+class DLL_API SingleBandRaster : public AbstractRaster
 {
   public:
     SingleBandRaster() {};
@@ -134,7 +144,7 @@ class SingleBandRaster : public AbstractRaster
     std::size_t toIndex( int row, int column ) const;
 };
 
-class ProjectedSquareCellRaster : public SingleBandRaster
+class DLL_API ProjectedSquareCellRaster : public SingleBandRaster
 {
   public:
     ProjectedSquareCellRaster( std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown, int band = 1 );
@@ -151,7 +161,8 @@ class ProjectedSquareCellRaster : public SingleBandRaster
 
 namespace simplerasters
 {
-    std::string rasterFormatsFileFilters();
+    DLL_API std::string rasterFormatsFileFilters();
 
-    bool compareValues( const double &a, const double &b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
+    DLL_API bool compareValues( const double &a, const double &b,
+                                double epsilon = 4 * std::numeric_limits<double>::epsilon() );
 } // namespace simplerasters
