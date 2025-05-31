@@ -16,5 +16,5 @@
 ## Setup precommits
 
 ```bash
-cp scripts/precommit/conda_version.sh .git/hooks/conda_version 
+cp -r scripts/precommit/* .git/hooks/
 ```
