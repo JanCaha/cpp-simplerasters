@@ -8,33 +8,37 @@ source:
 build:
   number: 0
 
-requirements:
-  build:
-    - {{ compiler('cxx') }}
-    - {{ compiler('c') }}
-  host:
-    - cmake
-    - ninja
-    - libgdal
-  run:
-    - libgdal
-
-test:
-  files:
-    - test_script.sh  # [unix]
-    - test_script.bat  # [win]
-  commands:
-    - bash test_script.sh  # [unix]
-    - call test_script.bat  # [win]
-
-about:
-  home: https://github.com/JanCaha/cpp-simplerasters
-  license: MIT
-  summary: "C++ Raster Data Access Library based on GDAL"
+outputs:
+  - name: libsimplerasters
+    script: 
+      - build.sh  # [unix]
+      - bld.bat  # [win]
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}
+      host:
+        - cmake
+        - ninja
+        - libgdal
+      run:
+        - libgdal
+    test:
+      files:
+        - test_script.sh  # [unix]
+        - test_script.bat  # [win]
+      commands:
+        - bash test_script.sh  # [unix]
+        - call test_script.bat  # [win]
+    about:
+      home: https://github.com/JanCaha/cpp-simplerasters
+      license: MIT
+      summary: "C++ Raster Data Access Library based on GDAL"
 
 extra:
   recipe-maintainers:
     - JanCaha
   channels:
+    - https://jancaha.github.io/conda-channel/
     - conda-forge
     - defaults
