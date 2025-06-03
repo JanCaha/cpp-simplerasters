@@ -33,7 +33,7 @@ macro(library_settings target_name)
     target_include_directories(${target_name}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/api>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}>
+        $<INSTALL_INTERFACE:include/${LIBRARY_NAME}>
     PRIVATE
         ${GDAL_INCLUDE_DIR}
     )
