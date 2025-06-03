@@ -20,7 +20,7 @@ macro(library_settings target_name)
             set_target_properties(${target_name} PROPERTIES OUTPUT_NAME "${LIBRARY_NAME_LOWER}_static")
         else()
             set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
-            target_compile_definitions(${target_name} PRIVATE VIEWSHED_EXPORTS)
+            target_compile_definitions(${target_name} PRIVATE SIMPLERASTERS_EXPORTS)
         endif()
     else()
         set_target_properties(${target_name} PROPERTIES OUTPUT_NAME ${LIBRARY_NAME_LOWER})
@@ -70,7 +70,7 @@ install(
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
 )
 
 install(
