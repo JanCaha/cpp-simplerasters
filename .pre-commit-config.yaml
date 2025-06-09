@@ -6,3 +6,9 @@ repos:
         entry: './scripts/precommit/conda_version.sh'
         language: script
         files: ^CMakeLists.txt
+
+      - id: style-cpp
+        name: 'Style C++ code'
+        entry: './scripts/precommit/clang_format.sh'
+        language: script
+        files: ^src/.*|^test/.*$
