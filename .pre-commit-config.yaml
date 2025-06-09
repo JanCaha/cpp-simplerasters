@@ -11,4 +11,4 @@ repos:
         name: 'Style C++ code'
         entry: './scripts/precommit/clang_format.sh'
         language: script
-        files: ^src/.*|^test/.*$
+        files: ^src/.*|^tests/.*$
