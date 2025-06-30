@@ -46,7 +46,7 @@ jobs:
 
       - name: Build library
         run: |
-          conda build conda --output-folder conda_package
+          conda build conda --output-folder conda_package --variant-config-files conda/variants/unix.yaml
       
       - name: Upload artifact   
         uses: actions/upload-artifact@v4
@@ -128,10 +128,10 @@ jobs:
 
       - name: Build library
         run: |
-          conda build conda --output-folder conda_package
+          conda build conda --output-folder conda_package --variant-config-files conda/variants/unix.yaml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: conda_package/osx-64/*.conda
+          path: conda_package/osx-arm64/*.conda
           name: conda_package_macos
