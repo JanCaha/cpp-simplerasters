@@ -7,11 +7,13 @@ mkdir build
 
 cmake \
     -S. \
-    -Bbuild \
+    -B build \
     -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_TESTS:bool=off \
-    -DPACK_DEB:bool=on \
+    -D CMAKE_C_COMPILER=clang \
+    -D CMAKE_CXX_COMPILER=clang++ \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D BUILD_TESTS:bool=off \
+    -D PACK_DEB:bool=on \
     -D CMAKE_INSTALL_PREFIX=/usr
 
 cmake --build build --config Release --target all
