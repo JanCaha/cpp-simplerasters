@@ -145,7 +145,7 @@ bool simplerasters::compareValues( const double &a, const double &b, double epsi
         return true;
     }
 
-    if ( abs( a - b ) < epsilon )
+    if ( std::abs( a - b ) < epsilon )
     {
         return true;
     }
