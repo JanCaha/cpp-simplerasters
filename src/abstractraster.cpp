@@ -24,7 +24,7 @@ void AbstractRaster::storeLastErrorMessage()
 
 std::string AbstractRaster::error() const { return mError; }
 
-void AbstractRaster::transformCoordinatesToRaster( const double &x, const double &y, double &row, double &col )
+void AbstractRaster::transformCoordinatesToRaster( const double &x, const double &y, double &row, double &col ) const
 {
     double div = ( mGeoTransform[2] * mGeoTransform[4] - mGeoTransform[1] * mGeoTransform[5] );
 
@@ -41,18 +41,18 @@ void AbstractRaster::transformCoordinatesToRaster( const double &x, const double
           div;
 }
 
-void AbstractRaster::transformCoordinatesToRaster( const std::shared_ptr<OGRPoint> p, double &row, double &col )
+void AbstractRaster::transformCoordinatesToRaster( const std::shared_ptr<OGRPoint> &p, double &row, double &col ) const
 {
     transformCoordinatesToRaster( p->getX(), p->getY(), row, col );
 }
 
-void AbstractRaster::transformCoordinatesToWorld( const double &row, const double &col, double &x, double &y )
+void AbstractRaster::transformCoordinatesToWorld( const double &row, const double &col, double &x, double &y ) const
 {
     x = mGeoTransform[0] + mGeoTransform[1] * col + mGeoTransform[2] * row;
     y = mGeoTransform[3] + mGeoTransform[4] * col + mGeoTransform[5] * row;
 }
 
-void AbstractRaster::transformCoordinatesToWorld( const std::shared_ptr<OGRPoint> p, double &x, double &y )
+void AbstractRaster::transformCoordinatesToWorld( const std::shared_ptr<OGRPoint> &p, double &x, double &y ) const
 {
     transformCoordinatesToWorld( p->getY(), p->getX(), x, y );
 }
@@ -73,7 +73,7 @@ void AbstractRaster::setUpGDAL()
                     } );
 }
 
-bool AbstractRaster::isInside( const std::shared_ptr<OGRPoint> p ) const { return isInside( *p.get() ); }
+bool AbstractRaster::isInside( const std::shared_ptr<OGRPoint> &p ) const { return isInside( *p.get() ); }
 
 void AbstractRaster::bBoxCoordinates( double &minX, double &maxX, double &minY, double &maxY ) const
 {
@@ -100,7 +100,7 @@ void AbstractRaster::bBoxCoordinates( double &minX, double &maxX, double &minY, 
     }
 }
 
-bool AbstractRaster::isInside( const OGRPoint p ) const
+bool AbstractRaster::isInside( const OGRPoint &p ) const
 {
     double minX, maxX, minY, maxY;
 
@@ -114,7 +114,7 @@ bool AbstractRaster::isInside( const OGRPoint p ) const
     return false;
 }
 
-OGRPolygon AbstractRaster::boundingBox()
+OGRPolygon AbstractRaster::boundingBox() const
 {
     double minX, maxX, minY, maxY;
 
@@ -133,11 +133,14 @@ OGRPolygon AbstractRaster::boundingBox()
     return poly;
 }
 
-bool AbstractRaster::sameDimensions( AbstractRaster &other ) { return mRows == other.mRows && mCols == other.mCols; }
+bool AbstractRaster::sameDimensions( const AbstractRaster &other ) const
+{
+    return mRows == other.mRows && mCols == other.mCols;
+}
 
-bool AbstractRaster::sameCrs( AbstractRaster &other ) { return mCrs.IsSame( &other.mCrs ); }
+bool AbstractRaster::sameCrs( const AbstractRaster &other ) const { return mCrs.IsSame( &other.mCrs ); }
 
-bool AbstractRaster::sameGeotransform( AbstractRaster &other, double epsilon )
+bool AbstractRaster::sameGeotransform( const AbstractRaster &other, const double epsilon ) const
 {
 
     bool same;

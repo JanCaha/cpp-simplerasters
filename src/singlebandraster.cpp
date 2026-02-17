@@ -2,7 +2,7 @@
 
 #include "helpers.h"
 
-SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int bandNo )
+SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType dataType, const size_t bandNumber )
 {
 
     setUpGDAL();
@@ -170,7 +170,7 @@ double SingleBandRaster::value( std::size_t index ) const
 
 std::size_t SingleBandRaster::cells() const { return cellsInBand(); };
 
-void SingleBandRaster::prefillValues( double value )
+void SingleBandRaster::prefillValues( const double value )
 {
     if ( mData )
     {
@@ -181,7 +181,7 @@ void SingleBandRaster::prefillValues( double value )
     }
 }
 
-void SingleBandRaster::writeValue( int row, int column, double value )
+void SingleBandRaster::writeValue( const int row, const int column, const double value )
 {
     if ( row >= mRows || column >= mCols || row < 0 || column < 0 )
     {
@@ -192,7 +192,7 @@ void SingleBandRaster::writeValue( int row, int column, double value )
     writeValue( index, value );
 }
 
-void SingleBandRaster::writeValue( std::size_t index, double value )
+void SingleBandRaster::writeValue( const std::size_t index, const double value )
 {
     if ( !mData )
     {
@@ -242,7 +242,7 @@ double SingleBandRaster::value( double row, double column ) const
     return value( static_cast<int>( row ), static_cast<int>( column ) );
 }
 
-double SingleBandRaster::cornerValue( double row, double column ) const
+double SingleBandRaster::cornerValue( const double row, const double column ) const
 {
 
     if ( isNoData( row, column ) )
@@ -271,14 +271,14 @@ double SingleBandRaster::cornerValue( double row, double column ) const
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-double SingleBandRaster::valueAt( double x, double y )
+double SingleBandRaster::valueAt( const double x, const double y )
 {
     double row, col;
     transformCoordinatesToRaster( x, y, row, col );
     return value( row, col );
 }
 
-bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
+bool SingleBandRaster::saveFile( const std::string filename, const std::string driverName )
 {
 
     std::unique_ptr<GDALDriver> driver =
@@ -319,7 +319,7 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
     return true;
 }
 
-SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues )
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const GDALDataType dataType, const bool copyValues )
 {
     mRows = other.mRows;
     mCols = other.mCols;
@@ -349,18 +349,18 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, GDALDataType 
     }
 }
 
-SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValues )
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const bool copyValues )
     : SingleBandRaster( other, other.mDataType, copyValues )
 {
 }
 
-std::size_t SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
+std::size_t SingleBandRaster::dataSize() const { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
 
-GDALDataType SingleBandRaster::gdalDataType() { return mDataType; }
+GDALDataType SingleBandRaster::gdalDataType() const { return mDataType; }
 
-bool SingleBandRaster::sameDataType( SingleBandRaster &other ) { return mDataType == other.gdalDataType(); }
+bool SingleBandRaster::sameDataType( const SingleBandRaster &other ) const { return mDataType == other.gdalDataType(); }
 
-bool SingleBandRaster::sameValues( SingleBandRaster &other, double epsilon )
+bool SingleBandRaster::sameValues( const SingleBandRaster &other, const double epsilon ) const
 {
     bool same;
 
