@@ -135,7 +135,7 @@ double SingleBandRaster::value( std::size_t index ) const
         return mNoData;
     }
 
-    if ( index < 0 || cells() - 1 < index )
+    if ( index >= cells() )
     {
         return mNoData;
     }
@@ -183,6 +183,11 @@ void SingleBandRaster::prefillValues( double value )
 
 void SingleBandRaster::writeValue( int row, int column, double value )
 {
+    if ( row >= mRows || column >= mCols || row < 0 || column < 0 )
+    {
+        return;
+    }
+
     std::size_t index = toIndex( row, column );
     writeValue( index, value );
 }
@@ -190,6 +195,11 @@ void SingleBandRaster::writeValue( int row, int column, double value )
 void SingleBandRaster::writeValue( std::size_t index, double value )
 {
     if ( !mData )
+    {
+        return;
+    }
+
+    if ( index >= cells() )
     {
         return;
     }
