@@ -34,7 +34,7 @@ SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType d
     mRows = dataset->GetRasterYSize();
     mCols = dataset->GetRasterXSize();
 
-    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( bandNo ) );
+    GDALRasterBand *band = dataset->GetRasterBand( static_cast<int>( bandNumber ) );
 
     if ( !band )
     {
@@ -64,8 +64,6 @@ SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType d
         storeLastErrorMessage();
         return;
     }
-
-    band.release();
 
     mDataValid = true;
 }
@@ -281,8 +279,7 @@ double SingleBandRaster::valueAt( const double x, const double y )
 bool SingleBandRaster::saveFile( const std::string filename, const std::string driverName )
 {
 
-    std::unique_ptr<GDALDriver> driver =
-        std::unique_ptr<GDALDriver>( GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) ) );
+    GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );
 
     if ( !driver )
     {
@@ -300,7 +297,7 @@ bool SingleBandRaster::saveFile( const std::string filename, const std::string d
     dataset->SetSpatialRef( &mCrs );
     dataset->SetGeoTransform( mGeoTransform.data() );
 
-    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+    GDALRasterBand *band = dataset->GetRasterBand( 1 );
 
     band->SetNoDataValue( mNoData );
 
@@ -310,11 +307,6 @@ bool SingleBandRaster::saveFile( const std::string filename, const std::string d
     {
         return false;
     }
-
-    band.release();
-
-    dataset.release();
-    driver.release();
 
     return true;
 }
