@@ -25,6 +25,13 @@ std::string AbstractRaster::error() const { return mError; }
 void AbstractRaster::transformCoordinatesToRaster( const double &x, const double &y, double &row, double &col )
 {
     double div = ( mGeoTransform[2] * mGeoTransform[4] - mGeoTransform[1] * mGeoTransform[5] );
+
+    if ( std::abs( div ) < 1e-12 )
+    {
+        row = col = std::numeric_limits<double>::quiet_NaN();
+        return;
+    }
+
     col =
         -( mGeoTransform[2] * ( mGeoTransform[3] - y ) + mGeoTransform[5] * x - mGeoTransform[0] * mGeoTransform[5] ) /
         div;
