@@ -144,7 +144,7 @@ bool AbstractRaster::sameGeotransform( AbstractRaster &other, double epsilon )
 
     for ( size_t i = 0; i < 6; i++ )
     {
-        same = simplerasters::compareValues( mGeoTransform.at( i ), other.mGeoTransform.at( i ) );
+        same = simplerasters::compareValues( mGeoTransform.at( i ), other.mGeoTransform.at( i ), epsilon );
 
         if ( !same )
         {
