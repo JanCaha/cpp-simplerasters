@@ -1,7 +1,8 @@
 #include "api/simplerasters.h"
 
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( std::string path, GDALDataType dataType, int bandNo )
-    : SingleBandRaster( path, dataType, bandNo )
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( const std::string path, GDALDataType dataType,
+                                                      const size_t bandNumber )
+    : SingleBandRaster( path, dataType, bandNumber )
 {
     if ( !isValid() )
     {
@@ -31,7 +32,7 @@ void ProjectedSquareCellRaster::validate()
     mValid = true;
 }
 
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, bool copyValues )
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, const bool copyValues )
     : SingleBandRaster( other, copyValues )
 {
     if ( !isValid() )
@@ -41,8 +42,8 @@ ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &ot
     validate();
 }
 
-ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, GDALDataType dataType,
-                                                      bool copyValues )
+ProjectedSquareCellRaster::ProjectedSquareCellRaster( const SingleBandRaster &other, const GDALDataType dataType,
+                                                      const bool copyValues )
     : SingleBandRaster( other, dataType, copyValues )
 {
     if ( !isValid() )

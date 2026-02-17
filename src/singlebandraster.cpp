@@ -2,7 +2,7 @@
 
 #include "helpers.h"
 
-SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int bandNo )
+SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType dataType, const size_t bandNumber )
 {
 
     setUpGDAL();
@@ -34,7 +34,7 @@ SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int
     mRows = dataset->GetRasterYSize();
     mCols = dataset->GetRasterXSize();
 
-    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( bandNo ) );
+    GDALRasterBand *band = dataset->GetRasterBand( static_cast<int>( bandNumber ) );
 
     if ( !band )
     {
@@ -65,8 +65,6 @@ SingleBandRaster::SingleBandRaster( std::string path, GDALDataType dataType, int
         return;
     }
 
-    band.release();
-
     mDataValid = true;
 }
 
@@ -81,26 +79,26 @@ void SingleBandRaster::prepareDataArray()
     {
         if ( mDataType == GDALDataType::GDT_Float32 )
         {
-            mData = std::shared_ptr<void>( new float[arraySize] );
+            mData = VoidPtr( new float[arraySize], +[]( void *p ) { delete[] static_cast<float *>( p ); } );
         }
         else
         {
-            mData = std::shared_ptr<void>( new double[arraySize] );
+            mData = VoidPtr( new double[arraySize], +[]( void *p ) { delete[] static_cast<double *>( p ); } );
         }
     }
     else
     {
         if ( mDataType == GDALDataType::GDT_Int16 )
         {
-            mData = std::shared_ptr<void>( new int16_t[arraySize] );
+            mData = VoidPtr( new int16_t[arraySize], +[]( void *p ) { delete[] static_cast<int16_t *>( p ); } );
         }
         else if ( mDataType == GDALDataType::GDT_Int32 )
         {
-            mData = std::shared_ptr<void>( new int32_t[arraySize] );
+            mData = VoidPtr( new int32_t[arraySize], +[]( void *p ) { delete[] static_cast<int32_t *>( p ); } );
         }
         else
         {
-            mData = std::shared_ptr<void>( new int64_t[arraySize] );
+            mData = VoidPtr( new int64_t[arraySize], +[]( void *p ) { delete[] static_cast<int64_t *>( p ); } );
         }
     }
 }
@@ -135,7 +133,7 @@ double SingleBandRaster::value( std::size_t index ) const
         return mNoData;
     }
 
-    if ( index < 0 || cells() - 1 < index )
+    if ( index >= cells() )
     {
         return mNoData;
     }
@@ -170,7 +168,7 @@ double SingleBandRaster::value( std::size_t index ) const
 
 std::size_t SingleBandRaster::cells() const { return cellsInBand(); };
 
-void SingleBandRaster::prefillValues( double value )
+void SingleBandRaster::prefillValues( const double value )
 {
     if ( mData )
     {
@@ -181,15 +179,25 @@ void SingleBandRaster::prefillValues( double value )
     }
 }
 
-void SingleBandRaster::writeValue( int row, int column, double value )
+void SingleBandRaster::writeValue( const int row, const int column, const double value )
 {
+    if ( row >= mRows || column >= mCols || row < 0 || column < 0 )
+    {
+        return;
+    }
+
     std::size_t index = toIndex( row, column );
     writeValue( index, value );
 }
 
-void SingleBandRaster::writeValue( std::size_t index, double value )
+void SingleBandRaster::writeValue( const std::size_t index, const double value )
 {
     if ( !mData )
+    {
+        return;
+    }
+
+    if ( index >= cells() )
     {
         return;
     }
@@ -232,7 +240,7 @@ double SingleBandRaster::value( double row, double column ) const
     return value( static_cast<int>( row ), static_cast<int>( column ) );
 }
 
-double SingleBandRaster::cornerValue( double row, double column ) const
+double SingleBandRaster::cornerValue( const double row, const double column ) const
 {
 
     if ( isNoData( row, column ) )
@@ -261,18 +269,17 @@ double SingleBandRaster::cornerValue( double row, double column ) const
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-double SingleBandRaster::valueAt( double x, double y )
+double SingleBandRaster::valueAt( const double x, const double y )
 {
     double row, col;
     transformCoordinatesToRaster( x, y, row, col );
     return value( row, col );
 }
 
-bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
+bool SingleBandRaster::saveFile( const std::string filename, const std::string driverName )
 {
 
-    std::unique_ptr<GDALDriver> driver =
-        std::unique_ptr<GDALDriver>( GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) ) );
+    GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );
 
     if ( !driver )
     {
@@ -290,7 +297,7 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
     dataset->SetSpatialRef( &mCrs );
     dataset->SetGeoTransform( mGeoTransform.data() );
 
-    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+    GDALRasterBand *band = dataset->GetRasterBand( 1 );
 
     band->SetNoDataValue( mNoData );
 
@@ -301,15 +308,10 @@ bool SingleBandRaster::saveFile( std::string filename, std::string driverName )
         return false;
     }
 
-    band.release();
-
-    dataset.release();
-    driver.release();
-
     return true;
 }
 
-SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, GDALDataType dataType, bool copyValues )
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const GDALDataType dataType, const bool copyValues )
 {
     mRows = other.mRows;
     mCols = other.mCols;
@@ -339,24 +341,24 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, GDALDataType 
     }
 }
 
-SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, bool copyValues )
+SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const bool copyValues )
     : SingleBandRaster( other, other.mDataType, copyValues )
 {
 }
 
-std::size_t SingleBandRaster::dataSize() { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
+std::size_t SingleBandRaster::dataSize() const { return GDALGetDataTypeSizeBytes( mDataType ) * cells(); }
 
-GDALDataType SingleBandRaster::gdalDataType() { return mDataType; }
+GDALDataType SingleBandRaster::gdalDataType() const { return mDataType; }
 
-bool SingleBandRaster::sameDataType( SingleBandRaster &other ) { return mDataType == other.gdalDataType(); }
+bool SingleBandRaster::sameDataType( const SingleBandRaster &other ) const { return mDataType == other.gdalDataType(); }
 
-bool SingleBandRaster::sameValues( SingleBandRaster &other, double epsilon )
+bool SingleBandRaster::sameValues( const SingleBandRaster &other, const double epsilon ) const
 {
     bool same;
 
     for ( size_t i = 0; i < cells(); i++ )
     {
-        same = simplerasters::compareValues( value( i ), other.value( i ) );
+        same = simplerasters::compareValues( value( i ), other.value( i ), epsilon );
 
         if ( !same )
         {

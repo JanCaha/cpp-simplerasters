@@ -1,3 +1,6 @@
+#include <filesystem>
+#include <string>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -42,7 +45,7 @@ TEST( ProjectedSquareCellRaster, Type )
 {
     if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
     {
-        std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_64.tif";
+        std::string resultFile = ( std::filesystem::temp_directory_path() / "dsm_int_64.tif" ).string();
         GDALDataType dataType = GDALDataType::GDT_Int64;
 
         ProjectedSquareCellRaster r = ProjectedSquareCellRaster( TEST_DATA_DSM, dataType );

@@ -1,15 +1,17 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(simplerasters VERSION 0.8.2 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
+project(simplerasters VERSION 0.9.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL")
 
 option(BUILD_TESTS "Build tests." ON)
-option(PACK_DEB "Build tests." ON)
+option(PACK_DEB "Build DEB package." ON)
 
 set(LIBRARY_NAME "SimpleRasters")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+include(GNUInstallDirs)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 

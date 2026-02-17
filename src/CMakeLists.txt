@@ -28,24 +28,17 @@ macro(library_settings target_name)
 
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
-    include(GNUInstallDirs)
-  
     target_include_directories(${target_name}
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/api>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
         $<INSTALL_INTERFACE:include/${LIBRARY_NAME}>
     PRIVATE
-        ${GDAL_INCLUDE_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_BINARY_DIR}/api
     )
 
-    target_link_libraries(${target_name} PRIVATE ${GDAL_LIBRARY})
+    target_link_libraries(${target_name} PRIVATE GDAL::GDAL)
 endmacro(library_settings)
-
-include_directories(
-    ${GDAL_INCLUDE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/api
-)
 
 add_library(simplerasters_shared SHARED
     ${SOURCES}

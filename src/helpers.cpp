@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cctype>
 #include <iostream>
 #include <regex>
 
@@ -35,14 +36,14 @@ std::vector<std::string> metadata( GDALMajorObject *object )
 
 std::string metadataValue( GDALMajorObject *object, const std::string key )
 {
-    size_t const key_len = key.length();
+    const std::string prefix = key + "=";
     std::vector<std::string> strings = metadata( object );
 
     for ( auto const &str : strings )
     {
-        if ( str.substr( 0, key_len ) == key )
+        if ( str.rfind( prefix, 0 ) == 0 )
         {
-            return str.substr( key_len + 1, std::string::npos );
+            return str.substr( prefix.length() );
         }
     }
     return std::string();
@@ -51,9 +52,11 @@ std::string metadataValue( GDALMajorObject *object, const std::string key )
 bool metadataEquals( GDALMajorObject *object, const std::string key, std::string expectedValue )
 {
     std::string realValue = metadataValue( object, key );
-    std::transform( realValue.begin(), realValue.end(), realValue.begin(), ::tolower );
+    std::transform( realValue.begin(), realValue.end(), realValue.begin(),
+                    []( unsigned char c ) { return static_cast<char>( std::tolower( c ) ); } );
 
-    std::transform( expectedValue.begin(), expectedValue.end(), expectedValue.begin(), ::tolower );
+    std::transform( expectedValue.begin(), expectedValue.end(), expectedValue.begin(),
+                    []( unsigned char c ) { return static_cast<char>( std::tolower( c ) ); } );
 
     return realValue == expectedValue;
 }
@@ -145,7 +148,7 @@ bool simplerasters::compareValues( const double &a, const double &b, double epsi
         return true;
     }
 
-    if ( abs( a - b ) < epsilon )
+    if ( std::abs( a - b ) < epsilon )
     {
         return true;
     }
