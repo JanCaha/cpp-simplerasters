@@ -8,9 +8,9 @@ int AbstractRaster::ySize() const { return mRows; }
 
 std::size_t AbstractRaster::cellsInBand() const { return mRows * mCols; }
 
-double AbstractRaster::xCellSize() const { return abs( mGeoTransform[1] ); }
+double AbstractRaster::xCellSize() const { return std::abs( mGeoTransform[1] ); }
 
-double AbstractRaster::yCellSize() const { return abs( mGeoTransform[5] ); }
+double AbstractRaster::yCellSize() const { return std::abs( mGeoTransform[5] ); }
 
 bool AbstractRaster::hasSquareCells() const { return doubleEqual( xCellSize(), yCellSize() ); }
 
