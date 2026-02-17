@@ -1,3 +1,5 @@
+#include <mutex>
+
 #include "api/simplerasters.h"
 
 #include "helpers.h"
@@ -61,11 +63,14 @@ bool AbstractRaster::isProjected() const { return mCrs.IsProjected(); };
 
 void AbstractRaster::setUpGDAL()
 {
-    // register all drivers
-    GDALAllRegister();
+    static std::once_flag gdalInitFlag;
 
-    // do not print errors
-    CPLPushErrorHandler( CPLQuietErrorHandler );
+    std::call_once( gdalInitFlag,
+                    []()
+                    {
+                        GDALAllRegister();
+                        CPLPushErrorHandler( CPLQuietErrorHandler );
+                    } );
 }
 
 bool AbstractRaster::isInside( const std::shared_ptr<OGRPoint> p ) const { return isInside( *p.get() ); }
