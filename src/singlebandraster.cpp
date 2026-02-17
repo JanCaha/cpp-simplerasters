@@ -358,7 +358,7 @@ bool SingleBandRaster::sameValues( const SingleBandRaster &other, const double e
 
     for ( size_t i = 0; i < cells(); i++ )
     {
-        same = simplerasters::compareValues( value( i ), other.value( i ) );
+        same = simplerasters::compareValues( value( i ), other.value( i ), epsilon );
 
         if ( !same )
         {
