@@ -9,6 +9,7 @@ Copyright (C) 2023 Jan Caha
 #include <limits>
 #include <memory>
 #include <string>
+#include <variant>
 
 #include "cpl_error.h"
 #include "gdal.h"
@@ -24,6 +25,9 @@ Copyright (C) 2023 Jan Caha
 #else
 #define DLL_API
 #endif
+
+using VoidDeleter = void ( * )( void * );
+using VoidPtr = std::unique_ptr<void, VoidDeleter>;
 
 //////////
 // Classes
@@ -80,7 +84,7 @@ class DLL_API AbstractRaster
 
     OGRSpatialReference mCrs;
 
-    std::shared_ptr<void> mData = nullptr;
+    VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
     bool mDataValid;
 
     std::array<double, 6> mGeoTransform;
@@ -142,9 +146,6 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
   protected:
     GDALDataType mDataType;
-
-    std::shared_ptr<void> mData = nullptr;
-    bool mDataValid;
 
     double mNoData = std::numeric_limits<double>::quiet_NaN();
 

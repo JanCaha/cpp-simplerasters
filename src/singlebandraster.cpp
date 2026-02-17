@@ -79,26 +79,26 @@ void SingleBandRaster::prepareDataArray()
     {
         if ( mDataType == GDALDataType::GDT_Float32 )
         {
-            mData = std::shared_ptr<void>( new float[arraySize] );
+            mData = VoidPtr( new float[arraySize], +[]( void *p ) { delete[] static_cast<float *>( p ); } );
         }
         else
         {
-            mData = std::shared_ptr<void>( new double[arraySize] );
+            mData = VoidPtr( new double[arraySize], +[]( void *p ) { delete[] static_cast<double *>( p ); } );
         }
     }
     else
     {
         if ( mDataType == GDALDataType::GDT_Int16 )
         {
-            mData = std::shared_ptr<void>( new int16_t[arraySize] );
+            mData = VoidPtr( new int16_t[arraySize], +[]( void *p ) { delete[] static_cast<int16_t *>( p ); } );
         }
         else if ( mDataType == GDALDataType::GDT_Int32 )
         {
-            mData = std::shared_ptr<void>( new int32_t[arraySize] );
+            mData = VoidPtr( new int32_t[arraySize], +[]( void *p ) { delete[] static_cast<int32_t *>( p ); } );
         }
         else
         {
-            mData = std::shared_ptr<void>( new int64_t[arraySize] );
+            mData = VoidPtr( new int64_t[arraySize], +[]( void *p ) { delete[] static_cast<int64_t *>( p ); } );
         }
     }
 }
