@@ -178,7 +178,7 @@ TEST_F( SingleBandRasterTest, SaveFile ) { r.saveFile( "/tmp/a.tif" ); }
 
 TEST_F( SingleBandRasterTest, CopyRasterWithoutData )
 {
-    SingleBandRaster rCopy = SingleBandRaster( r );
+    SingleBandRaster rCopy = SingleBandRaster( r, false );
     EXPECT_EQ( r.width(), rCopy.width() );
     EXPECT_EQ( r.height(), rCopy.height() );
     EXPECT_EQ( r.cells(), rCopy.cells() );
