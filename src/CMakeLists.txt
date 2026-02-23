@@ -28,6 +28,8 @@ macro(library_settings target_name)
 
     set_target_properties(${target_name} PROPERTIES VERSION ${PROJECT_VERSION})
 
+    target_compile_features(${target_name} PUBLIC cxx_std_20)
+
     target_include_directories(${target_name}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
@@ -48,8 +50,19 @@ add_library(simplerasters_static STATIC
     ${SOURCES}
 )
 
+add_library(SimpleRasters::simplerasters_shared ALIAS simplerasters_shared)
+add_library(SimpleRasters::simplerasters_static ALIAS simplerasters_static)
+
 library_settings(simplerasters_shared)
 library_settings(simplerasters_static)
+
+set_target_properties(simplerasters_shared PROPERTIES
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+)
+
+set_target_properties(simplerasters_static PROPERTIES
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+)
 
 set_target_properties(simplerasters_static PROPERTIES
     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
@@ -67,7 +80,7 @@ install(
 )
 
 install(
-    DIRECTORY ${CMAKE_SOURCE_DIR}/src/api/
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/api/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${LIBRARY_NAME}
     FILES_MATCHING PATTERN "*.h"
 )
