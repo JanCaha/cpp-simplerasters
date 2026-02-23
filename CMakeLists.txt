@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
