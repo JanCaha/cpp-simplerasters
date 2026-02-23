@@ -7,16 +7,13 @@ concurrency:
 on: [push, pull_request]
 
 jobs:
-
   Tests-library:
-
     runs-on: ubuntu-latest
 
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-
       - name: Update and Upgrade
         run: |
           sudo apt update
@@ -26,55 +23,25 @@ jobs:
         run: |
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ jammy main'
-          
+
       - name: Install GDAL
         run: |
           sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
           sudo apt update
           sudo apt-get -y install gdal-bin libgdal-dev
-      
+
       - name: Install GTest and GMock
         run: sudo apt-get install libgtest-dev libgmock-dev
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Configure
-        run: | 
-           mkdir build
-           cmake \
-            -S . \
-            -B build \
-            -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D BUILD_TESTS:bool=on \
-            -D CMAKE_INSTALL_PREFIX=/usr
-
-      - name: Build
-        run: | 
-           cmake --build build --config Release --target all
-
       - name: Run tests
         run: |
-          cd build/tests
-          ctest -VV --output-on-failure 
+          cmake --workflow --preset workflow-debug-tests
 
       - name: Test install
         run: |
-          rm -rf build
-          cmake \
-            -S . \
-            -B build \
-            -G Ninja \
-            -D CMAKE_C_COMPILER=/usr/bin/gcc-14 \
-            -D CMAKE_CXX_COMPILER=/usr/bin/g++-14 \
-            -D CMAKE_BUILD_TYPE=Release \
-            -D BUILD_TESTS:bool=off \
-            -D PACK_DEB:bool=on \
-            -D CMAKE_INSTALL_PREFIX=/usr
-          
-          sudo cmake --build build --config Release --target install
+          sudo cmake --workflow --preset workflow-release-install
