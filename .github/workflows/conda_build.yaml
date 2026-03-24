@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup conda
         uses: conda-incubator/setup-miniconda@v3
@@ -64,7 +64,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup conda
         uses: conda-incubator/setup-miniconda@v3
@@ -103,7 +103,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup conda
         uses: conda-incubator/setup-miniconda@v3
@@ -125,5 +125,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          path: conda_package/osx-arm64/*.conda
+          path: conda_package/osx-*/*.conda
           name: conda_package_macos
