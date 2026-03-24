@@ -65,6 +65,7 @@ jobs:
 
       - name: Deploy Documentation
         uses: peaceiris/actions-gh-pages@v4
+        if: ${{ hashFiles('documentation/**') != '' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./documentation
