@@ -1,7 +1,5 @@
 #include "api/simplerasters.h"
 
-#include "helpers.h"
-
 SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType dataType, const size_t bandNumber )
 {
 
@@ -112,9 +110,15 @@ double SingleBandRaster::noData() const { return mNoData; }
 
 void SingleBandRaster::setNoData( double value ) { mNoData = value; }
 
-bool SingleBandRaster::isNoData( int row, int column ) const { return doubleEqual( value( row, column ), noData() ); }
+bool SingleBandRaster::isNoData( int row, int column ) const
+{
+    return simplerasters::compareValues( value( row, column ), noData() );
+}
 
-bool SingleBandRaster::isNoData( std::size_t index ) const { return doubleEqual( value( index ), noData() ); }
+bool SingleBandRaster::isNoData( std::size_t index ) const
+{
+    return simplerasters::compareValues( value( index ), noData() );
+}
 
 double SingleBandRaster::value( int row, int column ) const
 {

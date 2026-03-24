@@ -2,8 +2,6 @@
 
 #include "api/simplerasters.h"
 
-#include "helpers.h"
-
 int AbstractRaster::xSize() const { return mCols; }
 
 int AbstractRaster::ySize() const { return mRows; }
@@ -14,7 +12,7 @@ double AbstractRaster::xCellSize() const { return std::abs( mGeoTransform[1] ); 
 
 double AbstractRaster::yCellSize() const { return std::abs( mGeoTransform[5] ); }
 
-bool AbstractRaster::hasSquareCells() const { return doubleEqual( xCellSize(), yCellSize() ); }
+bool AbstractRaster::hasSquareCells() const { return simplerasters::compareValues( xCellSize(), yCellSize() ); }
 
 void AbstractRaster::storeLastErrorMessage()
 {
