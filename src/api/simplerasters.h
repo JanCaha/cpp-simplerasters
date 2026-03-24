@@ -76,16 +76,16 @@ class DLL_API AbstractRaster
                            double epsilon = 4 * std::numeric_limits<double>::epsilon() ) const;
 
   protected:
-    bool mValid;
+    bool mValid = false;
     std::string mError;
 
-    int mRows;
-    int mCols;
+    int mRows = -1;
+    int mCols = -1;
 
     OGRSpatialReference mCrs;
 
     VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
-    bool mDataValid;
+    bool mDataValid = false;
 
     std::array<double, 6> mGeoTransform;
 
