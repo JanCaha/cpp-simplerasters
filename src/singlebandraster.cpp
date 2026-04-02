@@ -1,8 +1,6 @@
 #include "api/simplerasters.h"
 
-#include "helpers.h"
-
-SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType dataType, const size_t bandNumber )
+SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType dataType, const size_t bandNumber )
 {
 
     setUpGDAL();
@@ -20,7 +18,11 @@ SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType d
         return;
     }
 
-    mCrs = OGRSpatialReference( *dataset->GetSpatialRef() );
+    const OGRSpatialReference *spatialRef = dataset->GetSpatialRef();
+    if ( spatialRef )
+    {
+        mCrs = OGRSpatialReference( *spatialRef );
+    }
 
     mGeoTransform = { { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 } };
     CPLErr res = GDALGetGeoTransform( dataset.get(), mGeoTransform.data() );
@@ -112,9 +114,15 @@ double SingleBandRaster::noData() const { return mNoData; }
 
 void SingleBandRaster::setNoData( double value ) { mNoData = value; }
 
-bool SingleBandRaster::isNoData( int row, int column ) const { return doubleEqual( value( row, column ), noData() ); }
+bool SingleBandRaster::isNoData( int row, int column ) const
+{
+    return simplerasters::compareValues( value( row, column ), noData() );
+}
 
-bool SingleBandRaster::isNoData( std::size_t index ) const { return doubleEqual( value( index ), noData() ); }
+bool SingleBandRaster::isNoData( std::size_t index ) const
+{
+    return simplerasters::compareValues( value( index ), noData() );
+}
 
 double SingleBandRaster::value( int row, int column ) const
 {
@@ -269,14 +277,14 @@ double SingleBandRaster::cornerValue( const double row, const double column ) co
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-double SingleBandRaster::valueAt( const double x, const double y )
+double SingleBandRaster::valueAt( const double x, const double y ) const
 {
     double row, col;
     transformCoordinatesToRaster( x, y, row, col );
     return value( row, col );
 }
 
-bool SingleBandRaster::saveFile( const std::string filename, const std::string driverName )
+bool SingleBandRaster::saveFile( const std::string &filename, const std::string &driverName )
 {
 
     GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );
@@ -294,10 +302,20 @@ bool SingleBandRaster::saveFile( const std::string filename, const std::string d
         return false;
     }
 
+    if ( !mData || !mDataValid )
+    {
+        return false;
+    }
+
     dataset->SetSpatialRef( &mCrs );
     dataset->SetGeoTransform( mGeoTransform.data() );
 
     GDALRasterBand *band = dataset->GetRasterBand( 1 );
+
+    if ( !band )
+    {
+        return false;
+    }
 
     band->SetNoDataValue( mNoData );
 

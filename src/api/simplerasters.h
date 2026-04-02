@@ -76,16 +76,16 @@ class DLL_API AbstractRaster
                            double epsilon = 4 * std::numeric_limits<double>::epsilon() ) const;
 
   protected:
-    bool mValid;
+    bool mValid = false;
     std::string mError;
 
-    int mRows;
-    int mCols;
+    int mRows = -1;
+    int mCols = -1;
 
     OGRSpatialReference mCrs;
 
     VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
-    bool mDataValid;
+    bool mDataValid = false;
 
     std::array<double, 6> mGeoTransform;
 
@@ -100,7 +100,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 {
   public:
     SingleBandRaster() {};
-    SingleBandRaster( const std::string path, const GDALDataType dataType = GDALDataType::GDT_Unknown,
+    SingleBandRaster( const std::string &path, const GDALDataType dataType = GDALDataType::GDT_Unknown,
                       const size_t bandNumber = 1 );
     SingleBandRaster( const SingleBandRaster &other, const bool copyValues );
     SingleBandRaster( const SingleBandRaster &other, const GDALDataType dataType, const bool copyValues = false );
@@ -118,7 +118,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
     double value( const int row, const int column ) const;
     double value( const std::size_t index ) const;
 
-    double valueAt( const double x, const double y );
+    double valueAt( const double x, const double y ) const;
 
     bool isNoData( const double row, const double column ) const;
     bool isNoData( const int row, const int column ) const;
@@ -134,7 +134,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     void prefillValues( const double value );
 
-    bool saveFile( const std::string filename, const std::string driverName = "GTiff" );
+    bool saveFile( const std::string &filename, const std::string &driverName = "GTiff" );
 
     std::size_t dataSize() const;
 
@@ -156,7 +156,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 class DLL_API ProjectedSquareCellRaster : public SingleBandRaster
 {
   public:
-    ProjectedSquareCellRaster( const std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown,
+    ProjectedSquareCellRaster( const std::string &path, GDALDataType dataType = GDALDataType::GDT_Unknown,
                                const size_t bandNumber = 1 );
     ProjectedSquareCellRaster( const SingleBandRaster &other, const bool copyValues = false );
     ProjectedSquareCellRaster( const SingleBandRaster &other, const GDALDataType dataType,

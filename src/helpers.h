@@ -10,9 +10,6 @@
 #include "gdal.h"
 #include "gdal_priv.h"
 
-// from QGIS
-bool doubleEqual( double a, double b, double epsilon = 4 * std::numeric_limits<double>::epsilon() );
-
 std::vector<std::string> metadata( GDALMajorObject *object );
 
 std::string metadataValue( GDALMajorObject *object, const std::string key );

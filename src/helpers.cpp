@@ -6,17 +6,6 @@
 #include "api/simplerasters.h"
 #include "helpers.h"
 
-bool doubleEqual( double a, double b, double epsilon )
-{
-    const bool aIsNan = std::isnan( a );
-    const bool bIsNan = std::isnan( b );
-    if ( aIsNan || bIsNan )
-        return aIsNan && bIsNan;
-
-    const double diff = a - b;
-    return diff > -epsilon && diff <= epsilon;
-}
-
 std::vector<std::string> metadata( GDALMajorObject *object )
 {
     char **metadata = object->GetMetadata();
@@ -117,7 +106,7 @@ std::string simplerasters::rasterFormatsFileFilters()
 
     int count = dm->GetDriverCount();
     GDALDriver *driver;
-    for ( size_t i = 0; i < count; i++ )
+    for ( int i = 0; i < count; i++ )
     {
         driver = dm->GetDriver( i );
 
