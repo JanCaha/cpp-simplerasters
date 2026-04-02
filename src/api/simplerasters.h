@@ -118,7 +118,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
     double value( const int row, const int column ) const;
     double value( const std::size_t index ) const;
 
-    double valueAt( const double x, const double y );
+    double valueAt( const double x, const double y ) const;
 
     bool isNoData( const double row, const double column ) const;
     bool isNoData( const int row, const int column ) const;

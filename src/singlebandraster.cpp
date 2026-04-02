@@ -273,7 +273,7 @@ double SingleBandRaster::cornerValue( const double row, const double column ) co
     return ( value1 + value2 + value3 + value4 ) / 4;
 }
 
-double SingleBandRaster::valueAt( const double x, const double y )
+double SingleBandRaster::valueAt( const double x, const double y ) const
 {
     double row, col;
     transformCoordinatesToRaster( x, y, row, col );
