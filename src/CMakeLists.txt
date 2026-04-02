@@ -63,8 +63,6 @@ set_target_properties(simplerasters_shared PROPERTIES
 set_target_properties(simplerasters_static PROPERTIES
     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
 )
-    
-include(GNUInstallDirs)
 
 install(
     TARGETS simplerasters_static simplerasters_shared
