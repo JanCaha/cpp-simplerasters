@@ -18,7 +18,11 @@ SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType d
         return;
     }
 
-    mCrs = OGRSpatialReference( *dataset->GetSpatialRef() );
+    const OGRSpatialReference *spatialRef = dataset->GetSpatialRef();
+    if ( spatialRef )
+    {
+        mCrs = OGRSpatialReference( *spatialRef );
+    }
 
     mGeoTransform = { { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 } };
     CPLErr res = GDALGetGeoTransform( dataset.get(), mGeoTransform.data() );
