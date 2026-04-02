@@ -302,10 +302,20 @@ bool SingleBandRaster::saveFile( const std::string filename, const std::string d
         return false;
     }
 
+    if ( !mData || !mDataValid )
+    {
+        return false;
+    }
+
     dataset->SetSpatialRef( &mCrs );
     dataset->SetGeoTransform( mGeoTransform.data() );
 
     GDALRasterBand *band = dataset->GetRasterBand( 1 );
+
+    if ( !band )
+    {
+        return false;
+    }
 
     band->SetNoDataValue( mNoData );
 
