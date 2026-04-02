@@ -61,10 +61,6 @@ set_target_properties(simplerasters_shared PROPERTIES
 )
 
 set_target_properties(simplerasters_static PROPERTIES
-    SOVERSION ${PROJECT_VERSION_MAJOR}
-)
-
-set_target_properties(simplerasters_static PROPERTIES
     POSITION_INDEPENDENT_CODE ON # Enable PIC for static lib
 )
     
