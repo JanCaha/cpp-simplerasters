@@ -25,5 +25,5 @@ macro(add_library_test testname)
 endmacro(add_library_test)
 
 add_library_test(testsinglebandraster)
-add_library_test(testprojectedsqurecellraster)
+add_library_test(testprojectedsquarecellraster)
 add_library_test(testfunctions)
