@@ -106,7 +106,7 @@ std::string simplerasters::rasterFormatsFileFilters()
 
     int count = dm->GetDriverCount();
     GDALDriver *driver;
-    for ( size_t i = 0; i < count; i++ )
+    for ( int i = 0; i < count; i++ )
     {
         driver = dm->GetDriver( i );
 
