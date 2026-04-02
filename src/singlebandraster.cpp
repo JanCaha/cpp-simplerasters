@@ -1,6 +1,6 @@
 #include "api/simplerasters.h"
 
-SingleBandRaster::SingleBandRaster( const std::string path, const GDALDataType dataType, const size_t bandNumber )
+SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType dataType, const size_t bandNumber )
 {
 
     setUpGDAL();
@@ -284,7 +284,7 @@ double SingleBandRaster::valueAt( const double x, const double y ) const
     return value( row, col );
 }
 
-bool SingleBandRaster::saveFile( const std::string filename, const std::string driverName )
+bool SingleBandRaster::saveFile( const std::string &filename, const std::string &driverName )
 {
 
     GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );

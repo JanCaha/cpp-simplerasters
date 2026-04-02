@@ -100,7 +100,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 {
   public:
     SingleBandRaster() {};
-    SingleBandRaster( const std::string path, const GDALDataType dataType = GDALDataType::GDT_Unknown,
+    SingleBandRaster( const std::string &path, const GDALDataType dataType = GDALDataType::GDT_Unknown,
                       const size_t bandNumber = 1 );
     SingleBandRaster( const SingleBandRaster &other, const bool copyValues );
     SingleBandRaster( const SingleBandRaster &other, const GDALDataType dataType, const bool copyValues = false );
@@ -134,7 +134,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     void prefillValues( const double value );
 
-    bool saveFile( const std::string filename, const std::string driverName = "GTiff" );
+    bool saveFile( const std::string &filename, const std::string &driverName = "GTiff" );
 
     std::size_t dataSize() const;
 
@@ -156,7 +156,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 class DLL_API ProjectedSquareCellRaster : public SingleBandRaster
 {
   public:
-    ProjectedSquareCellRaster( const std::string path, GDALDataType dataType = GDALDataType::GDT_Unknown,
+    ProjectedSquareCellRaster( const std::string &path, GDALDataType dataType = GDALDataType::GDT_Unknown,
                                const size_t bandNumber = 1 );
     ProjectedSquareCellRaster( const SingleBandRaster &other, const bool copyValues = false );
     ProjectedSquareCellRaster( const SingleBandRaster &other, const GDALDataType dataType,
