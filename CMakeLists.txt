@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-project(simplerasters VERSION 0.9.0 DESCRIPTION "C++ Raster Data Access Library based on GDAL" LANGUAGES CXX)
+project(simplerasters VERSION 0.9.1 DESCRIPTION "C++ Raster Data Access Library based on GDAL" LANGUAGES CXX)
 
 option(BUILD_TESTS "Build tests." ON)
 
