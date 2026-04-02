@@ -6,7 +6,10 @@ int AbstractRaster::xSize() const { return mCols; }
 
 int AbstractRaster::ySize() const { return mRows; }
 
-std::size_t AbstractRaster::cellsInBand() const { return mRows * mCols; }
+std::size_t AbstractRaster::cellsInBand() const
+{
+    return static_cast<std::size_t>( mRows ) * static_cast<std::size_t>( mCols );
+}
 
 double AbstractRaster::xCellSize() const { return std::abs( mGeoTransform[1] ); }
 
