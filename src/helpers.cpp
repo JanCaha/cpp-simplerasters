@@ -8,7 +8,7 @@
 
 std::vector<std::string> metadata( GDALMajorObject *object )
 {
-    char **metadata = object->GetMetadata();
+    CSLConstList metadata = object->GetMetadata();
     std::vector<std::string> strings;
 
     if ( metadata )
