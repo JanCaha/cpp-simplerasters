@@ -87,7 +87,7 @@ class DLL_API AbstractRaster
     VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
     bool mDataValid = false;
 
-    std::array<double, 6> mGeoTransform;
+    std::array<double, 6> mGeoTransform = { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
 
     void storeLastErrorMessage();
 
@@ -126,6 +126,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     double noData() const;
     void setNoData( double value );
+    bool hasNoData() const;
 
     double cornerValue( const double row, const double column ) const;
 
@@ -145,9 +146,10 @@ class DLL_API SingleBandRaster : public AbstractRaster
                      const double epsilon = 4 * std::numeric_limits<double>::epsilon() ) const;
 
   protected:
-    GDALDataType mDataType;
+    GDALDataType mDataType = GDALDataType::GDT_Unknown;
 
     double mNoData = std::numeric_limits<double>::quiet_NaN();
+    bool mHasNoData = false;
 
     void prepareDataArray();
     std::size_t toIndex( int row, int column ) const;

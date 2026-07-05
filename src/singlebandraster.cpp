@@ -55,7 +55,10 @@ SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType 
         mDataType = dataType;
     }
 
-    mNoData = band->GetNoDataValue();
+    int noDataSet = 0;
+    const double noDataValue = band->GetNoDataValue( &noDataSet );
+    mHasNoData = noDataSet != 0;
+    mNoData = mHasNoData ? noDataValue : std::numeric_limits<double>::quiet_NaN();
 
     prepareDataArray();
 
@@ -112,7 +115,13 @@ std::size_t SingleBandRaster::toIndex( int row, int column ) const
 
 double SingleBandRaster::noData() const { return mNoData; }
 
-void SingleBandRaster::setNoData( double value ) { mNoData = value; }
+void SingleBandRaster::setNoData( double value )
+{
+    mNoData = value;
+    mHasNoData = true;
+}
+
+bool SingleBandRaster::hasNoData() const { return mHasNoData; }
 
 bool SingleBandRaster::isNoData( int row, int column ) const
 {
@@ -336,6 +345,7 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const GDALDat
     mCrs = other.mCrs;
     mGeoTransform = other.mGeoTransform;
     mNoData = other.mNoData;
+    mHasNoData = other.mHasNoData;
     mError = other.mError;
     mValid = other.mValid;
 
