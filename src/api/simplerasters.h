@@ -26,9 +26,6 @@ Copyright (C) 2023 Jan Caha
 #define DLL_API
 #endif
 
-using VoidDeleter = void ( * )( void * );
-using VoidPtr = std::unique_ptr<void, VoidDeleter>;
-
 //////////
 // Classes
 //////////
@@ -84,7 +81,9 @@ class DLL_API AbstractRaster
 
     OGRSpatialReference mCrs;
 
-    VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
+    // Cell values are always stored as doubles, GDAL converts from/to the
+    // raster data type (mDataType) on read and write.
+    std::unique_ptr<double[]> mData;
     bool mDataValid = false;
 
     std::array<double, 6> mGeoTransform = { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
