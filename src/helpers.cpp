@@ -114,7 +114,7 @@ std::string fileFilter( GDALMajorObject *object )
 
 std::string simplerasters::rasterFormatsFileFilters()
 {
-    GDALAllRegister();
+    registerGDAL();
 
     std::string completeFileFilter;
     GDALDriverManager *dm = GetGDALDriverManager();
