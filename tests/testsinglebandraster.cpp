@@ -1,4 +1,5 @@
 #include <cmath>
+#include <utility>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -250,6 +251,28 @@ TEST( SingleBandRaster, EmptyRaster )
     EXPECT_DOUBLE_EQ( r.yCellSize(), 1.0 );
     EXPECT_EQ( r.gdalDataType(), GDALDataType::GDT_Unknown );
     EXPECT_TRUE( std::isnan( r.value( 0, 0 ) ) );
+}
+
+TEST( SingleBandRaster, MoveSemantics )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
+    ASSERT_TRUE( r.isValid() );
+
+    const double valueBeforeMove = r.value( 0, 0 );
+
+    SingleBandRaster rMoved = std::move( r );
+    EXPECT_TRUE( rMoved.isValid() );
+    EXPECT_TRUE( rMoved.isDataValid() );
+    EXPECT_DOUBLE_EQ( rMoved.value( 0, 0 ), valueBeforeMove );
+
+    EXPECT_FALSE( r.isValid() );
+    EXPECT_FALSE( r.isDataValid() );
+
+    SingleBandRaster rAssigned;
+    rAssigned = std::move( rMoved );
+    EXPECT_TRUE( rAssigned.isValid() );
+    EXPECT_DOUBLE_EQ( rAssigned.value( 0, 0 ), valueBeforeMove );
+    EXPECT_FALSE( rMoved.isValid() );
 }
 
 TEST( SingleBandRaster, ByteRaster )
