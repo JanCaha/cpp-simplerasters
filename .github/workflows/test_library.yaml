@@ -43,3 +43,31 @@ jobs:
       - name: Test install
         run: |
           sudo cmake --workflow --preset workflow-release-install
+
+  Tests-library-sanitizers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update and Upgrade
+        run: |
+          sudo apt update
+          sudo apt install ninja-build g++-14
+
+      - name: Install latest CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Install GDAL
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+          sudo apt update
+          sudo apt-get -y install gdal-bin libgdal-dev
+
+      - name: Install GTest and GMock
+        run: sudo apt-get install libgtest-dev libgmock-dev
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Run tests with AddressSanitizer and UndefinedBehaviorSanitizer
+        run: |
+          cmake --workflow --preset workflow-debug-sanitizers
