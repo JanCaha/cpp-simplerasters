@@ -39,7 +39,7 @@ macro(library_settings target_name)
         ${CMAKE_CURRENT_BINARY_DIR}/api
     )
 
-    target_link_libraries(${target_name} PRIVATE GDAL::GDAL)
+    target_link_libraries(${target_name} PUBLIC GDAL::GDAL)
 endmacro(library_settings)
 
 add_library(simplerasters_shared SHARED
