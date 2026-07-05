@@ -39,3 +39,6 @@ build/*
 .vscode/settings.json
 .vscode/c_cpp_properties.json
 _packages
+# test outputs
+tests/data/results/*.tif
+tests/data/results/*.aux.xml
