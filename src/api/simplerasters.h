@@ -106,8 +106,9 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     SingleBandRaster( const SingleBandRaster & ) = delete;
     SingleBandRaster &operator=( const SingleBandRaster & ) = delete;
-    SingleBandRaster( SingleBandRaster && ) = default;
-    SingleBandRaster &operator=( SingleBandRaster && ) = default;
+
+    SingleBandRaster( SingleBandRaster &&other ) noexcept;
+    SingleBandRaster &operator=( SingleBandRaster &&other ) noexcept;
 
     bool isDataValid() const;
 

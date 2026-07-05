@@ -1,6 +1,31 @@
 #include <cmath>
+#include <utility>
 
 #include "api/simplerasters.h"
+
+SingleBandRaster::SingleBandRaster( SingleBandRaster &&other ) noexcept
+    : AbstractRaster( std::move( other ) ), mDataType( other.mDataType ), mNoData( other.mNoData ),
+      mHasNoData( other.mHasNoData )
+{
+    other.mValid = false;
+    other.mDataValid = false;
+}
+
+SingleBandRaster &SingleBandRaster::operator=( SingleBandRaster &&other ) noexcept
+{
+    if ( this != &other )
+    {
+        AbstractRaster::operator=( std::move( other ) );
+        mDataType = other.mDataType;
+        mNoData = other.mNoData;
+        mHasNoData = other.mHasNoData;
+
+        other.mValid = false;
+        other.mDataValid = false;
+    }
+
+    return *this;
+}
 
 SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType dataType, const size_t bandNumber )
 {
