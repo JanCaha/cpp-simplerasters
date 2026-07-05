@@ -2,11 +2,24 @@
 #include <cctype>
 #include <cmath>
 #include <iostream>
+#include <mutex>
 #include <regex>
 #include <sstream>
 
 #include "api/simplerasters.h"
 #include "helpers.h"
+
+void registerGDAL()
+{
+    static std::once_flag gdalInitFlag;
+
+    std::call_once( gdalInitFlag,
+                    []()
+                    {
+                        GDALAllRegister();
+                        CPLPushErrorHandler( CPLQuietErrorHandler );
+                    } );
+}
 
 std::vector<std::string> metadata( GDALMajorObject *object )
 {

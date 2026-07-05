@@ -10,6 +10,10 @@
 #include "gdal.h"
 #include "gdal_priv.h"
 
+// registers GDAL drivers and sets up quiet error handling, guarded so that
+// the initialization runs only once per process
+void registerGDAL();
+
 std::vector<std::string> metadata( GDALMajorObject *object );
 
 std::string metadataValue( GDALMajorObject *object, const std::string key );
