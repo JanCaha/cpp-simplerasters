@@ -188,12 +188,14 @@ void SingleBandRaster::writeValue( const std::size_t index, const double value )
 
 bool SingleBandRaster::isNoData( double row, double column ) const
 {
-    return isNoData( static_cast<int>( row ), static_cast<int>( column ) );
+    // floor instead of cast, so that coordinates just outside the raster
+    // (e.g. row -0.5) do not truncate towards zero into the edge cells
+    return isNoData( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
 double SingleBandRaster::value( double row, double column ) const
 {
-    return value( static_cast<int>( row ), static_cast<int>( column ) );
+    return value( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
 double SingleBandRaster::cornerValue( const double row, const double column ) const
@@ -270,6 +272,8 @@ bool SingleBandRaster::saveFile( const std::string &filename, const std::string 
         band->SetNoDataValue( mNoData );
     }
 
+    // buffer type is GDT_Float64 because mData stores doubles, GDAL converts
+    // to the band data type (mDataType) while writing
     CPLErr ret = band->RasterIO( GDALRWFlag::GF_Write, 0, 0, mCols, mRows, mData.get(), mCols, mRows,
                                  GDALDataType::GDT_Float64, 0, 0 );
 
