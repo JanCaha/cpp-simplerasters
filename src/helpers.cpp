@@ -1,7 +1,9 @@
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <iostream>
 #include <regex>
+#include <sstream>
 
 #include "api/simplerasters.h"
 #include "helpers.h"
@@ -137,10 +139,15 @@ bool simplerasters::compareValues( const double &a, const double &b, double epsi
         return true;
     }
 
-    if ( std::abs( a - b ) < epsilon )
+    if ( a == b )
     {
         return true;
     }
 
-    return false;
+    // scale the tolerance to the magnitude of the compared values, otherwise
+    // the default epsilon is meaningless for values far from 1 (e.g. nodata
+    // -3.4e+38 or projected coordinates)
+    const double scale = std::max( { 1.0, std::abs( a ), std::abs( b ) } );
+
+    return std::abs( a - b ) <= epsilon * scale;
 }
