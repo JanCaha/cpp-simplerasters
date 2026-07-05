@@ -65,14 +65,14 @@ bool metadataEquals( GDALMajorObject *object, const std::string key, std::string
     return realValue == expectedValue;
 }
 
-std::vector<std::string> splitBy( std::string input, const char *split )
+std::vector<std::string> splitBy( const std::string &input, const char split )
 {
     std::vector<std::string> strings;
 
     std::istringstream f( input );
     std::string s;
 
-    while ( std::getline( f, s, *split ) )
+    while ( std::getline( f, s, split ) )
     {
         strings.push_back( s );
     }
@@ -91,7 +91,7 @@ std::string fileFilter( GDALMajorObject *object )
 
     std::string extensions = metadataValue( object, GDAL_DMD_EXTENSIONS );
 
-    std::vector<std::string> exts = splitBy( extensions, " " );
+    std::vector<std::string> exts = splitBy( extensions, ' ' );
 
     if ( exts.empty() )
     {

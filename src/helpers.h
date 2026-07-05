@@ -20,6 +20,6 @@ std::string metadataValue( GDALMajorObject *object, const std::string key );
 
 bool metadataEquals( GDALMajorObject *object, const std::string key, std::string expectedValue );
 
-std::vector<std::string> splitBy( std::string input, const char *split );
+std::vector<std::string> splitBy( const std::string &input, const char split );
 
 std::string fileFilter( GDALMajorObject *object );
