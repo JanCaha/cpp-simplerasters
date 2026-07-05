@@ -1,6 +1,5 @@
-#include <mutex>
-
 #include "api/simplerasters.h"
+#include "helpers.h"
 
 int AbstractRaster::xSize() const { return mCols; }
 
@@ -62,17 +61,7 @@ bool AbstractRaster::isValid() const { return mValid; }
 
 bool AbstractRaster::isProjected() const { return mCrs.IsProjected(); };
 
-void AbstractRaster::setUpGDAL()
-{
-    static std::once_flag gdalInitFlag;
-
-    std::call_once( gdalInitFlag,
-                    []()
-                    {
-                        GDALAllRegister();
-                        CPLPushErrorHandler( CPLQuietErrorHandler );
-                    } );
-}
+void AbstractRaster::setUpGDAL() { registerGDAL(); }
 
 bool AbstractRaster::isInside( const std::shared_ptr<OGRPoint> &p ) const { return isInside( *p.get() ); }
 

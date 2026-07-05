@@ -21,6 +21,15 @@
             }
         },
         {
+            "name": "configure-debug-sanitizers",
+            "inherits": "configure-debug-tests",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-sanitize-recover=all",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined",
+                "CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address,undefined"
+            }
+        },
+        {
             "name": "configure-release-install",
             "inherits": "configure-base-ninja",
             "cacheVariables": {
@@ -34,6 +43,10 @@
         {
             "name": "build-debug-tests",
             "configurePreset": "configure-debug-tests"
+        },
+        {
+            "name": "build-debug-sanitizers",
+            "configurePreset": "configure-debug-sanitizers"
         },
         {
             "name": "build-release-install",
@@ -54,6 +67,16 @@
             "output": {
                 "verbosity": "verbose"
             }
+        },
+        {
+            "name": "test-debug-sanitizers",
+            "configurePreset": "configure-debug-sanitizers",
+            "output": {
+                "verbosity": "verbose"
+            },
+            "environment": {
+                "ASAN_OPTIONS": "detect_leaks=0"
+            }
         }
     ],
     "workflowPresets": [
@@ -71,6 +94,23 @@
                 {
                     "type": "test",
                     "name": "test-debug-tests"
+                }
+            ]
+        },
+        {
+            "name": "workflow-debug-sanitizers",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "configure-debug-sanitizers"
+                },
+                {
+                    "type": "build",
+                    "name": "build-debug-sanitizers"
+                },
+                {
+                    "type": "test",
+                    "name": "test-debug-sanitizers"
                 }
             ]
         },

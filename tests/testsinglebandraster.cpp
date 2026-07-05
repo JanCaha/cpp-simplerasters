@@ -1,3 +1,6 @@
+#include <cmath>
+#include <utility>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -240,7 +243,92 @@ TEST_F( SingleBandRasterTest, IsPointInside )
     EXPECT_FALSE( r.isInside( p ) );
 }
 
-TEST( SingleBandRaster, EmptyRaster ) { SingleBandRaster r = SingleBandRaster(); }
+TEST( SingleBandRaster, EmptyRaster )
+{
+    SingleBandRaster r = SingleBandRaster();
+    EXPECT_FALSE( r.isValid() );
+    EXPECT_DOUBLE_EQ( r.xCellSize(), 1.0 );
+    EXPECT_DOUBLE_EQ( r.yCellSize(), 1.0 );
+    EXPECT_EQ( r.gdalDataType(), GDALDataType::GDT_Unknown );
+    EXPECT_TRUE( std::isnan( r.value( 0, 0 ) ) );
+}
+
+TEST( SingleBandRaster, MoveSemantics )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM );
+    ASSERT_TRUE( r.isValid() );
+
+    const double valueBeforeMove = r.value( 0, 0 );
+
+    SingleBandRaster rMoved = std::move( r );
+    EXPECT_TRUE( rMoved.isValid() );
+    EXPECT_TRUE( rMoved.isDataValid() );
+    EXPECT_DOUBLE_EQ( rMoved.value( 0, 0 ), valueBeforeMove );
+
+    EXPECT_FALSE( r.isValid() );
+    EXPECT_FALSE( r.isDataValid() );
+
+    SingleBandRaster rAssigned;
+    rAssigned = std::move( rMoved );
+    EXPECT_TRUE( rAssigned.isValid() );
+    EXPECT_DOUBLE_EQ( rAssigned.value( 0, 0 ), valueBeforeMove );
+    EXPECT_FALSE( rMoved.isValid() );
+}
+
+TEST( SingleBandRaster, ByteRaster )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM_BYTE );
+    ASSERT_TRUE( r.isValid() );
+    ASSERT_TRUE( r.isDataValid() );
+    ASSERT_EQ( r.gdalDataType(), GDALDataType::GDT_Byte );
+
+    EXPECT_DOUBLE_EQ( r.noData(), 0 );
+    EXPECT_DOUBLE_EQ( r.value( 0, 0 ), 153 );
+
+    for ( std::size_t i = 0; i < r.cells(); i++ )
+    {
+        EXPECT_GE( r.value( i ), 0 );
+        EXPECT_LE( r.value( i ), 255 );
+    }
+
+    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_byte_saved.tif";
+    ASSERT_TRUE( r.saveFile( resultFile ) );
+
+    SingleBandRaster rSaved = SingleBandRaster( resultFile );
+    ASSERT_TRUE( rSaved.isDataValid() );
+    EXPECT_EQ( rSaved.gdalDataType(), GDALDataType::GDT_Byte );
+    EXPECT_TRUE( r.sameValues( rSaved ) );
+}
+
+TEST( SingleBandRaster, WithoutNoDataValue )
+{
+    SingleBandRaster r = SingleBandRaster( TEST_DATA_DSM_NO_NODATA );
+    ASSERT_TRUE( r.isValid() );
+    ASSERT_TRUE( r.isDataValid() );
+
+    EXPECT_FALSE( r.hasNoData() );
+    EXPECT_TRUE( std::isnan( r.noData() ) );
+    EXPECT_FALSE( r.isNoData( 0, 0 ) );
+    EXPECT_FALSE( r.isNoData( 174, 222 ) );
+
+    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_no_nodata_saved.tif";
+    ASSERT_TRUE( r.saveFile( resultFile ) );
+
+    GDALDatasetUniquePtr dataset =
+        GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+    int hasNoData = 1;
+    dataset->GetRasterBand( 1 )->GetNoDataValue( &hasNoData );
+    EXPECT_FALSE( hasNoData );
+}
+
+TEST_F( SingleBandRasterTest, ValueOutsideRasterIsNoData )
+{
+    // point slightly left of and above the raster origin, previously the
+    // negative row/col truncated towards zero into the edge cells
+    EXPECT_TRUE( r.isNoData( -0.25, 10.0 ) );
+    EXPECT_TRUE( r.isNoData( 10.0, -0.25 ) );
+    EXPECT_DOUBLE_EQ( r.valueAt( -336531.9, -1189032.0 ), r.noData() );
+}
 
 TEST( SingleBandRaster, ReadDataAsDefinedType )
 {

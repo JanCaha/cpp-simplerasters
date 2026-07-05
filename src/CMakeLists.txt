@@ -30,6 +30,12 @@ macro(library_settings target_name)
 
     target_compile_features(${target_name} PUBLIC cxx_std_20)
 
+    if(MSVC)
+        target_compile_options(${target_name} PRIVATE /W4)
+    else()
+        target_compile_options(${target_name} PRIVATE -Wall -Wextra)
+    endif()
+
     target_include_directories(${target_name}
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
@@ -39,7 +45,7 @@ macro(library_settings target_name)
         ${CMAKE_CURRENT_BINARY_DIR}/api
     )
 
-    target_link_libraries(${target_name} PRIVATE GDAL::GDAL)
+    target_link_libraries(${target_name} PUBLIC GDAL::GDAL)
 endmacro(library_settings)
 
 add_library(simplerasters_shared SHARED

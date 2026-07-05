@@ -26,9 +26,6 @@ Copyright (C) 2023 Jan Caha
 #define DLL_API
 #endif
 
-using VoidDeleter = void ( * )( void * );
-using VoidPtr = std::unique_ptr<void, VoidDeleter>;
-
 //////////
 // Classes
 //////////
@@ -84,10 +81,12 @@ class DLL_API AbstractRaster
 
     OGRSpatialReference mCrs;
 
-    VoidPtr mData = VoidPtr( nullptr, +[]( void * ) {} );
+    // Cell values are always stored as doubles, GDAL converts from/to the
+    // raster data type (mDataType) on read and write.
+    std::unique_ptr<double[]> mData;
     bool mDataValid = false;
 
-    std::array<double, 6> mGeoTransform;
+    std::array<double, 6> mGeoTransform = { 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 };
 
     void storeLastErrorMessage();
 
@@ -107,8 +106,9 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     SingleBandRaster( const SingleBandRaster & ) = delete;
     SingleBandRaster &operator=( const SingleBandRaster & ) = delete;
-    SingleBandRaster( SingleBandRaster && ) = default;
-    SingleBandRaster &operator=( SingleBandRaster && ) = default;
+
+    SingleBandRaster( SingleBandRaster &&other ) noexcept;
+    SingleBandRaster &operator=( SingleBandRaster &&other ) noexcept;
 
     bool isDataValid() const;
 
@@ -126,6 +126,7 @@ class DLL_API SingleBandRaster : public AbstractRaster
 
     double noData() const;
     void setNoData( double value );
+    bool hasNoData() const;
 
     double cornerValue( const double row, const double column ) const;
 
@@ -145,9 +146,10 @@ class DLL_API SingleBandRaster : public AbstractRaster
                      const double epsilon = 4 * std::numeric_limits<double>::epsilon() ) const;
 
   protected:
-    GDALDataType mDataType;
+    GDALDataType mDataType = GDALDataType::GDT_Unknown;
 
     double mNoData = std::numeric_limits<double>::quiet_NaN();
+    bool mHasNoData = false;
 
     void prepareDataArray();
     std::size_t toIndex( int row, int column ) const;

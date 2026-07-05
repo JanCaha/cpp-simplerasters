@@ -10,6 +10,8 @@
 #define TEST_DATA_DSM_NON_RECTANGULAR "@TEST_DATA_DIR@/dsm_non_rectangular.tif"
 #define TEST_DATA_DSM_INT32 "@TEST_DATA_DIR@/dsm_int32.tif"
 #define TEST_DATA_DSM_FLOAT64 "@TEST_DATA_DIR@/dsm_float64.tif"
+#define TEST_DATA_DSM_BYTE "@TEST_DATA_DIR@/dsm_byte.tif"
+#define TEST_DATA_DSM_NO_NODATA "@TEST_DATA_DIR@/dsm_no_nodata.tif"
 #define TEST_DATA_TXT "@TEST_DATA_DIR@/empty_file_for_folder_to_exist.txt"
 
 std::string getEnvVar( std::string const &key )

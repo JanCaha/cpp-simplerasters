@@ -1,4 +1,31 @@
+#include <cmath>
+#include <utility>
+
 #include "api/simplerasters.h"
+
+SingleBandRaster::SingleBandRaster( SingleBandRaster &&other ) noexcept
+    : AbstractRaster( std::move( other ) ), mDataType( other.mDataType ), mNoData( other.mNoData ),
+      mHasNoData( other.mHasNoData )
+{
+    other.mValid = false;
+    other.mDataValid = false;
+}
+
+SingleBandRaster &SingleBandRaster::operator=( SingleBandRaster &&other ) noexcept
+{
+    if ( this != &other )
+    {
+        AbstractRaster::operator=( std::move( other ) );
+        mDataType = other.mDataType;
+        mNoData = other.mNoData;
+        mHasNoData = other.mHasNoData;
+
+        other.mValid = false;
+        other.mDataValid = false;
+    }
+
+    return *this;
+}
 
 SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType dataType, const size_t bandNumber )
 {
@@ -55,11 +82,15 @@ SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType 
         mDataType = dataType;
     }
 
-    mNoData = band->GetNoDataValue();
+    int noDataSet = 0;
+    const double noDataValue = band->GetNoDataValue( &noDataSet );
+    mHasNoData = noDataSet != 0;
+    mNoData = mHasNoData ? noDataValue : std::numeric_limits<double>::quiet_NaN();
 
     prepareDataArray();
 
-    CPLErr ret = band->RasterIO( GDALRWFlag::GF_Read, 0, 0, mCols, mRows, mData.get(), mCols, mRows, mDataType, 0, 0 );
+    CPLErr ret = band->RasterIO( GDALRWFlag::GF_Read, 0, 0, mCols, mRows, mData.get(), mCols, mRows,
+                                 GDALDataType::GDT_Float64, 0, 0 );
 
     if ( ret != CPLErr::CE_None )
     {
@@ -67,43 +98,20 @@ SingleBandRaster::SingleBandRaster( const std::string &path, const GDALDataType 
         return;
     }
 
+    if ( !GDALDataTypeIsFloating( mDataType ) )
+    {
+        for ( std::size_t i = 0; i < cells(); i++ )
+        {
+            mData[i] = std::round( mData[i] );
+        }
+    }
+
     mDataValid = true;
 }
 
 bool SingleBandRaster::isDataValid() const { return mDataValid; }
 
-void SingleBandRaster::prepareDataArray()
-{
-
-    std::size_t arraySize = cells();
-
-    if ( GDALDataTypeIsFloating( mDataType ) )
-    {
-        if ( mDataType == GDALDataType::GDT_Float32 )
-        {
-            mData = VoidPtr( new float[arraySize], +[]( void *p ) { delete[] static_cast<float *>( p ); } );
-        }
-        else
-        {
-            mData = VoidPtr( new double[arraySize], +[]( void *p ) { delete[] static_cast<double *>( p ); } );
-        }
-    }
-    else
-    {
-        if ( mDataType == GDALDataType::GDT_Int16 )
-        {
-            mData = VoidPtr( new int16_t[arraySize], +[]( void *p ) { delete[] static_cast<int16_t *>( p ); } );
-        }
-        else if ( mDataType == GDALDataType::GDT_Int32 )
-        {
-            mData = VoidPtr( new int32_t[arraySize], +[]( void *p ) { delete[] static_cast<int32_t *>( p ); } );
-        }
-        else
-        {
-            mData = VoidPtr( new int64_t[arraySize], +[]( void *p ) { delete[] static_cast<int64_t *>( p ); } );
-        }
-    }
-}
+void SingleBandRaster::prepareDataArray() { mData = std::make_unique<double[]>( cells() ); }
 
 std::size_t SingleBandRaster::toIndex( int row, int column ) const
 {
@@ -112,7 +120,13 @@ std::size_t SingleBandRaster::toIndex( int row, int column ) const
 
 double SingleBandRaster::noData() const { return mNoData; }
 
-void SingleBandRaster::setNoData( double value ) { mNoData = value; }
+void SingleBandRaster::setNoData( double value )
+{
+    mNoData = value;
+    mHasNoData = true;
+}
+
+bool SingleBandRaster::hasNoData() const { return mHasNoData; }
 
 bool SingleBandRaster::isNoData( int row, int column ) const
 {
@@ -146,32 +160,7 @@ double SingleBandRaster::value( std::size_t index ) const
         return mNoData;
     }
 
-    if ( GDALDataTypeIsFloating( mDataType ) )
-    {
-        if ( mDataType == GDALDataType::GDT_Float32 )
-        {
-            return static_cast<double>( ( static_cast<float *>( mData.get() ) )[index] );
-        }
-        else
-        {
-            return static_cast<double>( ( static_cast<double *>( mData.get() ) )[index] );
-        }
-    }
-    else
-    {
-        if ( mDataType == GDALDataType::GDT_Int16 )
-        {
-            return static_cast<double>( ( static_cast<int16_t *>( mData.get() ) )[index] );
-        }
-        if ( mDataType == GDALDataType::GDT_Int32 )
-        {
-            return static_cast<double>( ( static_cast<int32_t *>( mData.get() ) )[index] );
-        }
-        else
-        {
-            return static_cast<double>( ( static_cast<int64_t *>( mData.get() ) )[index] );
-        }
-    }
+    return mData[index];
 }
 
 std::size_t SingleBandRaster::cells() const { return cellsInBand(); };
@@ -212,40 +201,26 @@ void SingleBandRaster::writeValue( const std::size_t index, const double value )
 
     if ( GDALDataTypeIsFloating( mDataType ) )
     {
-        if ( mDataType == GDALDataType::GDT_Float32 )
-        {
-            ( static_cast<float *>( mData.get() ) )[index] = static_cast<float>( value );
-        }
-        else
-        {
-            ( static_cast<double *>( mData.get() ) )[index] = static_cast<double>( value );
-        }
+        mData[index] = value;
     }
     else
     {
-        if ( mDataType == GDALDataType::GDT_Int16 )
-        {
-            ( static_cast<int16_t *>( mData.get() ) )[index] = static_cast<int16_t>( value );
-        }
-        else if ( mDataType == GDALDataType::GDT_Int32 )
-        {
-            ( static_cast<int32_t *>( mData.get() ) )[index] = static_cast<int32_t>( value );
-        }
-        else
-        {
-            ( static_cast<int64_t *>( mData.get() ) )[index] = static_cast<int64_t>( value );
-        }
+        // integer rasters store whole numbers, truncation matches the
+        // previous behaviour of casting to the integer type
+        mData[index] = std::trunc( value );
     }
 }
 
 bool SingleBandRaster::isNoData( double row, double column ) const
 {
-    return isNoData( static_cast<int>( row ), static_cast<int>( column ) );
+    // floor instead of cast, so that coordinates just outside the raster
+    // (e.g. row -0.5) do not truncate towards zero into the edge cells
+    return isNoData( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
 double SingleBandRaster::value( double row, double column ) const
 {
-    return value( static_cast<int>( row ), static_cast<int>( column ) );
+    return value( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
 double SingleBandRaster::cornerValue( const double row, const double column ) const
@@ -317,9 +292,15 @@ bool SingleBandRaster::saveFile( const std::string &filename, const std::string 
         return false;
     }
 
-    band->SetNoDataValue( mNoData );
+    if ( mHasNoData )
+    {
+        band->SetNoDataValue( mNoData );
+    }
 
-    CPLErr ret = band->RasterIO( GDALRWFlag::GF_Write, 0, 0, mCols, mRows, mData.get(), mCols, mRows, mDataType, 0, 0 );
+    // buffer type is GDT_Float64 because mData stores doubles, GDAL converts
+    // to the band data type (mDataType) while writing
+    CPLErr ret = band->RasterIO( GDALRWFlag::GF_Write, 0, 0, mCols, mRows, mData.get(), mCols, mRows,
+                                 GDALDataType::GDT_Float64, 0, 0 );
 
     if ( ret != CPLErr::CE_None )
     {
@@ -336,6 +317,7 @@ SingleBandRaster::SingleBandRaster( const SingleBandRaster &other, const GDALDat
     mCrs = other.mCrs;
     mGeoTransform = other.mGeoTransform;
     mNoData = other.mNoData;
+    mHasNoData = other.mHasNoData;
     mError = other.mError;
     mValid = other.mValid;
 

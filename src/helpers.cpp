@@ -1,10 +1,25 @@
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 #include <iostream>
+#include <mutex>
 #include <regex>
+#include <sstream>
 
 #include "api/simplerasters.h"
 #include "helpers.h"
+
+void registerGDAL()
+{
+    static std::once_flag gdalInitFlag;
+
+    std::call_once( gdalInitFlag,
+                    []()
+                    {
+                        GDALAllRegister();
+                        CPLPushErrorHandler( CPLQuietErrorHandler );
+                    } );
+}
 
 std::vector<std::string> metadata( GDALMajorObject *object )
 {
@@ -50,14 +65,14 @@ bool metadataEquals( GDALMajorObject *object, const std::string key, std::string
     return realValue == expectedValue;
 }
 
-std::vector<std::string> splitBy( std::string input, const char *split )
+std::vector<std::string> splitBy( const std::string &input, const char split )
 {
     std::vector<std::string> strings;
 
     std::istringstream f( input );
     std::string s;
 
-    while ( std::getline( f, s, *split ) )
+    while ( std::getline( f, s, split ) )
     {
         strings.push_back( s );
     }
@@ -76,7 +91,7 @@ std::string fileFilter( GDALMajorObject *object )
 
     std::string extensions = metadataValue( object, GDAL_DMD_EXTENSIONS );
 
-    std::vector<std::string> exts = splitBy( extensions, " " );
+    std::vector<std::string> exts = splitBy( extensions, ' ' );
 
     if ( exts.empty() )
     {
@@ -99,7 +114,7 @@ std::string fileFilter( GDALMajorObject *object )
 
 std::string simplerasters::rasterFormatsFileFilters()
 {
-    GDALAllRegister();
+    registerGDAL();
 
     std::string completeFileFilter;
     GDALDriverManager *dm = GetGDALDriverManager();
@@ -137,10 +152,15 @@ bool simplerasters::compareValues( const double &a, const double &b, double epsi
         return true;
     }
 
-    if ( std::abs( a - b ) < epsilon )
+    if ( a == b )
     {
         return true;
     }
 
-    return false;
+    // scale the tolerance to the magnitude of the compared values, otherwise
+    // the default epsilon is meaningless for values far from 1 (e.g. nodata
+    // -3.4e+38 or projected coordinates)
+    const double scale = std::max( { 1.0, std::abs( a ), std::abs( b ) } );
+
+    return std::abs( a - b ) <= epsilon * scale;
 }
