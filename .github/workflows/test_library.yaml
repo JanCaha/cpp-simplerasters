@@ -7,7 +7,7 @@ concurrency:
 on: [push, pull_request]
 
 jobs:
-  Tests-library:
+  Tests-library-linux:
     runs-on: ubuntu-26.04
 
     env:
@@ -43,7 +43,7 @@ jobs:
         run: |
           sudo cmake --workflow --preset workflow-release-install
 
-  Tests-library-sanitizers:
+  Tests-library-linux-sanitizers:
     runs-on: ubuntu-26.04
 
     steps:
