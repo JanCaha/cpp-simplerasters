@@ -69,3 +69,34 @@ jobs:
       - name: Run tests with AddressSanitizer and UndefinedBehaviorSanitizer
         run: |
           cmake --workflow --preset workflow-debug-sanitizers
+
+  Tests-library-macos:
+    runs-on: macos-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Install latest CMake
+        uses: lukka/get-cmake@latest
+
+      - name: Install GDAL
+        run: |
+          brew update
+          brew install gdal
+
+      - name: Install GTest and GMock
+        run: brew install googletest
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run tests
+        run: |
+          cmake --workflow --preset workflow-debug-tests
+
+      - name: Test install
+        run: |
+          sudo cmake --workflow --preset workflow-release-install
