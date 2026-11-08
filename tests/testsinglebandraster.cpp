@@ -44,30 +44,30 @@ TEST( SingleBandRaster, Types )
     if ( !getEnvVar( "GITHUB_ACTIONS" ).compare( "" ) )
         GTEST_SKIP() << "Skipping this test on GitHub Actions.";
 
-    if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
-    {
-        std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
-        std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
-        GDALDataType dataType = GDALDataType::GDT_Int32;
+    if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) <= GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
+        GTEST_SKIP() << "Skipping this test for GDAL versions <= 3.7.0.";
 
-        SingleBandRaster rOrig = SingleBandRaster( file );
-        ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
+    std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
+    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
+    GDALDataType dataType = GDALDataType::GDT_Int32;
 
-        SingleBandRaster r = SingleBandRaster( file, dataType );
-        ASSERT_TRUE( r.isValid() );
-        ASSERT_TRUE( r.isDataValid() );
-        ASSERT_EQ( r.gdalDataType(), dataType );
-        r.saveFile( resultFile );
+    SingleBandRaster rOrig = SingleBandRaster( file );
+    ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
 
-        GDALDatasetUniquePtr dataset =
-            GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
-        std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+    SingleBandRaster r = SingleBandRaster( file, dataType );
+    ASSERT_TRUE( r.isValid() );
+    ASSERT_TRUE( r.isDataValid() );
+    ASSERT_EQ( r.gdalDataType(), dataType );
+    r.saveFile( resultFile );
 
-        ASSERT_EQ( band->GetRasterDataType(), dataType );
+    GDALDatasetUniquePtr dataset =
+        GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
 
-        band.release();
-        dataset.release();
-    }
+    ASSERT_EQ( band->GetRasterDataType(), dataType );
+
+    band.release();
+    dataset.release();
 }
 
 TEST_F( SingleBandRasterTest, Validity )
