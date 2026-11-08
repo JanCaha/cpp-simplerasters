@@ -250,6 +250,17 @@ TEST_F( SingleBandRasterTest, IsPointInside )
     EXPECT_FALSE( r.isInside( p ) );
 }
 
+TEST( SingleBandRaster, SaveFileErrorReported )
+{
+    SingleBandRaster r = SingleBandRaster();
+
+    EXPECT_FALSE( r.saveFile( "/tmp/invalid-output.tif" ) );
+    EXPECT_FALSE( r.error().empty() );
+
+    EXPECT_FALSE( r.saveFile( "/tmp/invalid-output.tif", "THIS_DRIVER_DOES_NOT_EXIST" ) );
+    EXPECT_FALSE( r.error().empty() );
+}
+
 TEST( SingleBandRaster, EmptyRaster )
 {
     SingleBandRaster r = SingleBandRaster();
