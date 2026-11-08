@@ -1,37 +1,45 @@
 @PACKAGE_INIT@
 
-# find
 include(CMakeFindDependencyMacro)
 find_dependency(GDAL REQUIRED)
 
 include("${CMAKE_CURRENT_LIST_DIR}/SimpleRastersTargets.cmake")
 
-# Define standard variables for compatibility
-set(SIMPLERASTERS_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include/SimpleRasters")
-set(SIMPLERASTERS_VERSION "@PROJECT_VERSION@")
+set(SimpleRasters_VERSION "@PROJECT_VERSION@")
+set(SimpleRasters_VERSION_MAJOR "@PROJECT_VERSION_MAJOR@")
+set(SimpleRasters_VERSION_MINOR "@PROJECT_VERSION_MINOR@")
+set(SimpleRasters_VERSION_PATCH "@PROJECT_VERSION_PATCH@")
+
+set(SimpleRasters_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include/SimpleRasters")
+set(SIMPLERASTERS_INCLUDE_DIRS "${SimpleRasters_INCLUDE_DIRS}")
+
 set(SimpleRasters_FOUND TRUE)
+set(SimpleRasters_LIBRARIES "")
+set(SimpleRasters_SHARED_LIBRARIES "SimpleRasters::simplerasters_shared")
+set(SimpleRasters_STATIC_LIBRARIES "SimpleRasters::simplerasters_static")
 
-# Default to shared libraries if no component is specified
-set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_shared)
+# Default to shared libraries when no component is requested.
+set(SimpleRasters_LIBRARIES "SimpleRasters::simplerasters_shared")
+set(SIMPLERASTERS_LIBRARIES "${SimpleRasters_LIBRARIES}")
 
-# Handle requested components
 if(SimpleRasters_FIND_COMPONENTS)
     foreach(comp ${SimpleRasters_FIND_COMPONENTS})
         if(comp STREQUAL "static")
-            set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_static)
+            set(SimpleRasters_LIBRARIES "SimpleRasters::simplerasters_static")
         elseif(comp STREQUAL "shared" OR comp STREQUAL "dynamic")
-            set(SIMPLERASTERS_LIBRARIES SimpleRasters::simplerasters_shared)
+            set(SimpleRasters_LIBRARIES "SimpleRasters::simplerasters_shared")
         else()
             set(SimpleRasters_FOUND FALSE)
             set(SimpleRasters_NOT_FOUND_MESSAGE "Unsupported component: ${comp}")
+            break()
         endif()
     endforeach()
+    set(SIMPLERASTERS_LIBRARIES "${SimpleRasters_LIBRARIES}")
 endif()
 
-if(SimpleRasters_FOUND)
-    # Provide both static and shared library variables for flexibility
-    set(SIMPLERASTERS_SHARED_LIBRARIES SimpleRasters::simplerasters_shared)
-    set(SIMPLERASTERS_STATIC_LIBRARIES SimpleRasters::simplerasters_static)
+if(NOT TARGET SimpleRasters::simplerasters_shared AND NOT TARGET SimpleRasters::simplerasters_static)
+    set(SimpleRasters_FOUND FALSE)
+    set(SimpleRasters_NOT_FOUND_MESSAGE "SimpleRasters targets were not imported correctly.")
 endif()
 
 check_required_components(SimpleRasters)
