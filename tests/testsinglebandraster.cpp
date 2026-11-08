@@ -44,30 +44,30 @@ TEST( SingleBandRaster, Types )
     if ( !getEnvVar( "GITHUB_ACTIONS" ).compare( "" ) )
         GTEST_SKIP() << "Skipping this test on GitHub Actions.";
 
-    if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) > GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
-    {
-        std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
-        std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
-        GDALDataType dataType = GDALDataType::GDT_Int32;
+    if ( atoi( GDALVersionInfo( "VERSION_NUM" ) ) <= GDAL_COMPUTE_VERSION( 3, 7, 0 ) )
+        GTEST_SKIP() << "Skipping this test for GDAL versions <= 3.7.0.";
 
-        SingleBandRaster rOrig = SingleBandRaster( file );
-        ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
+    std::string file = (std::string)TEST_DATA_DIR + "/dsm.tif";
+    std::string resultFile = (std::string)TEST_DATA_RESULTS_DIR + "/dsm_int_32.tif";
+    GDALDataType dataType = GDALDataType::GDT_Int32;
 
-        SingleBandRaster r = SingleBandRaster( file, dataType );
-        ASSERT_TRUE( r.isValid() );
-        ASSERT_TRUE( r.isDataValid() );
-        ASSERT_EQ( r.gdalDataType(), dataType );
-        r.saveFile( resultFile );
+    SingleBandRaster rOrig = SingleBandRaster( file );
+    ASSERT_EQ( rOrig.gdalDataType(), GDALDataType::GDT_Float32 );
 
-        GDALDatasetUniquePtr dataset =
-            GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
-        std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
+    SingleBandRaster r = SingleBandRaster( file, dataType );
+    ASSERT_TRUE( r.isValid() );
+    ASSERT_TRUE( r.isDataValid() );
+    ASSERT_EQ( r.gdalDataType(), dataType );
+    r.saveFile( resultFile );
 
-        ASSERT_EQ( band->GetRasterDataType(), dataType );
+    GDALDatasetUniquePtr dataset =
+        GDALDatasetUniquePtr( GDALDataset::FromHandle( GDALOpen( resultFile.c_str(), GA_ReadOnly ) ) );
+    std::unique_ptr<GDALRasterBand> band = std::unique_ptr<GDALRasterBand>( dataset->GetRasterBand( 1 ) );
 
-        band.release();
-        dataset.release();
-    }
+    ASSERT_EQ( band->GetRasterDataType(), dataType );
+
+    band.release();
+    dataset.release();
 }
 
 TEST_F( SingleBandRasterTest, Validity )
@@ -137,10 +137,12 @@ TEST_F( SingleBandRasterTest, CoordinatesTransformToRaster )
     EXPECT_EQ( col1, col );
 
     // outside of raster
-    // x = -336539.10;
-    // y = -1189212.01;
+    x = -336539.10;
+    y = -1189212.01;
 
-    // r.transformCoordinatesToRaster( x, y, row, col );
+    r.transformCoordinatesToRaster( x, y, row, col );
+    EXPECT_TRUE( std::isnan( row ) );
+    EXPECT_TRUE( std::isnan( col ) );
 }
 
 TEST_F( SingleBandRasterTest, CoordinatesTransformToWorld )
@@ -157,6 +159,11 @@ TEST_F( SingleBandRasterTest, CoordinatesTransformToWorld )
     col = 222;
 
     r.transformCoordinatesToWorld( row, col, x, y );
+    EXPECT_DOUBLE_EQ( x, -336309.64529999997 );
+    EXPECT_DOUBLE_EQ( y, -1189206.1188999999 );
+
+    std::shared_ptr<OGRPoint> p = std::make_shared<OGRPoint>( col, row );
+    r.transformCoordinatesToWorld( p, x, y );
     EXPECT_DOUBLE_EQ( x, -336309.64529999997 );
     EXPECT_DOUBLE_EQ( y, -1189206.1188999999 );
 }
@@ -241,6 +248,17 @@ TEST_F( SingleBandRasterTest, IsPointInside )
 
     p = OGRPoint( -336295.87, -1189221.40 );
     EXPECT_FALSE( r.isInside( p ) );
+}
+
+TEST( SingleBandRaster, SaveFileErrorReported )
+{
+    SingleBandRaster r = SingleBandRaster();
+
+    EXPECT_FALSE( r.saveFile( "/tmp/invalid-output.tif" ) );
+    EXPECT_FALSE( r.error().empty() );
+
+    EXPECT_FALSE( r.saveFile( "/tmp/invalid-output.tif", "THIS_DRIVER_DOES_NOT_EXIST" ) );
+    EXPECT_FALSE( r.error().empty() );
 }
 
 TEST( SingleBandRaster, EmptyRaster )

@@ -213,6 +213,11 @@ void SingleBandRaster::writeValue( const std::size_t index, const double value )
 
 bool SingleBandRaster::isNoData( double row, double column ) const
 {
+    if ( !std::isfinite( row ) || !std::isfinite( column ) )
+    {
+        return true;
+    }
+
     // floor instead of cast, so that coordinates just outside the raster
     // (e.g. row -0.5) do not truncate towards zero into the edge cells
     return isNoData( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
@@ -220,6 +225,11 @@ bool SingleBandRaster::isNoData( double row, double column ) const
 
 double SingleBandRaster::value( double row, double column ) const
 {
+    if ( !std::isfinite( row ) || !std::isfinite( column ) )
+    {
+        return mNoData;
+    }
+
     return value( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
@@ -261,11 +271,13 @@ double SingleBandRaster::valueAt( const double x, const double y ) const
 
 bool SingleBandRaster::saveFile( const std::string &filename, const std::string &driverName )
 {
+    mError.clear();
 
     GDALDriver *driver = GDALDriver::FromHandle( GDALGetDriverByName( driverName.c_str() ) );
 
     if ( !driver )
     {
+        mError = "GDAL driver not found: " + driverName;
         return false;
     }
 
@@ -274,27 +286,46 @@ bool SingleBandRaster::saveFile( const std::string &filename, const std::string 
 
     if ( !dataset )
     {
+        storeLastErrorMessage();
         return false;
     }
 
     if ( !mData || !mDataValid )
     {
+        mError = "Raster data is not available for writing.";
         return false;
     }
 
-    dataset->SetSpatialRef( &mCrs );
-    dataset->SetGeoTransform( mGeoTransform.data() );
+    CPLErr spatialRefResult = dataset->SetSpatialRef( &mCrs );
+    if ( spatialRefResult != CE_None )
+    {
+        storeLastErrorMessage();
+        return false;
+    }
+
+    CPLErr geotransformResult = dataset->SetGeoTransform( mGeoTransform.data() );
+    if ( geotransformResult != CE_None )
+    {
+        storeLastErrorMessage();
+        return false;
+    }
 
     GDALRasterBand *band = dataset->GetRasterBand( 1 );
 
     if ( !band )
     {
+        storeLastErrorMessage();
         return false;
     }
 
     if ( mHasNoData )
     {
-        band->SetNoDataValue( mNoData );
+        CPLErr nodataResult = band->SetNoDataValue( mNoData );
+        if ( nodataResult != CE_None )
+        {
+            storeLastErrorMessage();
+            return false;
+        }
     }
 
     // buffer type is GDT_Float64 because mData stores doubles, GDAL converts
@@ -304,6 +335,7 @@ bool SingleBandRaster::saveFile( const std::string &filename, const std::string 
 
     if ( ret != CPLErr::CE_None )
     {
+        storeLastErrorMessage();
         return false;
     }
 

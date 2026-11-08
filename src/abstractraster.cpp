@@ -39,6 +39,11 @@ void AbstractRaster::transformCoordinatesToRaster( const double &x, const double
         div;
     row = ( mGeoTransform[1] * ( mGeoTransform[3] - y ) + mGeoTransform[4] * x - mGeoTransform[0] * mGeoTransform[4] ) /
           div;
+
+    if ( row < 0 || row >= mRows || col < 0 || col >= mCols )
+    {
+        row = col = std::numeric_limits<double>::quiet_NaN();
+    }
 }
 
 void AbstractRaster::transformCoordinatesToRaster( const std::shared_ptr<OGRPoint> &p, double &row, double &col ) const

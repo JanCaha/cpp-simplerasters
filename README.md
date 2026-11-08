@@ -55,14 +55,34 @@ if ( !raster.isNoData( 10, 20 ) )
 raster.saveFile( "/path/to/output.tif" );
 ```
 
-Link in CMake with:
+### Using from another CMake project
+
+After installing the library, a downstream project can consume it with `find_package`:
 
 ```cmake
+cmake_minimum_required(VERSION 3.23)
+project(example LANGUAGES CXX)
+
 find_package(SimpleRasters REQUIRED)
-target_link_libraries(mytarget PRIVATE SimpleRasters::simplerasters_shared)
+
+add_executable(example main.cpp)
+target_link_libraries(example PRIVATE SimpleRasters::simplerasters_shared)
 ```
 
-(GDAL usage requirements propagate automatically; `SimpleRasters::simplerasters_static` is also available.)
+If you want the static variant instead:
+
+```cmake
+find_package(SimpleRasters REQUIRED COMPONENTS static)
+target_link_libraries(example PRIVATE SimpleRasters::simplerasters_static)
+```
+
+When installing the library to a custom prefix, point CMake at that prefix with:
+
+```bash
+cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/install/prefix
+```
+
+The package also exposes compatibility variables such as `SimpleRasters_VERSION`, `SimpleRasters_INCLUDE_DIRS`, and `SimpleRasters_LIBRARIES`. GDAL usage requirements propagate automatically; `SimpleRasters::simplerasters_static` is also available.
 
 ## Citation
 
