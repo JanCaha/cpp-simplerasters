@@ -137,10 +137,12 @@ TEST_F( SingleBandRasterTest, CoordinatesTransformToRaster )
     EXPECT_EQ( col1, col );
 
     // outside of raster
-    // x = -336539.10;
-    // y = -1189212.01;
+    x = -336539.10;
+    y = -1189212.01;
 
-    // r.transformCoordinatesToRaster( x, y, row, col );
+    r.transformCoordinatesToRaster( x, y, row, col );
+    EXPECT_TRUE( std::isnan( row ) );
+    EXPECT_TRUE( std::isnan( col ) );
 }
 
 TEST_F( SingleBandRasterTest, CoordinatesTransformToWorld )
@@ -157,6 +159,11 @@ TEST_F( SingleBandRasterTest, CoordinatesTransformToWorld )
     col = 222;
 
     r.transformCoordinatesToWorld( row, col, x, y );
+    EXPECT_DOUBLE_EQ( x, -336309.64529999997 );
+    EXPECT_DOUBLE_EQ( y, -1189206.1188999999 );
+
+    std::shared_ptr<OGRPoint> p = std::make_shared<OGRPoint>( col, row );
+    r.transformCoordinatesToWorld( p, x, y );
     EXPECT_DOUBLE_EQ( x, -336309.64529999997 );
     EXPECT_DOUBLE_EQ( y, -1189206.1188999999 );
 }
