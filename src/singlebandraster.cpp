@@ -213,6 +213,11 @@ void SingleBandRaster::writeValue( const std::size_t index, const double value )
 
 bool SingleBandRaster::isNoData( double row, double column ) const
 {
+    if ( !std::isfinite( row ) || !std::isfinite( column ) )
+    {
+        return true;
+    }
+
     // floor instead of cast, so that coordinates just outside the raster
     // (e.g. row -0.5) do not truncate towards zero into the edge cells
     return isNoData( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
@@ -220,6 +225,11 @@ bool SingleBandRaster::isNoData( double row, double column ) const
 
 double SingleBandRaster::value( double row, double column ) const
 {
+    if ( !std::isfinite( row ) || !std::isfinite( column ) )
+    {
+        return mNoData;
+    }
+
     return value( static_cast<int>( std::floor( row ) ), static_cast<int>( std::floor( column ) ) );
 }
 
